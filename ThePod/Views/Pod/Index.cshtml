@@ -1,0 +1,19 @@
+﻿    @model Show
+        <form asp-controller="Pod" asp-action="Index" method="post">
+            <select name="show">
+            </select>
+            <input name="id" type="text>"
+            <input type="submit"  value="id" />
+        </form>
+
+@*
+<form asp-controller="Pod" asp-action="Index" method="post">
+    <select name="show">
+    @foreach(var show in Model.id)
+    {
+        @Html.DisplayFor(m=>m.id)
+    }
+
+    </select>
+    <input type="submit" value="id" />
+</form>*@

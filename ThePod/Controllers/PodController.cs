@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using ThePod.Models;
 
 namespace ThePod.Controllers
 {
-    public class PodController
+    public class PodController:Controller
     {
         private readonly PodDAL _dal;
         private readonly IConfiguration _config;
@@ -17,9 +18,14 @@ namespace ThePod.Controllers
             _dal = dal;
             _config = config;
         }
-        //public async Task<Shows> GetShowsAsync()
-        //{
-        //    return ErrorViewModel();
-        //}
+      
+        public async Task<IActionResult> Index(string id)
+        {
+            var result = await _dal.GetEpisodeAsync(id);
+
+            return View(result);
+        }
+
+
     }
 }
