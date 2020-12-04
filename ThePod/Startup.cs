@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ThePod.Data;
+using ThePod.DataAccess;
 
 namespace ThePod
 {
@@ -27,6 +28,10 @@ namespace ThePod
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient<PodDAL>(client =>
+            {
+                client.BaseAddress = new Uri("https://api.spotify.com/v1");
+            });
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
@@ -34,8 +39,21 @@ namespace ThePod
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
-        }
 
+            services.AddAuthentication()
+                .AddSpotify(options =>
+                {
+                    options.ClientId = Secret.ClientId;
+                    options.ClientSecret = Secret.ClientSecret;
+                    options.CallbackPath = "/callback";
+                    options.Events.OnRemoteFailure = (context) =>
+                    {
+                    //Handle fail login attempts here
+                    return Task.CompletedTask;
+                    };
+                }
+                );
+        }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
