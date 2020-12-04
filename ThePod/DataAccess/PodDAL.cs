@@ -15,9 +15,9 @@ namespace ThePod.DataAccess
         {
             _client = client;
         }
-        public async Task<Shows> FindShowsAsync(string query)
+        public async Task<Shows> SearchShowsAsync(string query)
         {
-            var response = await _client.GetAsync($"search?id={query}");
+            var response = await _client.GetAsync($"search?q={query}");
             var jsonData = await response.Content.ReadAsStringAsync();
 
             Shows s = JsonSerializer.Deserialize<Shows>(jsonData);
