@@ -48,8 +48,8 @@ namespace ThePod
                     options.CallbackPath = "/callback";
                     options.Events.OnRemoteFailure = (context) =>
                     {
-                    //Handle fail login attempts here
-                    return Task.CompletedTask;
+                        //Handle fail login attempts here
+                        return Task.CompletedTask;
                     };
                 }
                 );

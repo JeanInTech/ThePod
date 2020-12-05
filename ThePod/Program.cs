@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ThePod.Controllers;
+using ThePod.DataAccess;
 
 namespace ThePod
 { 
@@ -16,9 +17,6 @@ namespace ThePod
         public static async Task Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
-
-            //var config = SpotifyClientConfig.CreateDefault().WithAuthenticator(new ClientCredentialsAuthenticator(Secret.ClientId, Secret.ClientSecret));
-            //var spotify = new SpotifyClient(config);
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
