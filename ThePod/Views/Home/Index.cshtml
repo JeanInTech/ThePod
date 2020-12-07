@@ -1,12 +1,9 @@
-﻿
-
-<form asp-controller="Pod" asp-action="SearchResults" method="post">
-
+﻿<form asp-controller="Pod" asp-action="SearchResults" method="post">
     <input type="text" name="query" /><br />
     <h5>Search by:</h5>
-    <input type="checkbox" name="type" id="show" value="show"/>
+    <input type="radio" name="type" id="show" value="show"/>
     <label for="show">Show</label><br />
-    <input type="checkbox" name="type" id="episode" value="episode" />
+    <input type="radio" name="type" id="episode" value="episode" />
     <label for="episode">Episode</label><br />
     <input type="submit"/>
 </form>

@@ -56,8 +56,39 @@ namespace ThePod.DataAccess
             var jsonData = await response.Content.ReadAsStringAsync();
 
             Rootobject ro = JsonSerializer.Deserialize<Rootobject>(jsonData);
-
             return ro;
         }
+        public async Task<RootobjectEpisodes> SearchEpisodeNameAsync(string query)
+        {
+            var token = await GetToken();
+            HttpClient client = new HttpClient();
+            //var encodedQuery = Uri.EscapeDataString(query);
+
+            client.BaseAddress = new Uri("https://api.spotify.com/v1/");
+            client.DefaultRequestHeaders.Add("Authorization", $"{token.token_type} {token.access_token}");
+            var response = await client.GetAsync($"search?q={query}&type=episode&market=US");
+            var jsonData = await response.Content.ReadAsStringAsync();
+
+            RootobjectEpisodes roe = JsonSerializer.Deserialize<RootobjectEpisodes>(jsonData);
+
+            return roe;
+        }
+
+        public async Task<RootEpisodes> SearchEpisodeIdAsync(string query, string type)
+        {
+            var token = await GetToken();
+            HttpClient client = new HttpClient();
+            //var encodedQuery = Uri.EscapeDataString(query);
+
+            client.BaseAddress = new Uri("https://api.spotify.com/v1/");
+            client.DefaultRequestHeaders.Add("Authorization", $"{token.token_type} {token.access_token}");
+            var response = await client.GetAsync($"episodes?id={query}&market=US");
+            var jsonData = await response.Content.ReadAsStringAsync();
+
+            RootEpisodes roe = JsonSerializer.Deserialize<RootEpisodes>(jsonData);
+
+            return roe;
+        }
+
     }
 }

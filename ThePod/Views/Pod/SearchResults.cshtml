@@ -1,9 +1,16 @@
 ﻿@model List<Item>
 
+    <h2>@TempData["type"] results for "@TempData["query"]"</h2>
+
 @foreach (Item i in Model)
 {
     if (i != null)
     {
-        <p>@i.description</p>
+        <p>Id: @i.id </p>
+        <p>Podcast name: @i.name </p>
+        <p>Publisher: @i.publisher</p>
+        <p>Description: @i.description</p>
+        <hr>
+        <br>
     }
 }
