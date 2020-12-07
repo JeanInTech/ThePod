@@ -32,18 +32,20 @@ namespace ThePod.Controllers
 
             return View("episodesearchresults", s);
         }
-        public async Task<IActionResult> SearchByEpisodeId(string query)
+        public async Task<IActionResult> SearchByEpisodeId(string query) //this takes in a search term and gets the episode id to feed that into the "episode" endpoint
         {
             var results = await _dal.SearchEpisodeNameAsync(query);
             List<EpisodeItem> s = results.episodes.items.ToList();
 
+            List<string> episodeIds = new List<string>();
+
             foreach (EpisodeItem e in s)
             {
-                string episodeId = e.id;
+                episodeIds.Add(e.id);
 
             }
-
-            var eachEpisode = await _dal.SearchEpisodeIdAsync(query);
+            var str = String.Join("," , episodeIds);
+            var eachEpisode = await _dal.SearchEpisodeIdAsync(str);
 
             return View("episodeidresults", eachEpisode);
 
