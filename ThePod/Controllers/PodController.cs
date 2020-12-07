@@ -42,13 +42,11 @@ namespace ThePod.Controllers
         //    foreach (EpisodeItem e in s)
         //    {
         //        string episodeId = e.id;
-
         //    }
 
         //    //var eachEpisode = await _dal.SearchEpisodeIdAsync(query);
 
         //    return View("episodeidresults", eachEpisode);
-
         //}
     }
 }
