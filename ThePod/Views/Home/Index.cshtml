@@ -1,6 +1,11 @@
 ﻿
 
 <form asp-controller="Pod" asp-action="SearchResults" method="post">
-    <input type="text" name="query" />
-    <input type="submit"/>
+    search type podcast name: <input type="text" name="query" />
+   <input type="submit"/>
+</form>
+
+<form asp-controller="Pod" asp-action="SearchEpisodeNameResults" method="post">
+    search episode name:<input type="text" name="query" />
+    <input type="submit" />
 </form>
