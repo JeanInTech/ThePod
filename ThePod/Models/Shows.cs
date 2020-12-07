@@ -5,12 +5,23 @@ using System.Threading.Tasks;
 
 namespace ThePod.Models
 {
-    public class Shows
+    public class Rootobject
     {
-        public Show[] shows { get; set; }
+        public Shows shows { get; set; }
     }
 
-    public class Show
+    public class Shows
+    {
+        public string href { get; set; }
+        public Item[] items { get; set; }
+        public int limit { get; set; }
+        public string next { get; set; }
+        public int offset { get; set; }
+        public object previous { get; set; }
+        public int total { get; set; }
+    }
+
+    public class Item
     {
         public string[] available_markets { get; set; }
         public object[] copyrights { get; set; }
@@ -25,6 +36,7 @@ namespace ThePod.Models
         public string media_type { get; set; }
         public string name { get; set; }
         public string publisher { get; set; }
+        public int total_episodes { get; set; }
         public string type { get; set; }
         public string uri { get; set; }
     }
@@ -40,5 +52,4 @@ namespace ThePod.Models
         public string url { get; set; }
         public int width { get; set; }
     }
-
 }

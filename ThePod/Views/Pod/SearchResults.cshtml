@@ -1,0 +1,9 @@
+﻿@model List<Item>
+
+@foreach (Item i in Model)
+{
+    if (i != null)
+    {
+        <p>@i.description</p>
+    }
+}
