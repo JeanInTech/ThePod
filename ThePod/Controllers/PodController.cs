@@ -21,7 +21,6 @@ namespace ThePod.Controllers
         public async Task<IActionResult> SearchResults(string query)
         {
             var results = await _dal.SearchShowsAsync(query);
-
             List<Item> s = results.shows.items.ToList();
 
             return View(s);

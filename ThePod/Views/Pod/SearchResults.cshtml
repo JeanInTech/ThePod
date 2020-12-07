@@ -2,6 +2,8 @@
 
 @foreach (Item i in Model)
 {
-    <p>@i.description</p>
+    if (i != null)
+    {
+        <p>@i.description</p>
+    }
 }
-

@@ -1,10 +1,10 @@
-﻿using RestSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ThePod.Models;
@@ -24,6 +24,8 @@ namespace ThePod.DataAccess
             string clientId = Secret.ClientId;
             string clientSecret = Secret.ClientSecret;
             string credentials = String.Format("{0}:{1}", clientId, clientSecret);
+
+
             using (var client = new HttpClient())
             {
                 //Define Headers
@@ -35,11 +37,11 @@ namespace ThePod.DataAccess
                 //Prepare Request Body
                 List<KeyValuePair<string, string>> requestData = new List<KeyValuePair<string, string>>();
                 requestData.Add(new KeyValuePair<string, string>("grant_type", "client_credentials"));
-
                 FormUrlEncodedContent requestBody = new FormUrlEncodedContent(requestData);
 
                 //Request Token
                 var request = await client.PostAsync("https://accounts.spotify.com/api/token", requestBody);
+
                 var response = await request.Content.ReadAsStringAsync();
 
                 return JsonSerializer.Deserialize<AccessToken>(response);
@@ -49,10 +51,11 @@ namespace ThePod.DataAccess
         {
             var token = await GetToken();
             HttpClient client = new HttpClient();
+            //var encodedQuery = Uri.EscapeDataString(query);
 
             client.BaseAddress = new Uri("https://api.spotify.com/v1/");
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer BQBRWpH8L1GihAoGDKT7uRV1gyAndKlSQ9dV_djFE6YoW6abrFczUOKifc6gfUDdG3jcejUqrzdx0y_sVMs3RcLxw__gRknd7FH7XnDAONE7fqQW_K6rUZDh0c6VqblniIqbqIILifTJdEl8");
-            var response = await client.GetAsync($"search?type=show&q={query}");
+            client.DefaultRequestHeaders.Add("Authorization", $"{token.token_type} {token.access_token}");
+            var response = await client.GetAsync($"search?q={query}&type=show&market=US");
             var jsonData = await response.Content.ReadAsStringAsync();
 
             Rootobject ro = JsonSerializer.Deserialize<Rootobject>(jsonData);
