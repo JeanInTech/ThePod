@@ -25,13 +25,11 @@ namespace ThePod.DataAccess
             string clientSecret = Secret.ClientSecret;
             string credentials = String.Format("{0}:{1}", clientId, clientSecret);
 
-
             using (var client = new HttpClient())
             {
                 //Define Headers
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes(credentials)));
 
                 //Prepare Request Body
@@ -41,7 +39,6 @@ namespace ThePod.DataAccess
 
                 //Request Token
                 var request = await client.PostAsync("https://accounts.spotify.com/api/token", requestBody);
-
                 var response = await request.Content.ReadAsStringAsync();
 
                 return JsonSerializer.Deserialize<AccessToken>(response);
