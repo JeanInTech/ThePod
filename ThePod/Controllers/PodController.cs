@@ -9,7 +9,7 @@ using ThePod.Models;
 
 namespace ThePod.Controllers
 {
-    public class PodController:Controller
+    public class PodController : Controller
     {
         private readonly PodDAL _dal;
         private readonly IConfiguration _config;
@@ -18,14 +18,35 @@ namespace ThePod.Controllers
             _dal = dal;
             _config = config;
         }
-      
-        public async Task<IActionResult> Index(string id)
+        public async Task<IActionResult> SearchResults(string query) //this is searching using "search by shows" endpoint
         {
-            var result = await _dal.GetEpisodeAsync(id);
+            var results = await _dal.SearchShowsAsync(query);
+            List<Item> s = results.shows.items.ToList();
 
-            return View(result);
+            return View(s);
         }
+        public async Task<IActionResult> SearchEpisodeNameResults(string query) //this is searching using "search by episodes"
+        {
+            var results = await _dal.SearchEpisodeNameAsync(query);
+            List<EpisodeItem> s = results.episodes.items.ToList();
 
+            return View("episodesearchresults", s);
+        }
+        public async Task<IActionResult> SearchByEpisodeId(string query)
+        {
+            var results = await _dal.SearchEpisodeNameAsync(query);
+            List<EpisodeItem> s = results.episodes.items.ToList();
 
+            foreach (EpisodeItem e in s)
+            {
+                string episodeId = e.id;
+
+            }
+
+            var eachEpisode = await _dal.SearchEpisodeIdAsync(query);
+
+            return View("episodeidresults", eachEpisode);
+
+        }
     }
 }

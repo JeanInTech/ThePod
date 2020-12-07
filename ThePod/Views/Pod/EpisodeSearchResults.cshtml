@@ -1,0 +1,18 @@
+﻿@model List<EpisodeItem>
+
+<h2>These are the values returned from searching using the "search by episode" endpoint:</h2>
+
+@foreach (EpisodeItem i in Model)
+{
+    if (i != null)
+    {
+        <p>Episode id: @i.id</p>
+        <p>Episode Name: @i.name</p>
+        <p>Description: @i.description</p>
+        <p>Release date : @i.release_date</p>
+        <p>Language: @i.language</p>
+        <p>Contains explicit content: @i._explicit</p>
+        <hr>
+    }
+
+}
