@@ -1,4 +1,6 @@
-﻿<form asp-controller="Pod" asp-action="SearchResults" method="post">
+﻿
+
+<form asp-controller="Pod" asp-action="SearchResults" method="post">
     search type podcast name: <input type="text" name="query" />
    <input type="submit"/>
 </form>
@@ -12,3 +14,27 @@
     search episode using episode Id controller:<input type="text" name="query" />
     <input type="submit" />
 </form>
+
+
+<form asp-controller="Pod" asp-action="SearchWithDropdown" method="post">
+    What are you looking for?
+    <select name="searchType" id="something">
+    <option value="podcast">A podcast called...</option>
+    <option value="episode">A specific episode called...</option>
+    <option value="content">A podcast about...</option>
+</select>
+    <input type="text" name="query" />
+    <input type="submit" />
+</form>
+
+@*this below came from Jean's code*@
+﻿<form asp-controller="Pod" asp-action="SearchResults" method="post">
+    <input type="text" name="query" /><br />
+    <h5>Search by:</h5>
+    <input type="radio" name="type" id="show" value="show"/>
+    <label for="show">Show</label><br />
+    <input type="radio" name="type" id="episode" value="episode" />
+    <label for="episode">Episode</label><br />
+    <input type="submit"/>
+</form>
+
