@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 namespace ThePod.Models
 {
-
+    /*This is a helper class and is called in the SearchEpisodeNameAsync method in the DAL
+     * Helper class exists for the sole purpose of obtaining an ID to feed into the 
+     * SearchEpisodeIdAsync to retrieve Episode AND Show data */
     public class RootobjectEpisodes
     {
         public Episodes episodes { get; set; }
@@ -28,7 +30,7 @@ namespace ThePod.Models
         public string description { get; set; }
         public int duration_ms { get; set; }
         public bool _explicit { get; set; }
-        public Episode_External_Urls external_urls { get; set; } //Tuesday-> I added Episode_ to the beginning
+        public Episode_External_Urls external_urls { get; set; } //Tuesday-> added Episode_ to the beginning
         public string href { get; set; }
         public string id { get; set; }
         public EpisodeImage[] images { get; set; } //Tuesday-> I added Episode to Image

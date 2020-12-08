@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ThePod.DataAccess;
 using ThePod.Models;
@@ -14,48 +15,45 @@ namespace ThePod.Controllers
         private readonly thepodContext _db;
         private readonly thepodContext _context;
         private readonly PodDAL _dal;
-        private thepodContext db = new thepodContext();
-        public FavoriteController(thepodContext context, PodDAL dal, thepodContext db)
+        public FavoriteController(thepodContext context, PodDAL dal)
         {
             _db = db;
             _context = context;
             _dal = dal;
         }
-
-        public async Task<IActionResult> IndexAsync()
+        public IActionResult Index()
         {
-
-            var thepodContext = _context.Favorites.Include(f => f.User);
-            return View(await thepodContext.ToListAsync());
+            return View();
         }
+        //public async Task<IActionResult> IndexAsync()
+        //{
 
-        public async Task<IActionResult> Details(int? id)
-        {
-            if(id == null)
-            {
-                return NotFound();
-            }
+        //    var thepodContext = _context.Favorites.Include(f => f.User);
+        //    return View(await thepodContext.ToListAsync());
+        //}
 
-            var favorites = await _context.Favorites.
-                Include(f => f.User).FirstOrDefaultAsync(m => m.Id == id);
-            if(favorites==null)
-            {
-                return NotFound();
-            }
-            return View(favorites);
-        }
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if(id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-        public IActionResult Favorite()
-        {
-            return View(_db.Favorites.ToList());
-        }
+        //    var favorites = await _context.Favorites.
+        //        Include(f => f.User).FirstOrDefaultAsync(m => m.Id == id);
+        //    if(favorites==null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(favorites);
+        //}
 
-        public IActionResult AddFavorite(int id/*, int? UserId, int? episodeId, string publisher, string podcastName, string episodeName, string audioPreviewUrl, string description, string durationMs, string externalUrls, string images, string releaseDatePrecision*/)
-        {
-            Favorite add = new Favorite(id/*, UserId, episodeId, publisher, podcastName, episodeName, audioPreviewUrl, description, durationMs, externalUrls, images, releaseDatePrecision*/);
-            _db.Favorites.Add(add);
-            _db.SaveChanges();
-            return RedirectToAction("Index", "Favorite");
-        }
+        //public IActionResult Favorite()
+        //{
+        //    return View();
+        //    return View(_context.SavedPodcasts.ToList());
+        //}
+
+
     }
 } 
