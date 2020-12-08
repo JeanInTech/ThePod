@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace ThePod.Models
 {
+    /* Primary class for obtaining Episode and Show data 
+     Creates an object from the SearchEpisodeIdAsync method in the DAL 
+    Requires an Id pulled from the SearchEpisodeNameAsync method */
     public class RootEpisodes
     {
         public Episode[] episodes { get; set; }
