@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ThePod.Data;
 using ThePod.DataAccess;
+using ThePod.Models;
 
 namespace ThePod
 {
@@ -33,6 +34,9 @@ namespace ThePod
                 client.BaseAddress = new Uri("https://api.spotify.com/v1");
             });
             services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<thepodContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -60,7 +64,7 @@ namespace ThePod
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+              
             }
             else
             {
