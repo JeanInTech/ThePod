@@ -1,6 +1,6 @@
 ﻿@model List<Item>
 
-    <h2>These are the values returned from searching using the "search by show" endpoint:</h2>
+    <h2>@TempData["type"] results for "@TempData["query"]"</h2>
 
 @foreach (Item i in Model)
 {

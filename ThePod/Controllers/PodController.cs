@@ -18,8 +18,10 @@ namespace ThePod.Controllers
             _dal = dal;
             _config = config;
         }
-        public async Task<IActionResult> SearchResults(string query) //this is searching using "search by shows" endpoint
+        public async Task<IActionResult> SearchResults(string query, string type) //this is searching using "search by shows" endpoint
         {
+            TempData["query"] = query;
+            TempData["type"] = type;
             var results = await _dal.SearchShowsAsync(query);
             List<Item> s = results.shows.items.ToList();
 
@@ -86,5 +88,6 @@ namespace ThePod.Controllers
 
 
         }
+
     }
 }
