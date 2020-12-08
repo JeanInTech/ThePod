@@ -1,5 +1,7 @@
 ﻿@model RootEpisodes
 
+
+
 @foreach (Episode e in Model.episodes)
 {
     <p>Name of podcast: @e.show.name</p> //this is going to need some filtering to make sure that it only returns relevant results and omits duplicates
@@ -13,5 +15,8 @@
         }
     <hr>
 
+    <form asp-controller="Favorite" asp-action="AddFavorite" asp-route-name="@e.show.name" method="post">
+        <input type="submit" name="data" value="Add to Favorites" />
+    </form>
 
 }

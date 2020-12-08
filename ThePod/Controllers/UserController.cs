@@ -25,6 +25,21 @@ namespace ThePod.Controllers
             return View(await thepodContext.ToListAsync());
         }
 
+        //public async Task<IActionResult> AddToFavorites(UserFavoritesViewModel userFavorites)
+        //{
+        //    Favorite f = new Favorite();
+        //    List<Favorite> favorites = new List<Favorite>();
+
+        //    if(ModelState.IsValid)
+        //    {
+        //        _context.Add(favorites);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+
+        //}
+
+        //public IActionResult GetFavorites(string )
        
         
     }
