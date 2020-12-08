@@ -62,7 +62,7 @@ namespace ThePod.DataAccess
         {
             var token = await GetToken();
             HttpClient client = new HttpClient();
-            //var encodedQuery = Uri.EscapeDataString(query);
+            var encodedQuery = Uri.EscapeDataString(query);
 
             client.BaseAddress = new Uri("https://api.spotify.com/v1/");
             client.DefaultRequestHeaders.Add("Authorization", $"{token.token_type} {token.access_token}");

@@ -71,6 +71,7 @@ namespace ThePod.Controllers
 
             if (searchType == "podcast")
             {
+                ViewBag.Podcast = query;
                 return View("podcastDetails", eachEpisode);
             }
             if (searchType == "episode")
