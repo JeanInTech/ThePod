@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ThePod.Data;
 using ThePod.DataAccess;
+using ThePod.Models;
 
 namespace ThePod
 {
@@ -40,6 +41,8 @@ namespace ThePod
             services.AddControllersWithViews();
             services.AddRazorPages();
 
+            services.AddDbContext<thepodContext>(options => options.UseSqlServer(Secret.ConnectionString));
+
             services.AddAuthentication()
                 .AddSpotify(options =>
                 {
@@ -60,6 +63,7 @@ namespace ThePod
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+
             }
             else
             {
