@@ -80,7 +80,7 @@ namespace ThePod.Controllers
             }
             else
             {
-                return View("allContent", eachEpisode);
+                return View("AllContent", eachEpisode);
             }
         }
     }
