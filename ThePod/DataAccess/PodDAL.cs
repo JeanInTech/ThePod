@@ -73,7 +73,6 @@ namespace ThePod.DataAccess
 
             return roe;
         }
-
         public async Task<RootEpisodes> SearchEpisodeIdAsync(string query, string type)
         {
             var token = await GetToken();
