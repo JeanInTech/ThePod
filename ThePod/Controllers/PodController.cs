@@ -60,10 +60,10 @@ namespace ThePod.Controllers
             List<EpisodeItem> s = results.episodes.items.ToList();
 
             List<string> episodeIds = new List<string>();
-
-            foreach (EpisodeItem e in s)
+                foreach (EpisodeItem e in s)
             {
-                episodeIds.Add(e.id);
+                if (e != null)
+                    episodeIds.Add(e.id);
 
             }
             var str = String.Join(",", episodeIds);
