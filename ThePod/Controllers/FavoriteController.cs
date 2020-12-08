@@ -11,11 +11,13 @@ namespace ThePod.Controllers
 {
     public class FavoriteController : Controller
     {
+        private readonly thepodContext _db;
         private readonly thepodContext _context;
         private readonly PodDAL _dal;
         private thepodContext db = new thepodContext();
-        public FavoriteController(thepodContext context, PodDAL dal)
+        public FavoriteController(thepodContext context, PodDAL dal, thepodContext db)
         {
+            _db = db;
             _context = context;
             _dal = dal;
         }
@@ -45,15 +47,15 @@ namespace ThePod.Controllers
 
         public IActionResult Favorite()
         {
-            return View(db.Favorites.ToList());
+            return View(_db.Favorites.ToList());
         }
 
-        public IActionResult AddFavorite(int id, int? UserId, int? episodeId, string publisher, string podcastName, string episodeName, string audioPreviewUrl, string description, string durationMs, string externalUrls, string images, string releaseDatePrecision)
+        public IActionResult AddFavorite(int id/*, int? UserId, int? episodeId, string publisher, string podcastName, string episodeName, string audioPreviewUrl, string description, string durationMs, string externalUrls, string images, string releaseDatePrecision*/)
         {
-            Favorite add = new Favorite(id, UserId, episodeId, publisher, podcastName, episodeName, audioPreviewUrl, description, durationMs, externalUrls, images, releaseDatePrecision);
-            db.Favorites.Add(add);
-            db.SaveChanges();
+            Favorite add = new Favorite(id/*, UserId, episodeId, publisher, podcastName, episodeName, audioPreviewUrl, description, durationMs, externalUrls, images, releaseDatePrecision*/);
+            _db.Favorites.Add(add);
+            _db.SaveChanges();
             return RedirectToAction("Index", "Favorite");
         }
     }
-}
+} 

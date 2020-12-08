@@ -12,10 +12,10 @@ namespace ThePod.Models
             InverseUser = new HashSet<Favorite>();
         }
 
-        public Favorite(int id, int? userId, int? episodeId, string publisher, string podcastName, string episodeName, string audioPreviewUrl, string description, string durationMs, string externalUrls, string images, string releaseDatePrecision)
+        public Favorite(int id /*,int? userId, int? episodeId, string publisher, string podcastName, string episodeName, string audioPreviewUrl, string description, string durationMs, string externalUrls, string images, string releaseDatePrecision*/)
         {
             Id = id;
-            UserId = userId;
+            /*UserId = userId;
             EpisodeId = episodeId;
             Publisher = publisher;
             PodCastName = podcastName;
@@ -25,7 +25,7 @@ namespace ThePod.Models
             DurationMs = durationMs;
             ExternalUrls = externalUrls;
             Images = images;
-            ReleaseDatePrecision = releaseDatePrecision;
+            ReleaseDatePrecision = releaseDatePrecision;*/
         }
 
         public int Id { get; set; }

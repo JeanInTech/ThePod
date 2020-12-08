@@ -15,8 +15,8 @@
         }
     <hr>
 
-    <form asp-controller="Favorite" asp-action="AddFavorite" asp-route-name="@e.show.name" method="post">
-        <input type="submit" name="data" value="Add to Favorites" />
+    <form asp-controller="Favorite" asp-action="AddFavorite" asp-route-id="@e.id" method="post">
+        <input type="submit" name="id" value="Add to Favorites" />
     </form>
 
 }
