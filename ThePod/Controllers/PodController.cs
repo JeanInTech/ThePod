@@ -44,10 +44,46 @@ namespace ThePod.Controllers
                 episodeIds.Add(e.id);
 
             }
-            var str = String.Join("," , episodeIds);
+            var str = String.Join(",", episodeIds);
             var eachEpisode = await _dal.SearchEpisodeIdAsync(str);
 
-            return View("episodeidresults", eachEpisode);
+            return View("episodeidresults", eachEpisode); 
+            //if we end up using dropowns or something addtl to filter the user's search, this view can be deleted.  
+            //I just made it to test the functionality of this method.  It's a duplicate of "AllContent"
+
+        }
+        public async Task<IActionResult> SearchWithDropdown(string query, string searchType) //this takes in a search term and gets the episode id to feed that into the "episode" endpoint
+        {
+            var results = await _dal.SearchEpisodeNameAsync(query);
+            List<EpisodeItem> s = results.episodes.items.ToList();
+
+            List<string> episodeIds = new List<string>();
+
+            foreach (EpisodeItem e in s)
+            {
+                episodeIds.Add(e.id);
+
+            }
+            var str = String.Join(",", episodeIds);
+            var eachEpisode = await _dal.SearchEpisodeIdAsync(str);
+
+            if (searchType == "podcast")
+            {
+                return View("podcastDetails", eachEpisode);
+            }
+            if (searchType == "episode")
+            {
+                return View("episodeDetails", eachEpisode);
+            }
+            if (searchType == "content")
+            {
+                return View("allContent", eachEpisode);
+            }
+            else
+            {
+                return View("allContent", eachEpisode);
+            }
+
 
         }
     }
