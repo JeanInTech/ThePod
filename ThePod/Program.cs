@@ -6,8 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ThePod.Controllers;
-using ThePod.DataAccess;
 
 namespace ThePod
 { 
