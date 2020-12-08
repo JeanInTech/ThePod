@@ -2,6 +2,8 @@
     List<string> uniqueEpisodeIDs = new List<string>();
 }
 
+
+
 @foreach (Episode e in Model.episodes)
 {
     //bool containsSearchTerm = @e.show.name.Contains(ViewBag.Podcast);
@@ -20,5 +22,8 @@
     }
   
 
-
+    <form asp-controller="User" asp-action="AddFavorite" method="post">
+        <input type="hidden" name="id" value="@e.id" />
+        <input type="submit" name="data" value="Add to Favorites" />
+    </form>
 }

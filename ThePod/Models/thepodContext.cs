@@ -27,11 +27,13 @@ namespace ThePod.Models
         public virtual DbSet<SavedPodcast> SavedPodcasts { get; set; }
         public virtual DbSet<UserFeedback> UserFeedbacks { get; set; }
 
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(Secret.ConnectionString);
+
+                optionsBuilder.UseSqlServer("AzureString");
             }
         }
 

@@ -1,13 +1,12 @@
-﻿
-<form asp-controller="Pod" asp-action="Search" method="post">
-    What are you looking for?
-    <select name="searchType" id="something">
-    <option value="podcast">A podcast called...</option>
-    <option value="episode">A specific episode called...</option>
-    <option value="content">A podcast about...</option>
+
+﻿<form asp-controller="Pod" asp-action="SearchResults" method="post">
+    <h4>Find your next podcast</h4><br />
+    <select name="searchType" id="searchType">
+    <option value="podcast">Podcasts</option>
+    <option value="episode">Episodes</option>
+    <option value="content">All Content</option>
+    @*<option value="tags">Tags</option> keywords and stuff*@
 </select>
-    <input type="text" name="query" />
-    <input type="submit" />
+    <input type="text" name="query" placeholder="Whatever sounds good"/>
+    <input type="submit" value="Submit"/>
 </form>
-
-
