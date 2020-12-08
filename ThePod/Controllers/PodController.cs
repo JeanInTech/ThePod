@@ -24,6 +24,12 @@ namespace ThePod.Controllers
         //    TempData["type"] = type;
         //    var results = await _dal.SearchShowsAsync(query);
         //    List<Item> s = results.shows.items.ToList();
+<<<<<<< HEAD
+
+        //    return View(s);
+        //}
+        //public async Task<IActionResult> SearchEpisodeNameResults(string query) //this is searching using "search by episodes"
+=======
 
         //    return View(s);
         //}
@@ -32,6 +38,15 @@ namespace ThePod.Controllers
         //    var results = await _dal.SearchEpisodeNameAsync(query);
         //    List<EpisodeItem> s = results.episodes.items.ToList();
 
+        //    return View("episodesearchresults", s);
+        //}
+        //public async Task<IActionResult> SearchByEpisodeId(string query) //this takes in a search term and gets the episode id to feed that into the "episode" endpoint
+>>>>>>> 438b912185afec61da8c84fb96c00b1aa6a28cde
+        //{
+        //    var results = await _dal.SearchEpisodeNameAsync(query);
+        //    List<EpisodeItem> s = results.episodes.items.ToList();
+
+<<<<<<< HEAD
         //    return View("episodesearchresults", s);
         //}
         //public async Task<IActionResult> SearchByEpisodeId(string query) //this takes in a search term and gets the episode id to feed that into the "episode" endpoint
@@ -54,6 +69,24 @@ namespace ThePod.Controllers
         //    //I just made it to test the functionality of this method.  It's a duplicate of "AllContent"
         //}
         public async Task<IActionResult> SearchResults(string query, string searchType) //this takes in a search term and gets the episode id to feed that into the "episode" endpoint
+=======
+        //    List<string> episodeIds = new List<string>();
+
+        //    foreach (EpisodeItem e in s)
+        //    {
+        //        episodeIds.Add(e.id);
+
+        //    }
+        //    var str = String.Join(",", episodeIds);
+        //    var eachEpisode = await _dal.SearchEpisodeIdAsync(str);
+
+        //    return View("episodeidresults", eachEpisode); 
+        //    //if we end up using dropowns or something addtl to filter the user's search, this view can be deleted.  
+        //    //I just made it to test the functionality of this method.  It's a duplicate of "AllContent"
+
+        //}
+        public async Task<IActionResult> Search(string query, string searchType) //this takes in a search term and gets the episode id to feed that into the "episode" endpoint
+>>>>>>> 438b912185afec61da8c84fb96c00b1aa6a28cde
         {
             var results = await _dal.SearchEpisodeNameAsync(query);
             List<EpisodeItem> s = results.episodes.items.ToList();
