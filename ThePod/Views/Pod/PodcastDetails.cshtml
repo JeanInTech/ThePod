@@ -1,0 +1,17 @@
+﻿@model RootEpisodes
+
+@foreach (Episode e in Model.episodes)
+{
+    <p>Name of podcast: @e.show.name</p> //this is going to need some filtering to make sure that it only returns relevant results and omits duplicates
+    <p>Producer: @e.show.publisher</p>
+    <p>Number of episodes: @e.show.total_episodes</p>
+    <p>Description of show: @e.show.description</p>
+    <p>Available images: </p>
+        @foreach (var i in @e.show.images) //this is an array of 3 images for the episode- we could decide which size we want to use wherever and display it
+        {
+        <img src="@i.url" height="@i.height" width="@i.width" />
+        }
+    <hr>
+
+
+}
