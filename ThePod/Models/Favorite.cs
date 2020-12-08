@@ -27,5 +27,7 @@ namespace ThePod.Models
 
         public virtual Favorite User { get; set; }
         public virtual ICollection<Favorite> InverseUser { get; set; }
+
+       
     }
 }
