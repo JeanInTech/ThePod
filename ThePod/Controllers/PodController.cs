@@ -49,9 +49,9 @@ namespace ThePod.Controllers
             var str = String.Join("," , episodeIds);
             var eachEpisode = await _dal.SearchEpisodeIdAsync(str);
 
-        //    //var eachEpisode = await _dal.SearchEpisodeIdAsync(query);
+            //var eachEpisode = await _dal.SearchEpisodeIdAsync(query);
 
-        //    return View("episodeidresults", eachEpisode);
-        //}
+            return View("episodeidresults", eachEpisode);
+        }
     }
 }

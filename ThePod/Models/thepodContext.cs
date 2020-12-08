@@ -24,6 +24,7 @@ namespace ThePod.Models
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUserRole> AspNetUserRoles { get; set; }
         public virtual DbSet<AspNetUserToken> AspNetUserTokens { get; set; }
+        public virtual DbSet<Favorite> Favorites { get; set; }
         public virtual DbSet<SavedPodcast> SavedPodcasts { get; set; }
         public virtual DbSet<UserFeedback> UserFeedbacks { get; set; }
 
@@ -31,7 +32,8 @@ namespace ThePod.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(Secret.ConnectionString);
+
+                optionsBuilder.UseSqlServer("AzureString");
             }
         }
 
@@ -130,6 +132,32 @@ namespace ThePod.Models
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.AspNetUserTokens)
                     .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<Favorite>(entity =>
+            {
+                entity.Property(e => e.AudioPreviewUrl).HasMaxLength(150);
+
+                entity.Property(e => e.DurationMs)
+                    .HasMaxLength(20)
+                    .HasColumnName("Duration_MS");
+
+                entity.Property(e => e.EpisodeName).HasMaxLength(100);
+
+                entity.Property(e => e.ExternalUrls).HasMaxLength(100);
+
+                entity.Property(e => e.Images).HasMaxLength(100);
+
+                entity.Property(e => e.PodCastName).HasMaxLength(100);
+
+                entity.Property(e => e.Publisher).HasMaxLength(50);
+
+                entity.Property(e => e.ReleaseDatePrecision).HasMaxLength(100);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.InverseUser)
+                    .HasForeignKey(d => d.UserId)
+                    .HasConstraintName("FK__Favorites__UserI__7A672E12");
             });
 
             modelBuilder.Entity<SavedPodcast>(entity =>
