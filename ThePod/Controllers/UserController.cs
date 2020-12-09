@@ -27,6 +27,36 @@ namespace ThePod.Controllers
             return View();
         }
 
+        //public async Task<IActionResult> IndexAsync()
+        //{
+
+        //    var thepodContext = _context.Favorites.Include(f => f.User);
+        //    return View(await thepodContext.ToListAsync());
+        //}
+
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if(id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var favorites = await _context.Favorites.
+        //        Include(f => f.User).FirstOrDefaultAsync(m => m.Id == id);
+        //    if(favorites==null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(favorites);
+        //}
+
+        //public IActionResult Favorite()
+        //{
+        //    return View();
+        //    return View(_context.SavedPodcasts.ToList());
+        //}
+
+
         [HttpPost]
         public async Task<IActionResult> AddFavorite(string id)
         {
