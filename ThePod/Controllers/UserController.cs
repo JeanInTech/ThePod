@@ -89,5 +89,32 @@ namespace ThePod.Controllers
             var userId = claim.Value;
             return userId;
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ReviewEpisode(string id)
+        {
+            var results = await _dal.SearchEpisodeIdAsync(id);
+            var ep = results.episodes.ToList().First();
+            return View(ep);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ReviewEpisode(string EpisodeId, int Rating, string Tags, string Review)
+        {
+            string user = FindUser();
+            UserFeedback u = new UserFeedback();
+            u.UserId = user;
+            u.EpisodeId = EpisodeId;
+            u.Rating = (byte)Rating;
+            u.Tags = Tags;
+            u.Review = Review;
+
+            await _context.UserFeedbacks.AddAsync(u);
+            await _context.SaveChangesAsync();
+
+            return View("Index");
+        }
+
+
     }
 }
