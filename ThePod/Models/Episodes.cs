@@ -4,11 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace ThePod.Models
-{
-    /*This is a helper class and is called in the SearchEpisodeNameAsync method in the DAL
-     * Used for the sole purpose of obtaining an ID to feed into the 
-     * SearchEpisodeIdAsync to retrieve Episode AND Show data
-     * ALSO contains Paging object, used to navigate next/previous search results*/
+{ 
+    /* Helper class exists for the sole purpose of obtaining an ID to feed into the 
+     * SearchEpisodeIdAsync to retrieve Episode AND Show data 
+     * This class is also required to get us the "next" property for episodes so that 
+     * We can obtain the next set of 20 results*/
+
     public class RootobjectEpisodes
     {
         public Episodes episodes { get; set; }
