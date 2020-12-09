@@ -66,7 +66,6 @@ namespace ThePod
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-
             }
             else
             {
