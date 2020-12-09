@@ -1,8 +1,46 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model IEnumerable<SavedPodcast>
 
 
 <p>hi, you added a favorite</p>
+<table class="styled-table">
+
+    @foreach (SavedPodcast s in Model)
+    {
+        <thead>
+            <tr>
+                <th> Name</th>
+                <th>Publisher</th>
+                <th>Episode Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td> @s.PodcastName  </td>
+                <td>@s.Publisher </td>
+
+            </tr>
+        </tbody>
+       
+        <tr>
+            <td>
+                <p>
+                   
+                    
+                </p>
+            </td>
+
+        </tr>
+    }
+
+    @*@model ShowsRootViewModel
+
+        @foreach (var show in Model.Shows)
+        {
+            @show.Property1;
+        }
+
+        @foreach (var episode in Model.Episodes)
+        {
+            @episode.Property1;
+        }*@
+</table>

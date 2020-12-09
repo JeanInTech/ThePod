@@ -17,13 +17,23 @@ namespace ThePod.Controllers
         private readonly PodDAL _dal;
         public FavoriteController(thepodContext context, PodDAL dal)
         {
-            _db = db;
+            
             _context = context;
             _dal = dal;
         }
         public IActionResult Index()
         {
-            return View();
+            return View(_context.SavedPodcasts.ToList());
+        }
+
+
+        public IActionResult SomeAction()
+        {
+            var model = new ShowsRootViewModel();
+          //  model.Shows = _dal.GetShow();
+          //  model.Episodes = _dal.GetEpisodes();
+
+            return View(model);
         }
         //public async Task<IActionResult> IndexAsync()
         //{

@@ -21,10 +21,12 @@ namespace ThePod.Controllers
             _dal = dal;
             _context = context;
         }
+
         public async Task<IActionResult> Index()
         {
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> AddFavorite(string id)
         {
@@ -49,7 +51,7 @@ namespace ThePod.Controllers
             await _context.SavedPodcasts.AddAsync(favorite);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Favorites");
+            return RedirectToAction("Index", "Favorite");
         }
         public string FindUser()
         {
