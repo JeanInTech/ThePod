@@ -20,5 +20,10 @@ namespace ThePod.Controllers
         {
             return View();
         }
+
+        public IActionResult UserReview()
+        {
+            return View();
+        }
     }
 }
