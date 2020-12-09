@@ -74,7 +74,7 @@ namespace ThePod.DataAccess
 
             return re;
         }
-        public async Task<Rootobject> SearchShowsAsync(string query)
+        public async Task<Rootobject> SearchShowNameAsync(string query)
         {
             var token = await GetToken();
             HttpClient client = new HttpClient();
