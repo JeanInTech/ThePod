@@ -6,9 +6,9 @@
 
 @foreach (Episode e in Model.episodes)
 {
-    //bool containsSearchTerm = @e.show.name.Contains(ViewBag.Podcast);
-    if (!uniqueEpisodeIDs.Contains(e.show.name))
-    {<p>Name of podcast: @e.show.name</p> //this is going to need some filtering to make sure that it only returns relevant results and omits duplicates
+    bool containsSearchTerm = @e.show.name.ToLower().Contains(ViewBag.Podcast);
+    if (!uniqueEpisodeIDs.Contains(e.show.name) && containsSearchTerm == true)
+    {<p>Name of podcast: @e.show.name</p> 
     <p>Producer: @e.show.publisher</p>
     <p>Number of episodes: @e.show.total_episodes</p>
     <p>Description of show: @e.show.description</p>
@@ -18,12 +18,17 @@
         <img src="@i.url" height="@i.height" width="@i.width" />
         }
         uniqueEpisodeIDs.Add(e.show.name);
-    <hr>
-    }
-  
-
     <form asp-controller="User" asp-action="AddFavorite" method="post">
         <input type="hidden" name="id" value="@e.id" />
         <input type="submit" name="data" value="Add to Favorites" />
     </form>
+    <hr>
+    }
+
+    else
+    {
+        <a asp-action="index" asp-controller="home">No results found - Search again</a>
+        break;
+    }
+
 }
