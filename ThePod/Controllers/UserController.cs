@@ -89,12 +89,15 @@ namespace ThePod.Controllers
                 {
                     await _context.SavedPodcasts.AddAsync(favorite);
                     await _context.SaveChangesAsync();
+
                 }
             }
             
             catch(Exception ex)
             {
-                ModelState.AddModelError("", ex.Message);
+               
+                ModelState.AddModelError("Error", ex.Message);
+                return View("Error");
             }
 
             return RedirectToAction("Index", "User");
