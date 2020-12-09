@@ -1,15 +1,10 @@
-﻿@model RootEpisodes
+﻿
+@{foreach (EpByPodItem e in Model)
 
-@{
-    List<string> uniqueEpisodeIDs = new List<string>();
-}
-
-@foreach (Episode e in Model.episodes)
-{
-    @if (!uniqueEpisodeIDs.Contains(e.name))
     {
         <p>Episode name: @e.name</p> //this needs to be cleaned up to make sure it returns relevant results and no duplicates (so far it doesn't seem to show duplicates)
-        <p>Name of podcast: <a asp-controller="pod" asp-action="searchresults" asp-route-query="@e.show.name" asp-route-searchType="podcast">@e.show.name</a></p> 
+        @*<p>Name of podcast: @e.name</p>
+        <p>Name of podcast: <a asp-controller="pod" asp-action="searchresults" asp-route-query="@e.show.name" asp-route-searchType="podcast">@e.show.name</a></p>
         <p>Episode description: @e.description</p>
         <p>Release date: @e.release_date</p>
         <p>Contains explicit content? @e._explicit</p>
@@ -24,11 +19,10 @@
             <img src="@i.url" height="@i.height" width="@i.width" />
         }
         <p>Here's a 30 second clip of the episode:</p>
-        <audio controls>
-            <source src="@e.audio_preview_url" type="audio/mpeg">
-        </audio>
-        uniqueEpisodeIDs.Add(e.name);
+            <audio controls>
+                <source src="@e.audio_preview_url" type="audio/mpeg">
+            </audio>
+            uniqueEpisodeIDs.Add(e.name);*@
         <hr>
     }
 }
-

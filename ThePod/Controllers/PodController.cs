@@ -41,7 +41,7 @@ namespace ThePod.Controllers
 
                 return View("PodcastDetails", eachShow);
             }
-           
+
             else if (searchType == "episode")
             {
                 var episodeResults = await _dal.SearchEpisodeNameAsync(query); //this is where you can access the "next" property to see the next 20 Episode results from your search
@@ -82,5 +82,22 @@ namespace ThePod.Controllers
                 return View("AllContent", eachEpisode);
             }
         }
+        public async Task<IActionResult> GetEpisodeByPodcast(string query)
+        {
+            var showResults = await _dal.SearchShowNameAsync(query);
+            List<Item> i = showResults.shows.items.ToList();
+            foreach (Item x in i)
+            {
+                if (x.name == query)
+                {
+                    string shoId = x.id;
+                    var episodesByPodcast = await _dal.SearchEpbyPodIdAsync(shoId);
+                    return View("episodedetails", episodesByPodcast);
+                }
+            }
+            return View(); // I need to put something else here- if I do not meet the conditions above, I will end up here, and this view does not exist
+
+        }
+
     }
 }
