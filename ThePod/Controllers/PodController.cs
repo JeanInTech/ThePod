@@ -24,9 +24,9 @@ namespace ThePod.Controllers
             List<EpisodeItem> s = results.episodes.items.ToList();
             
             List<string> episodeIds = new List<string>();
-
-            foreach (EpisodeItem e in s)
+                foreach (EpisodeItem e in s)
             {
+
                 if(e != null)
                 { 
                     episodeIds.Add(e.id);
@@ -37,16 +37,26 @@ namespace ThePod.Controllers
 
             if (searchType == "podcast")
             {
+
+             ViewBag.Podcast = query.ToLower();
+            
                 return View("PodcastDetails", eachEpisode);
             }
             else if (searchType == "episode")
             {
+                ViewBag.Episode = query.ToLower();
                 return View("EpisodeDetails", eachEpisode);
             }
             else
             {
                 return View("AllContent", eachEpisode);
             }
+        }
+        [HttpPost]
+        public async Task<IActionResult> GetNext(string query)
+        {
+            var nextResults = await _dal.GetNextEpisode(query);
+                return View("NextResults", nextResults);
         }
     }
 }

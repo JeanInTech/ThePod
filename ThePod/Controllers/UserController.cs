@@ -21,9 +21,10 @@ namespace ThePod.Controllers
             _dal = dal;
             _context = context;
         }
+
         public async Task<IActionResult> Index()
         {
-            return View();
+            return View(_context.SavedPodcasts.ToList());
         }
 
         //public async Task<IActionResult> IndexAsync()
@@ -80,14 +81,67 @@ namespace ThePod.Controllers
             await _context.SavedPodcasts.AddAsync(favorite);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Favorites");
+            return RedirectToAction("Index");
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteFromFavorites(int id)
+        {
+            var favoriteItem = await _context.SavedPodcasts.FindAsync(id);
+            _context.SavedPodcasts.Remove(favoriteItem);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var favorites = await _context.SavedPodcasts
+                .Include(f => f.User)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (favorites == null)
+            {
+                return NotFound();
+            }
+
+            return View(favorites);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var favorites = await _context.SavedPodcasts.FindAsync(id);
+            _context.SavedPodcasts.Remove(favorites);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+
         public string FindUser()
         {
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
             var claim = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
             var userId = claim.Value;
             return userId;
+        }
+
+
+
+
+
+
+        public IActionResult SomeAction()
+        {
+            var model = new ShowsRootViewModel();
+            //  model.Shows = _dal.GetShow();
+            //  model.Episodes = _dal.GetEpisodes();
+
+            return View(model);
         }
     }
 }
