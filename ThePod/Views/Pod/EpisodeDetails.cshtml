@@ -1,5 +1,6 @@
 ﻿@model RootEpisodes
 @{
+    ViewData["EpisodeDetails"] = "Episode Details";
     List<string> uniqueEpisodeIDs = new List<string>();
     string userQuery = TempData.Peek("UserQuery").ToString();
     string totalResults = TempData.Peek("TotalResults").ToString();
@@ -13,7 +14,7 @@
     @if (!uniqueEpisodeIDs.Contains(e.name))
     {
         <p>Episode name: @e.name</p> //this needs to be cleaned up to make sure it returns relevant results and no duplicates (so far it doesn't seem to show duplicates)
-        <p>Name of podcast: @e.show.name</p>
+        @*<p>Name of podcast: @e.show.name</p>
         <p>Episode description: @e.description</p>
         <p>Release date: @e.release_date</p>
         <p>Contains explicit content? @e._explicit</p>
@@ -30,13 +31,13 @@
         <p>Here's a 30 second clip of the episode:</p>
         <audio controls>
             <source src="@e.audio_preview_url" type="audio/mpeg">
-        </audio>
+        </audio>*@
         uniqueEpisodeIDs.Add(e.name);
         <hr>
     }
 }
 
-@if (previousPage != null)
+@*@if (previousPage != null)
 {
     int convert = int.Parse(offset);
     int previous = convert -= 20;
@@ -46,7 +47,7 @@
         <input type="submit" value="Previous" />
     </form>
 
-}
+}*@
 
 @if (nextPage != null)
 {
@@ -58,8 +59,6 @@
     </form>
 }
 
-
-}
 
 @*<p>Here's a 30 second clip of the episode:</p>
     <audio controls>

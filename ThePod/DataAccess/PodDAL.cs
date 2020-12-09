@@ -89,7 +89,7 @@ namespace ThePod.DataAccess
 
             return re;
         }
-        public async Task<Episodes> GetNextEpisode(string query, int offset)
+        public async Task<Episodes> GetNextEpisodeAsync(string query, int offset)
         {
             var token = await GetToken();
             HttpClient client = new HttpClient();

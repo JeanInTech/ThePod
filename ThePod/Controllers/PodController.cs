@@ -41,7 +41,6 @@ namespace ThePod.Controllers
             }
             else
             {
-
                 TempData["UserQuery"] = query;
                 var episodeResults = await _dal.SearchEpisodeNameAsync(query); //this is where you can access the "next" property to see the next 20 Episode results from your search
                 List<EpisodeItem> s = episodeResults.episodes.items.ToList();
@@ -82,7 +81,7 @@ namespace ThePod.Controllers
             var epId = ConvertToIdString(s);
             var nextEpisodes = await _dal.SearchEpisodeIdAsync(epId);
 
-            return View(nextEpisodes);
+            return View("EpisodeDetails", nextEpisodes);
         }
         //[HttpPost]
         //public async Task<IActionResult> GetPreviousEpisode(string query, int offset)
