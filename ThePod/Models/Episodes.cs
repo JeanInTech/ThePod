@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 namespace ThePod.Models
 {
     /*This is a helper class and is called in the SearchEpisodeNameAsync method in the DAL
-     * Helper class exists for the sole purpose of obtaining an ID to feed into the 
-     * SearchEpisodeIdAsync to retrieve Episode AND Show data */
+     * Used for the sole purpose of obtaining an ID to feed into the 
+     * SearchEpisodeIdAsync to retrieve Episode AND Show data
+     * ALSO contains Paging object, used to navigate next/previous search results*/
     public class RootobjectEpisodes
     {
         public Episodes episodes { get; set; }
     }
 
-    public class Episodes
+    public class Episodes //Paging object
     {
         public string href { get; set; }
         public EpisodeItem[] items { get; set; }
