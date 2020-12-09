@@ -61,6 +61,7 @@
                 <th>Preview</th>
                 <th>Image</th>
                 <th>Duration</th>
+                <th>Id</th>
             </tr>
         </thead>
         <tbody>
@@ -72,12 +73,20 @@
                 <td>@s.AudioPreviewUrl</td>
                 <td>@s.ImageUrl</td>
                 <td>@s.Duration</td>
-
+                <td>@s.Id</td>
+               <td> <a asp-action="Delete" asp-route-id="@s.Id">Delete</a></td>
             </tr>
         </tbody>
-      
+
+
     }
 
+</table>
+    <form asp-action="Delete">
+        <input type="hidden" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
     @*@model ShowsRootViewModel
 
         @foreach (var show in Model.Shows)
@@ -89,4 +98,3 @@
         {
             @episode.Property1;
         }*@
-</table>
