@@ -78,7 +78,6 @@ namespace ThePod.DataAccess
         {
             var token = await GetToken();
             HttpClient client = new HttpClient();
-            //var encodedQuery = Uri.EscapeDataString(query);
 
             client.BaseAddress = new Uri("https://api.spotify.com/v1/");
             client.DefaultRequestHeaders.Add("Authorization", $"{token.token_type} {token.access_token}");
@@ -89,38 +88,40 @@ namespace ThePod.DataAccess
 
             return re;
         }
-        public async Task<Episodes> GetNextEpisodeAsync(string query, int offset)
-        {
-            var token = await GetToken();
-            HttpClient client = new HttpClient();
-           // var encodedQuery = Uri.EscapeDataString(query);
-
-            client.BaseAddress = new Uri("https://api.spotify.com/v1/");
-            client.DefaultRequestHeaders.Add("Authorization", $"{token.token_type} {token.access_token}");
-            var response = await client.GetAsync($"search?q={query}&type=episode&market=US&offset={offset}&limit=20");
-            var jsonData = await response.Content.ReadAsStringAsync();
-
-            Episodes ro = JsonSerializer.Deserialize<Episodes>(jsonData);
-
-            return ro;
-        }
         public async Task<Rootobject> SearchShowNameAsync(string query)
         {
             var token = await GetToken();
             HttpClient client = new HttpClient();
-            //var encodedQuery = Uri.EscapeDataString(query);
+            var encodedQuery = Uri.EscapeDataString(query);
+
             client.BaseAddress = new Uri("https://api.spotify.com/v1/");
             client.DefaultRequestHeaders.Add("Authorization", $"{token.token_type} {token.access_token}");
-            var response = await client.GetAsync($"search?q={query}&type=show&market=US");
+            var response = await client.GetAsync($"search?q={encodedQuery}&type=show&market=US");
             var jsonData = await response.Content.ReadAsStringAsync();
+
             Rootobject ro = JsonSerializer.Deserialize<Rootobject>(jsonData);
+
+            return ro;
+        }
+        public async Task<Rootobject> MoreSearchShowAsync(string query, int offset)
+        {
+            var token = await GetToken();
+            HttpClient client = new HttpClient();
+            var encodedQuery = Uri.EscapeDataString(query);
+
+            client.BaseAddress = new Uri("https://api.spotify.com/v1/");
+            client.DefaultRequestHeaders.Add("Authorization", $"{token.token_type} {token.access_token}");
+            var response = await client.GetAsync($"search?q={encodedQuery}&type=show&market=US&offset={offset}&limit=20");
+            var jsonData = await response.Content.ReadAsStringAsync();
+
+            Rootobject ro = JsonSerializer.Deserialize<Rootobject>(jsonData);
+
             return ro;
         }
         public async Task<RootShows> SearchShowIdAsync(string shoId)
         {
             var token = await GetToken();
             HttpClient client = new HttpClient();
-            //var encodedQuery = Uri.EscapeDataString(query);
 
             client.BaseAddress = new Uri("https://api.spotify.com/v1/");
             client.DefaultRequestHeaders.Add("Authorization", $"{token.token_type} {token.access_token}");
@@ -132,7 +133,4 @@ namespace ThePod.DataAccess
             return re;
         }
     }
-    //"https://api.spotify.com/v1/search?query=radiolab&type=episode&market=US&offset=20&limit=20"
-
-
 }

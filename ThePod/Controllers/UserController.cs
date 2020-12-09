@@ -22,14 +22,13 @@ namespace ThePod.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
-        {
-            return View(_context.SavedPodcasts.ToList());
-        }
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(_context.SavedPodcasts.ToList());
+        //}
 
         //public async Task<IActionResult> IndexAsync()
         //{
-
         //    var thepodContext = _context.Favorites.Include(f => f.User);
         //    return View(await thepodContext.ToListAsync());
         //}
