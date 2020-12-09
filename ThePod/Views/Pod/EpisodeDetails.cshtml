@@ -31,3 +31,9 @@
         <hr>
     }
     }
+
+@{ string userQuery = ViewBag.Episode;}
+<form asp-controller="pod" asp-action="GetNext"  method="post">
+    <input type="text" name="query" value="@userQuery"/>
+    <input type="submit" value="next"  />
+</form>

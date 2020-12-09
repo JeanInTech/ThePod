@@ -24,7 +24,7 @@ namespace ThePod.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View();
+            return View(_context.SavedPodcasts.ToList());
         }
 
         //public async Task<IActionResult> IndexAsync()
@@ -89,6 +89,20 @@ namespace ThePod.Controllers
             var claim = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
             var userId = claim.Value;
             return userId;
+        }
+
+
+
+
+
+
+        public IActionResult SomeAction()
+        {
+            var model = new ShowsRootViewModel();
+            //  model.Shows = _dal.GetShow();
+            //  model.Episodes = _dal.GetEpisodes();
+
+            return View(model);
         }
     }
 }

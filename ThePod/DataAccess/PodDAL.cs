@@ -74,5 +74,25 @@ namespace ThePod.DataAccess
 
             return re;
         }
+
+        public async Task<Episodes> GetNextEpisode(string query)
+        {
+            var token = await GetToken();
+            HttpClient client = new HttpClient();
+           // var encodedQuery = Uri.EscapeDataString(query);
+
+            client.BaseAddress = new Uri("https://api.spotify.com/v1/");
+            client.DefaultRequestHeaders.Add("Authorization", $"{token.token_type} {token.access_token}");
+            var response = await client.GetAsync($"search?q={query}&type=episode&market=US&offset=20&limit=20");
+            var jsonData = await response.Content.ReadAsStringAsync();
+
+            Episodes ro = JsonSerializer.Deserialize<Episodes>(jsonData);
+
+            return ro;
+        }
+
     }
+    //"https://api.spotify.com/v1/search?query=radiolab&type=episode&market=US&offset=20&limit=20"
+
+
 }
