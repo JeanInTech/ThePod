@@ -36,12 +36,15 @@ namespace ThePod
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            services.AddDbContext<thepodContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddDbContext<thepodContext>(options => options.UseSqlServer(Secret.ConnectionString));
+          //  services.AddDbContext<thepodContext>(options => options.UseSqlServer(Secret.ConnectionString));
 
             services.AddAuthentication()
                 .AddSpotify(options =>

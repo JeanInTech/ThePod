@@ -21,6 +21,9 @@
     <audio controls>
         <source src="@e.audio_preview_url" type="audio/mpeg">
     </audio>
+    <form asp-controller="User" asp-action="ReviewEpisode" method="get">
+        <input type="hidden" name="id" value="@e.id" />
+        <input type="submit" name="data" value="Review Episode" />
+    </form>
     <hr>
-
 }

@@ -1,0 +1,23 @@
+﻿@model Episode
+
+<p>Episode name: @Model.name</p>
+<p>Name of podcast: @Model.show.name</p>
+<p>Episode description: @Model.description</p>
+<p>Release date: @Model.release_date</p>
+<img src="@Model.images[0].url" height="300" />
+<br />
+<audio controls>
+    <source src="@Model.audio_preview_url" type="audio/mpeg">
+</audio>
+<br />
+
+<form asp-controller="User" asp-action="ReviewEpisode" method="post">
+    <input type="hidden" name="EpisodeId" value="@Model.id" />
+    <p>
+        Rating: <input type="number" name="Rating" required min="1" max="5" /> /5
+    </p><br />
+    <p>Tags: <input type="text" name="Tags" placeholder="(e.g. comedy)" max="150" /></p><br />
+    <p>Review</p><br />
+    <textarea name="Review" rows="5" cols="70"></textarea><br />
+    <input type="submit" value="Review Episode" />
+</form>
