@@ -20,31 +20,65 @@ namespace ThePod.Controllers
         }
         public async Task<IActionResult> SearchResults(string query, string searchType) //this takes in a search term and gets the episode id to feed that into the "episode" endpoint
         {
-            var results = await _dal.SearchEpisodeNameAsync(query);
-            List<EpisodeItem> s = results.episodes.items.ToList();
-
-            List<string> episodeIds = new List<string>();
-
-            foreach (EpisodeItem e in s)
-            {
-                if(e != null)
-                { 
-                    episodeIds.Add(e.id);
-                }
-            }
-            var str = String.Join(",", episodeIds);
-            var eachEpisode = await _dal.SearchEpisodeIdAsync(str);
 
             if (searchType == "podcast")
             {
-                return View("PodcastDetails", eachEpisode);
+                var showResults = await _dal.SearchShowNameAsync(query); //this is where you can access the "next" property to see the next 20 Podcast-show results from your search
+                List<Item> i = showResults.shows.items.ToList();
+
+                List<string> showIds = new List<string>();
+                foreach (Item p in i)
+                {
+                    if (p != null)
+                    {
+                        showIds.Add(p.id);
+                    }
+                }
+                var shoId = String.Join(",", showIds);
+                var eachShow = await _dal.SearchShowIdAsync(shoId);
+
+                ViewBag.Podcast = query.ToLower();
+
+                return View("PodcastDetails", eachShow);
             }
+           
             else if (searchType == "episode")
             {
+                var episodeResults = await _dal.SearchEpisodeNameAsync(query); //this is where you can access the "next" property to see the next 20 Episode results from your search
+                List<EpisodeItem> s = episodeResults.episodes.items.ToList();
+
+                List<string> episodeIds = new List<string>();
+                foreach (EpisodeItem e in s)
+                {
+
+                    if (e != null)
+                    {
+                        episodeIds.Add(e.id);
+                    }
+                }
+                var epId = String.Join(",", episodeIds);
+                var eachEpisode = await _dal.SearchEpisodeIdAsync(epId);
+
                 return View("EpisodeDetails", eachEpisode);
             }
+
             else
             {
+                var episodeResults = await _dal.SearchEpisodeNameAsync(query); //this is where you can access the "next" property to see the next 20 Episode results from your search
+                List<EpisodeItem> s = episodeResults.episodes.items.ToList();
+
+                List<string> episodeIds = new List<string>();
+                foreach (EpisodeItem e in s)
+                {
+
+                    if (e != null)
+                    {
+                        episodeIds.Add(e.id);
+                    }
+                }
+                var epId = String.Join(",", episodeIds);
+                var eachEpisode = await _dal.SearchEpisodeIdAsync(epId);
+
                 return View("AllContent", eachEpisode);
             }
         }

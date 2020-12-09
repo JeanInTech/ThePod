@@ -1,29 +1,33 @@
 ﻿@model RootEpisodes
 
+@{
+    List<string> uniqueEpisodeIDs = new List<string>();
+}
+
 @foreach (Episode e in Model.episodes)
 {
-    <p>Episode name: @e.name</p> //this needs to be cleaned up to make sure it returns relevant results and no duplicates (so far it doesn't seem to show duplicates)
-    <p>Name of podcast: @e.show.name</p>
-    <p>Episode description: @e.description</p>
-    <p>Release date: @e.release_date</p>
-    <p>Contains explicit content? @e._explicit</p>
-    <p>Languages:</p>
-    foreach (var x in @e.languages)
+    @if (!uniqueEpisodeIDs.Contains(e.name))
     {
-        <p>@x</p> //we could clean up the way this displays the languages, like display the whole word
+        <p>Episode name: @e.name</p> //this needs to be cleaned up to make sure it returns relevant results and no duplicates (so far it doesn't seem to show duplicates)
+        <p>Name of podcast: @e.show.name</p>
+        <p>Episode description: @e.description</p>
+        <p>Release date: @e.release_date</p>
+        <p>Contains explicit content? @e._explicit</p>
+        <p>Languages:</p>
+        foreach (var x in @e.languages)
+        {
+            <p>@x</p> //we could clean up the way this displays the languages, like display the whole word
+        }
+        <p>Episode images:</p>
+        foreach (var i in @e.images) //this is an array of 3 images for the episode- we could decide which size we want to use wherever and display it
+        {
+            <img src="@i.url" height="@i.height" width="@i.width" />
+        }
+        <p>Here's a 30 second clip of the episode:</p>
+        <audio controls>
+            <source src="@e.audio_preview_url" type="audio/mpeg">
+        </audio>
+        uniqueEpisodeIDs.Add(e.name);
+        <hr>
     }
-    <p>Episode images:</p>
-    foreach (var i in @e.images) //this is an array of 3 images for the episode- we could decide which size we want to use wherever and display it
-    {
-        <img src="@i.url" height="@i.height" width="@i.width" />
-    }
-    <p>Here's a 30 second clip of the episode:</p>
-    <audio controls>
-        <source src="@e.audio_preview_url" type="audio/mpeg">
-    </audio>
-    <form asp-controller="User" asp-action="ReviewEpisode" method="get">
-        <input type="hidden" name="id" value="@e.id" />
-        <input type="submit" name="data" value="Review Episode" />
-    </form>
-    <hr>
-}
+
