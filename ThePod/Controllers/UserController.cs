@@ -21,14 +21,14 @@ namespace ThePod.Controllers
             _dal = dal;
             _context = context;
         }
-        public async Task<IActionResult> Index()
-        {
-            return View();
-        }
+
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(_context.SavedPodcasts.ToList());
+        //}
 
         //public async Task<IActionResult> IndexAsync()
         //{
-
         //    var thepodContext = _context.Favorites.Include(f => f.User);
         //    return View(await thepodContext.ToListAsync());
         //}
@@ -80,8 +80,46 @@ namespace ThePod.Controllers
             await _context.SavedPodcasts.AddAsync(favorite);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Favorites");
+            return RedirectToAction("Index");
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteFromFavorites(int id)
+        {
+            var favoriteItem = await _context.SavedPodcasts.FindAsync(id);
+            _context.SavedPodcasts.Remove(favoriteItem);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var favorites = await _context.SavedPodcasts
+                .Include(f => f.User)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (favorites == null)
+            {
+                return NotFound();
+            }
+
+            return View(favorites);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var favorites = await _context.SavedPodcasts.FindAsync(id);
+            _context.SavedPodcasts.Remove(favorites);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
         public string FindUser()
         {
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
@@ -89,7 +127,6 @@ namespace ThePod.Controllers
             var userId = claim.Value;
             return userId;
         }
-
         [HttpGet]
         public async Task<IActionResult> ReviewEpisode(string id)
         {
@@ -114,7 +151,5 @@ namespace ThePod.Controllers
 
             return View("Index");
         }
-
-
     }
 }
