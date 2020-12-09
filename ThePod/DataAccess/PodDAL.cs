@@ -59,6 +59,21 @@ namespace ThePod.DataAccess
 
             return ro;
         }
+        public async Task<RootobjectEpisodes> MoreSearchEpisodeAsync(string query, int offset)
+        {
+            var token = await GetToken();
+            HttpClient client = new HttpClient();
+            var encodedQuery = Uri.EscapeDataString(query);
+
+            client.BaseAddress = new Uri("https://api.spotify.com/v1/");
+            client.DefaultRequestHeaders.Add("Authorization", $"{token.token_type} {token.access_token}");
+            var response = await client.GetAsync($"search?q={encodedQuery}&type=episode&market=US&offset={offset}&limit=20");
+            var jsonData = await response.Content.ReadAsStringAsync();
+
+            RootobjectEpisodes ro = JsonSerializer.Deserialize<RootobjectEpisodes>(jsonData);
+
+            return ro;
+        }
         public async Task<RootEpisodes> SearchEpisodeIdAsync(string epId)
         {
             var token = await GetToken();
@@ -74,7 +89,7 @@ namespace ThePod.DataAccess
 
             return re;
         }
-        public async Task<Episodes> GetNextEpisode(string query)
+        public async Task<Episodes> GetNextEpisode(string query, int offset)
         {
             var token = await GetToken();
             HttpClient client = new HttpClient();
@@ -82,7 +97,7 @@ namespace ThePod.DataAccess
 
             client.BaseAddress = new Uri("https://api.spotify.com/v1/");
             client.DefaultRequestHeaders.Add("Authorization", $"{token.token_type} {token.access_token}");
-            var response = await client.GetAsync($"search?q={query}&type=episode&market=US&offset=20&limit=20");
+            var response = await client.GetAsync($"search?q={query}&type=episode&market=US&offset={offset}&limit=20");
             var jsonData = await response.Content.ReadAsStringAsync();
 
             Episodes ro = JsonSerializer.Deserialize<Episodes>(jsonData);

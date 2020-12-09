@@ -121,7 +121,6 @@ namespace ThePod.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
         public string FindUser()
         {
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;

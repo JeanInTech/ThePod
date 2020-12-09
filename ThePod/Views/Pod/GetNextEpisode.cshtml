@@ -40,7 +40,7 @@
 {
     int convert = int.Parse(offset);
     int previous = convert -= 20;
-    <form asp-controller="Pod" asp-action="GetPrevious" method="post">
+    <form asp-controller="pod" asp-action="GetPrevious" method="post">
         <input type="text" name="query" value="@userQuery" />
         <input type="hidden" name="offset" value="@previous" />
         <input type="submit" value="Previous" />
@@ -51,7 +51,7 @@
 @if (nextPage != null)
 {
     int convert = int.Parse(offset);
-    <form asp-controller="Pod" asp-action="GetNextEpisode" method="post">
+    <form asp-controller="pod" asp-action="GetNextEpisode" method="post">
         <input type="hidden" name="query" value="@userQuery" />
         <input type="hidden" name="offset" value="@convert" />
         <input type="submit" value="Next" />
