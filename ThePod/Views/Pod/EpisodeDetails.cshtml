@@ -29,11 +29,17 @@
         </audio>
         uniqueEpisodeIDs.Add(e.name);
         <hr>
+        <form asp-controller="User" asp-action="AddFavorite" method="post">
+            <input type="hidden" name="id" value="@e.id" />
+            <input type="submit" name="data" value="Add to Favorites" />
+            <a asp-action="Index"></a>
+        </form>
+
     }
-    }
+}
 
 @{ string userQuery = ViewBag.Episode;}
-<form asp-controller="pod" asp-action="GetNext"  method="post">
-    <input type="text" name="query" value="@userQuery"/>
-    <input type="submit" value="next"  />
+<form asp-controller="pod" asp-action="GetNext" method="post">
+    <input type="text" name="query" value="@userQuery" />
+    <input type="submit" value="next" />
 </form>

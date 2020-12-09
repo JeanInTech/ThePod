@@ -78,10 +78,26 @@ namespace ThePod.Controllers
             favorite.ImageUrl = firstPic.url;
             favorite.Duration = ep.duration_ms;
             favorite.ReleaseDate = DateTime.Parse(ep.release_date);
-            await _context.SavedPodcasts.AddAsync(favorite);
-            await _context.SaveChangesAsync();
+            //await _context.SavedPodcasts.AddAsync(favorite);
+            //await _context.SaveChangesAsync();
 
-            return RedirectToAction("Index");
+
+            try
+            {
+                favorite = new SavedPodcast() { EpisodeId = id };
+                if(ModelState.IsValid)
+                {
+                    await _context.SavedPodcasts.AddAsync(favorite);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            
+            catch(Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+            }
+
+            return RedirectToAction("Index", "User");
         }
 
         [HttpDelete]
