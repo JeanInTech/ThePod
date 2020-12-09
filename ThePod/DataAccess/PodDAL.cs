@@ -59,7 +59,7 @@ namespace ThePod.DataAccess
 
             return ro;
         }
-        public async Task<RootEpisodes> SearchEpisodeIdAsync(string str)
+        public async Task<RootEpisodes> SearchEpisodeIdAsync(string epId)
         {
             var token = await GetToken();
             HttpClient client = new HttpClient();
@@ -67,10 +67,37 @@ namespace ThePod.DataAccess
 
             client.BaseAddress = new Uri("https://api.spotify.com/v1/");
             client.DefaultRequestHeaders.Add("Authorization", $"{token.token_type} {token.access_token}");
-            var response = await client.GetAsync($"episodes?ids={str}&market=US");
+            var response = await client.GetAsync($"episodes?ids={epId}&market=US");
             var jsonData = await response.Content.ReadAsStringAsync();
 
             RootEpisodes re = JsonSerializer.Deserialize<RootEpisodes>(jsonData);
+
+            return re;
+        }
+        public async Task<Rootobject> SearchShowsAsync(string query)
+        {
+            var token = await GetToken();
+            HttpClient client = new HttpClient();
+            //var encodedQuery = Uri.EscapeDataString(query);
+            client.BaseAddress = new Uri("https://api.spotify.com/v1/");
+            client.DefaultRequestHeaders.Add("Authorization", $"{token.token_type} {token.access_token}");
+            var response = await client.GetAsync($"search?q={query}&type=show&market=US");
+            var jsonData = await response.Content.ReadAsStringAsync();
+            Rootobject ro = JsonSerializer.Deserialize<Rootobject>(jsonData);
+            return ro;
+        }
+        public async Task<RootShows> SearchShowIdAsync(string shoId)
+        {
+            var token = await GetToken();
+            HttpClient client = new HttpClient();
+            //var encodedQuery = Uri.EscapeDataString(query);
+
+            client.BaseAddress = new Uri("https://api.spotify.com/v1/");
+            client.DefaultRequestHeaders.Add("Authorization", $"{token.token_type} {token.access_token}");
+            var response = await client.GetAsync($"shows?ids={shoId}&market=US");
+            var jsonData = await response.Content.ReadAsStringAsync();
+
+            RootShows re = JsonSerializer.Deserialize<RootShows>(jsonData);
 
             return re;
         }
