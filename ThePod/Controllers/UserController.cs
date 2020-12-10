@@ -96,14 +96,7 @@ namespace ThePod.Controllers
             return RedirectToAction("Index", "User");
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteFromFavorites(int id)
-        {
-            var favoriteItem = await _context.SavedPodcasts.FindAsync(id);
-            _context.SavedPodcasts.Remove(favoriteItem);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
-        }
+       
 
         public async Task<IActionResult> Delete(int? id)
         {
@@ -112,26 +105,18 @@ namespace ThePod.Controllers
                 return NotFound();
             }
 
-            var favorites = await _context.SavedPodcasts
-                .Include(f => f.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var favorites = await _context.SavedPodcasts.FindAsync(id);
+            _context.SavedPodcasts.Remove(favorites);
+            await _context.SaveChangesAsync();
             if (favorites == null)
             {
                 return NotFound();
             }
 
-            return View(favorites);
+            return RedirectToAction("Index");
         }
 
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var favorites = await _context.SavedPodcasts.FindAsync(id);
-            _context.SavedPodcasts.Remove(favorites);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+       
 
         public string FindUser()
         {
