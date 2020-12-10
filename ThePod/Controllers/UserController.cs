@@ -59,7 +59,7 @@ namespace ThePod.Controllers
         //}
 
 
-        [HttpPost]
+        //[HttpPost]
         public async Task<IActionResult> AddFavorite(string id)
         {
             string user = FindUser();
@@ -92,14 +92,14 @@ namespace ThePod.Controllers
                 {
                     await _context.SavedPodcasts.AddAsync(favorite);
                     await _context.SaveChangesAsync();
-              
                 }
             }
-
             return RedirectToAction("Index", "User");
         }
 
         public async Task<IActionResult> SortFavorites(string sortOrder, string searchString)
+        public async Task<IActionResult> DeleteFromFavorites(int id)
+        public async Task<IActionResult> DeleteFromFavorites(int id)
         {
             string user = FindUser();
             ViewData["EpNameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "epname_desc" : "";

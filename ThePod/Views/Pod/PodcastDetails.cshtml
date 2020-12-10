@@ -9,37 +9,48 @@
     var offset = TempData["Offset"].ToString();
 }
 
-@foreach (RootShow e in Model.shows)
-{
-    bool containsSearchTerm = @e.name.ToLower().Contains(ViewBag.Podcast); //this is used to make sure that the names of the podcast shows include the search term the user entered
-    if (!uniqueEpisodeIDs.Contains(e.name) && containsSearchTerm == true) 
+<div class="searchresults">
+    <h5 class="text-left text-capitalize" style="color: grey; letter-spacing: 2px">Search Results For "@userQuery"</h5>
+</div>
+
+<table class="table table-hover table-responsive">
+    <thead class="thead-dark">
+        <tr class="thead-dark">
+            <th class="text-center">Podcast</th>
+            <th class="text-center">Episodes</th>
+            <th class="text-center">Description</th>
+        </tr>
+    </thead>
+
+    @foreach (RootShow e in Model.shows)
     {
-        <p>Name of podcast: @e.name</p>
-        <p>Producer: <a asp-controller="pod" asp-action="searchresults" asp-route-query="@e.publisher" asp-route-searchType="episodes">@e.publisher </a></p>//there is no "else" that clearly defines "allcontent" so we need to fix this in the controller
-        <p>Number of episodes: <a asp-controller="pod" asp-action="GetEpisodeByPodcast" asp-route-query="@e.name" asp-route-searchType="episodes">@e.total_episodes </a></p>
-        <p>Description of show: @e.description</p>
-        <p>Available images: </p>
-        foreach (var i in @e.images) //this is an array of 3 images for the episode- we could decide which size we want to use wherever and display it
+        bool containsSearchTerm = @e.name.ToLower().Contains(userQuery); //this is us4ed to make sure that the names of the podcast shows include the search term the user entered
+        if (!uniqueEpisodeIDs.Contains(e.name) && containsSearchTerm == true)
         {
-            <img src="@i.url" height="@i.height" width="@i.width" />
+            <tr>
+                <td>
+                    @{
+                        List<Image> img = new List<Image>(e.images);
+                        var firstPic = img.First();
+                        uniqueEpisodeIDs.Add(e.name);
+                    }
+                    <figure class="figure">
+                        <a href="@e.external_urls.spotify" alt="@e.name" target="_blank"><img src="@firstPic.url" style="height: 250px; width:250px;" class="figure-img" /></a>
+                        <figcaption class="figure-caption text-right">
+                            <a asp-controller="pod" asp-action="searchresults" asp-route-query="@e.publisher" asp-route-searchType="episodes">Produced by @e.publisher</a>
+                            <br />Episodes: @e.total_episodes
+                        </figcaption>
+                    </figure>
+                </td>
+                <td style="padding: 2em 2em 2em 2em">
+                    <p>Number of episodes: <a asp-controller="pod" asp-action="GetEpisodeByPodcast" asp-route-query="@e.name" asp-route-searchType="episodes">@e.total_episodes </a></p>
+                </td>
+                <td style="padding: 2em 2em 2em 2em">@e.description</td>
+            </tr>
         }
-        uniqueEpisodeIDs.Add(e.name);
-        <form asp-controller="User" asp-action="AddFavorite" method="post">
-            <input type="hidden" name="id" value="@e.id" />
-            <input type="submit" name="data" value="Add to Favorites" />
-        </form>
-        <hr>
     }
+</table>
 
-}
-
-@*else
-{
-<a asp-action="index" asp-controller="home">No results found - Search again</a>
-    break;
-}
-
-}*@
 
 @if (previousPage != null)
 {
@@ -47,7 +58,7 @@
     <form asp-controller="Pod" asp-action="GetPreviousPodcast" method="post">
         <input type="hidden" name="query" value="@userQuery" />
         <input type="hidden" name="offset" value="@convert" />
-        <input type="submit" value="Previous" />
+        <input type="submit" value="Previous" class="btn btn-outline-dark btn-group-lg float-lg-left" />
     </form>
 
 }
@@ -56,7 +67,12 @@
     int convert = int.Parse(offset);
     <form asp-controller="Pod" asp-action="GetNextPodcast" method="post">
         <input type="hidden" name="query" value="@userQuery" />
-        <input type="hidden" name="offset" value="@offset" />
-        <input type="submit" value="Next" />
+        <input type="hidden" name="offset" value="@convert" />
+        <input type="submit" value="Next" class="btn btn-outline-dark btn-group-lg float-lg-right" />
     </form>
 }
+
+<br />
+<br />
+<br />
+<br />

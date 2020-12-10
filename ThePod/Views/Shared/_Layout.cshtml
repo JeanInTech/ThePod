@@ -4,14 +4,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - The Pod</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-               
+
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">The Pod</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -24,20 +24,19 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Search</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Favorites</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Favorites</a>
                         </li>
-                        <form asp-controller="Pod" asp-action="SearchResults" method="post">
-                            <select name="searchType" id="searchType" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <option class="dropdown-item-text" value="podcast">Podcasts</option>
-                                <option class="dropdown-item-text" value="episode">Episodes</option>
-                                <option class="dropdown-item-text" value="content">All Content</option>
-                                @*<option value="tags">Tags</option> keywords and stuff*@
-                            </select>
-                            <input type="text" name="query" placeholder="Whatever sounds good" required />
-                            <input type="submit" class="btn-dark" value="Search" />
-                        </form>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="ViewFeedBack">My Reviews</a>
+                        </li>
                     </ul>
                 </div>
+
+            <form name="searchForm" asp-controller="Pod" asp-action="SearchResults" method="POST" style="align-items: right;">
+                <input type="text" name="query" class="small" required />
+                <input type="hidden" id="search_type" name="searchType" value="episodes">
+                <input type="submit" class="btn btn-sm btn-success" value="search" />
+            </form>
             </div>
         </nav>
     </header>
@@ -47,11 +46,11 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    @*<footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2020 - ThePod - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
+    </footer>*@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
