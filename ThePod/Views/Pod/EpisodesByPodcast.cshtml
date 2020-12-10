@@ -1,5 +1,14 @@
 ﻿@model EpisodesByPodId
 
+@{
+    ViewData["PodcastDetails"] = "Podcast Details";
+    List<string> uniqueEpisodeIDs = new List<string>();
+    string shoId = TempData["ShowId"].ToString();
+    string totalResults = TempData.Peek("TotalResults").ToString();
+    var nextPage = TempData.Peek("NextPage");
+    var previousPage = TempData.Peek("PreviousPage");
+    var offset = TempData["Offset"].ToString();
+}
 <div class="searchresults">
     <h5 class="text-left text-capitalize" style="color: grey; letter-spacing: 2px">All Episodes from "@ViewBag.userQuery"</h5>
 </div>
@@ -14,8 +23,6 @@
             <th class="text-center">Review</th>
         </tr>
     </thead>
-
-
 
     @{foreach (EpByPodItem e in Model.items)
         {
@@ -56,5 +63,34 @@
             </tr>
         }
     }
+
 </table>
+
+<div>
+
+
+@if (previousPage != null)
+{
+    int convert = int.Parse(offset);
+    <form asp-controller="Pod" asp-action="GetPreviousEpByPod" method="post">
+        <input type="hidden" name="shoId" value="@shoId" />
+        <input type="hidden" name="offset" value="@convert" />
+        <input type="submit" value="Previous" class="btn btn-outline-dark btn-group-lg float-lg-left" />
+    </form>
+
 }
+@if (nextPage != null)
+{
+    int convert = int.Parse(offset);
+    <form asp-controller="Pod" asp-action="GetNextEpByPod" method="post">
+        <input type="hidden" name="shoId" value="@shoId" />
+        <input type="hidden" name="offset" value="@convert" />
+        <input type="submit" value="Next" class="btn btn-outline-dark btn-group-lg float-lg-right" />
+    </form>
+}
+
+</div>
+<br />
+<br />
+<br />
+<br />

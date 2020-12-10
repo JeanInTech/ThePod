@@ -59,13 +59,10 @@ namespace ThePod.Controllers
                 {
                     await _context.SavedPodcasts.AddAsync(favorite);
                     await _context.SaveChangesAsync();
-              
                 }
             }
-
             return RedirectToAction("Index", "User");
         }
-
         public async Task<IActionResult> SortFavorites(string sortOrder, string searchString)
         {
             string user = FindUser();

@@ -1,4 +1,7 @@
-<img src="https://png2.cleanpng.com/sh/bbebdd4106dd999b26fe57d1564d30f6/L0KzQYm3U8I0N5D6j5H0aYP2gLBuTgBmaaF0fJ9sbHnzPbL5lL1xbZIyTdNrNUDnQIe8hsA0O2MzSac8NEG8QIa4VcIyQGI5T6s5M0i8QnB3jvc=/kisspng-peapod-clip-art-pea-5ab50d065f0332.1534190515218147903892.png" style="height: 250px; width: 250px; justify-content: center;" />
+<div id="indexPicContainer" class="d-flex justify-content-center align-items-center">
+ <img src="~/img/thepod.png" style="max-height: 30%; max-width: 30%;"  />
+</div>   
+
 ﻿<div id="indexContainer" class="d-flex justify-content-center align-items-center">
     <form asp-controller="Pod" asp-action="SearchResults" method="post" id="searchIndex">
         <h3>Find your next podcast</h3><br />
@@ -7,7 +10,7 @@
             <select name="searchType" id="searchType" class="btn btn-success dropdown-toggle btn-lg btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <option class="dropdown-item-text" value="podcast" style="color: white;">Podcasts</option>
                 <option class="dropdown-item-text" value="episode" style="color: white">Episodes</option>
-                <option class="dropdown-item-text" value="content" style="color: white">All Content</option>
+                @*<option class="dropdown-item-text" value="content" style="color: white">All Content</option>*@
                 @*<option value="tags">Tags</option> keywords and stuff*@
             </select><br />
 

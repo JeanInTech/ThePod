@@ -190,19 +190,61 @@ namespace ThePod.Controllers
             ViewBag.userQuery = query;
             var showResults = await _dal.SearchShowNameAsync(query);
             List<Item> i = showResults.shows.items.ToList();
+
+            TempData["ShowId"] = i.First().id;
+            TempData["TotalResults"] = showResults.shows.total;
+            TempData["NextPage"] = showResults.shows.next;
+            TempData["PreviousPage"] = showResults.shows.previous;
+            TempData["Offset"] = showResults.shows.offset;
+
             foreach (Item x in i)
             {
                 if (x.name == query)
                 {
                     string shoId = x.id;
+                    
                     var episodesByPodcast = await _dal.SearchEpbyPodIdAsync(shoId);
-                    return View("episodesbypodcast", episodesByPodcast);
+                    return View("EpisodesByPodcast", episodesByPodcast);
                 }
             }
 
             return View(); // I need to put something else here- if I do not meet the conditions above, I will end up here, and this view does not exist
-
         }
+        [HttpPost]
+        public async Task<IActionResult> GetNextEpByPod(string shoId, int offset)
+        {
+            int increment = offset + 20;
+            var showResults = await _dal.MoreEpbyPodIdAsync(shoId, increment);
+            //List<Item> i = showResults.shows.items.ToList();
 
+            TempData["ShowId"] = shoId;
+            TempData["TotalResults"] = showResults.total;
+            TempData["NextPage"] = showResults.next;
+            TempData["PreviousPage"] = showResults.previous;
+            TempData["Offset"] = increment;
+
+            //var epId = ConvertToIdString(i);
+            //var nextShows = await _dal.SearchEpisodeIdAsync(epId);
+
+            return View("EpisodesByPodcast", showResults);
+        }
+        [HttpPost]
+        public async Task<IActionResult> GetPreviousEpByPod(string shoId, int offset)
+        {
+            int decrement = offset - 20;
+            var showResults = await _dal.MoreEpbyPodIdAsync(shoId, decrement);
+            //List<Item> i = showResults.shows.items.ToList();
+
+            TempData["ShowId"] = shoId;
+            TempData["TotalResults"] = showResults.total;
+            TempData["NextPage"] = showResults.next;
+            TempData["PreviousPage"] = showResults.previous;
+            TempData["Offset"] = decrement;
+
+            //var epId = ConvertToIdString(i);
+            //var previousShows = await _dal.SearchEpbyPodIdAsync(epId);
+
+            return View("EpisodesByPodcast", showResults);
+        }
     }
 }
