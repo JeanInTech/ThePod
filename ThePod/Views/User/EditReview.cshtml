@@ -1,13 +1,19 @@
 ﻿@model UserFeedback
 
 <h2>Edit Review</h2>
-<p>Edit your review on @Model.EpisodeName</p>
-<p>Originally posted on: @Model.DatePosted</p>
+<img src="@Model.ImageUrl" height="200"/>
+<p><strong>Episode:</strong> @Model.EpisodeName</p>
+<p><strong>Podcast:</strong> @Model.PodcastName</p>
+<p><strong>Originally reviewed on</strong>: @Model.DatePosted</p>
+@*<p><strong>Original Rating:</strong> @Model.Rating</p>
+<p><strong>Original Tags:</strong> @Model.Tags</p>
+<p><strong>Original Reivew:</strong> @Model.Review</p>*@
+
 <form asp-controller="User" asp-action="EditReview" method="post">
-    <p>Rating: <input type="number" name="Rating" value="@Model.Rating" min="1" max="5" required/></p>
-    <p>Tags: <input type="text" name="Tags" value="@Model.Tags" required/></p>
-    <p>Review: </p>
-    <textarea name="Review" rows="5" cols="70"></textarea><br />
+    <p><strong>Rating:</strong> <input type="number" name="Rating" placeholder="@Model.Rating" min="1" max="5" required />/5</p>
+    <p><strong>Tags:</strong> <input type="text" name="Tags" placeholder="@Model.Tags" required /></p>
+    <p><strong>Review:</strong> </p>
+    <textarea name="Review" placeholder="@Model.Review" rows="5" cols="70"></textarea><br />
     <input type="hidden" name="Id" value="@Model.Id" />
     @*<input type="hidden" name="UserId" value="@Model.UserId" />
     <input type="hidden" name="EpisodeId" value="@Model.EpisodeId" />
