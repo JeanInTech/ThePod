@@ -15,6 +15,7 @@
     {
         <p>Episode name: @e.name</p> //this needs to be cleaned up to make sure it returns relevant results and no duplicates (so far it doesn't seem to show duplicates)
         @*<p>Name of podcast: @e.show.name</p>
+        <p>Name of podcast: <a asp-controller="pod" asp-action="searchresults" asp-route-query="@e.show.name" asp-route-searchType="podcast">@e.show.name</a></p> 
             <p>Episode description: @e.description</p>
             <p>Release date: @e.release_date</p>
             <p>Contains explicit content? @e._explicit</p>

@@ -11,12 +11,12 @@
 
 @foreach (RootShow e in Model.shows)
 {
-    //bool containsSearchTerm = @e.name.ToLower().Contains(ViewBag.Podcast);
-    if (!uniqueEpisodeIDs.Contains(e.name)) // && containsSearchTerm == true
+    bool containsSearchTerm = @e.name.ToLower().Contains(ViewBag.Podcast); //this is used to make sure that the names of the podcast shows include the search term the user entered
+    if (!uniqueEpisodeIDs.Contains(e.name) && containsSearchTerm == true) 
     {
         <p>Name of podcast: @e.name</p>
-        <p>Producer: @e.publisher</p>
-        <p>Number of episodes: @e.total_episodes</p>
+        <p>Producer: <a asp-controller="pod" asp-action="searchresults" asp-route-query="@e.publisher" asp-route-searchType="episodes">@e.publisher </a></p>//there is no "else" that clearly defines "allcontent" so we need to fix this in the controller
+        <p>Number of episodes: <a asp-controller="pod" asp-action="GetEpisodeByPodcast" asp-route-query="@e.name" asp-route-searchType="episodes">@e.total_episodes </a></p>
         <p>Description of show: @e.description</p>
         <p>Available images: </p>
         foreach (var i in @e.images) //this is an array of 3 images for the episode- we could decide which size we want to use wherever and display it
@@ -30,6 +30,7 @@
         </form>
         <hr>
     }
+
 }
 
 @*else

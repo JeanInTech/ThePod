@@ -44,7 +44,7 @@ namespace ThePod.DataAccess
                 return JsonSerializer.Deserialize<AccessToken>(response);
             }
         }
-        public async Task<RootobjectEpisodes> SearchEpisodeNameAsync(string query)
+        public async Task<RootobjectEpisodes> SearchEpisodeNameAsync(string query) // returns object that is model type: "Episdodes"
         {
             var token = await GetToken();
             HttpClient client = new HttpClient();
@@ -59,6 +59,7 @@ namespace ThePod.DataAccess
 
             return ro;
         }
+
         public async Task<RootobjectEpisodes> MoreSearchEpisodeAsync(string query, int offset)
         {
             var token = await GetToken();
@@ -74,7 +75,7 @@ namespace ThePod.DataAccess
 
             return ro;
         }
-        public async Task<RootEpisodes> SearchEpisodeIdAsync(string epId)
+        public async Task<RootEpisodes> SearchEpisodeIdAsync(string epId) //returns object that is model type: "Rootepisode"
         {
             var token = await GetToken();
             HttpClient client = new HttpClient();
@@ -88,7 +89,7 @@ namespace ThePod.DataAccess
 
             return re;
         }
-        public async Task<Rootobject> SearchShowNameAsync(string query)
+        public async Task<Rootobject> SearchShowNameAsync(string query) //returns object that is model type: "shows"
         {
             var token = await GetToken();
             HttpClient client = new HttpClient();
@@ -118,7 +119,7 @@ namespace ThePod.DataAccess
 
             return ro;
         }
-        public async Task<RootShows> SearchShowIdAsync(string shoId)
+        public async Task<RootShows> SearchShowIdAsync(string shoId) // returns object that is model type: "Rootshows"
         {
             var token = await GetToken();
             HttpClient client = new HttpClient();
@@ -131,6 +132,21 @@ namespace ThePod.DataAccess
             RootShows re = JsonSerializer.Deserialize<RootShows>(jsonData);
 
             return re;
+        }
+        public async Task<EpisodesByPodId> SearchEpbyPodIdAsync(string shoId) // returns object that is model type: "EpisodesByPodId"
+        {
+            var token = await GetToken();
+            HttpClient client = new HttpClient();
+            //var encodedQuery = Uri.EscapeDataString(query);
+
+            client.BaseAddress = new Uri("https://api.spotify.com/v1/");
+            client.DefaultRequestHeaders.Add("Authorization", $"{token.token_type} {token.access_token}");
+            var response = await client.GetAsync($"shows/{shoId}/episodes?market=US");
+            var jsonData = await response.Content.ReadAsStringAsync();
+
+            EpisodesByPodId ebp = JsonSerializer.Deserialize<EpisodesByPodId>(jsonData);
+
+            return ebp;
         }
     }
 }
