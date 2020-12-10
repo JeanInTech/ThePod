@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using ThePod.DataAccess;
 using ThePod.Models;
 
+
 namespace ThePod.Controllers
 {
     [Authorize]
@@ -26,37 +27,6 @@ namespace ThePod.Controllers
         {
             return View(_context.SavedPodcasts.ToList());
         }
-
-        //public async Task<IActionResult> IndexAsync()
-        //{
-        //    var thepodContext = _context.Favorites.Include(f => f.User);
-        //    return View(await thepodContext.ToListAsync());
-        //}
-
-        //public async Task<IActionResult> Details(int? id)
-        //{
-        //    if(id == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var favorites = await _context.Favorites.
-        //        Include(f => f.User).FirstOrDefaultAsync(m => m.Id == id);
-        //    if(favorites==null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(favorites);
-        //}
-
-        //public IActionResult Favorite()
-        //{
-        //    return View();
-        //    return View(_context.SavedPodcasts.ToList());
-        //}
-
-
-        //[HttpPost]
         public async Task<IActionResult> AddFavorite(string id)
         {
             string user = FindUser();
@@ -96,6 +66,47 @@ namespace ThePod.Controllers
             return RedirectToAction("Index", "User");
         }
 
+        public async Task<IActionResult> SortFavorites(string sortOrder, string searchString)
+        {
+            string user = FindUser();
+            ViewData["EpNameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "epname_desc" : "";
+            ViewData["PodNameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "podname_desc" : "";
+            ViewData["PublisherSortParm"] = String.IsNullOrEmpty(sortOrder) ? "publisher_sort" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewData["CurrentFilter"] = searchString;
+
+            var podcast = from p in _context.SavedPodcasts
+                           select p;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                podcast = podcast.Where(p => p.Description.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "Date":
+                    podcast = podcast.OrderBy(p => p.ReleaseDate);
+                    break;
+                case "date_desc":
+                    podcast = podcast.OrderByDescending(p => p.ReleaseDate);
+                    break;
+                case "epname_desc":
+                    podcast = podcast.OrderBy(p => p.EpisodeName);
+                    break;
+                case "podname_desc":
+                    podcast = podcast.OrderBy(p => p.PodcastName);
+                    break;
+                case "publisher_sort":
+                    podcast = podcast.OrderByDescending(p => p.Publisher);
+                    break;
+                default:
+                    podcast = podcast.OrderBy(p =>p.PodcastName);
+                    break;
+            }
+            return View("Index", await podcast.Where(x => x.UserId == user).AsNoTracking().ToListAsync());
+        }
+
+
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -111,7 +122,7 @@ namespace ThePod.Controllers
             }
             return RedirectToAction("Index");
         }
-      
+
         public string FindUser()
         {
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
@@ -161,6 +172,49 @@ namespace ThePod.Controllers
 
             return View(usersFeedback);
         }
+
+        
+        public async Task<IActionResult> SortFeedback(string sortOrder, string searchString)
+        {
+            string user = FindUser();
+            ViewData["EpNameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "epname_desc" : "";
+            ViewData["PodNameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "podname_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewData["RatingSortParm"] = String.IsNullOrEmpty(sortOrder) ? "sort_rating" : "";
+            ViewData["CurrentFilter"] = searchString;
+            
+            var feedback = from f in _context.UserFeedbacks
+                           select f;
+            if(!String.IsNullOrEmpty(searchString))
+            {
+                feedback = feedback.Where(f => f.Tags.Contains(searchString));
+            }
+            switch(sortOrder)
+            {
+                case "Date":
+                    feedback = feedback.OrderBy(f => f.DatePosted);
+                    break;
+                case "date_desc":
+                    feedback = feedback.OrderByDescending(f => f.DatePosted);
+                    break;
+                case "epname_desc":
+                    feedback = feedback.OrderBy(f => f.EpisodeName);
+                    break;
+                case "podname_desc":
+                    feedback = feedback.OrderBy(f => f.PodcastName);
+                    break;
+                case "sort_rating":
+                    feedback = feedback.OrderByDescending(f => f.Rating);
+                    break;
+                default:
+                    feedback = feedback.OrderBy(f => f.DatePosted);
+                    break;
+            }
+
+
+            return View("ViewFeedback", await feedback.Where(x => x.UserId == user).AsNoTracking().ToListAsync());
+        }
+
 
         public async Task<IActionResult> DeleteReview(int Id)
         {

@@ -1,12 +1,17 @@
 ﻿@model List<UserFeedback>
 
-
+<form asp-action="SortFeedback" method="get">
+    <div class="form-actions no-color">
+        <p> Find by tag: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]"/>
+        <input type="submit" value="Search" class="btn btn-default"/> | <a asp-action="SortFeedback">Back to Feedback</a></p>
+    </div>
+</form>
 <table class="table-striped, table-hover" border="1">
     <tr>
-        <th><strong>Date Posted</strong></th>
-        <th><strong>Episode Name</strong></th>
-        <th><strong>Podcast Name</strong></th>
-        <th><strong>Rating</strong></th>
+        <th><strong><a asp-action="SortFeedback" asp-route-sortOrder="@ViewData["DateSortParm"]">Date Posted</a></strong></th>
+        <th><strong><a asp-action="SortFeedback" asp-route-sortOrder="@ViewData["EpNameSortParm"]">Episode Name</a></strong></th>
+        <th><strong><a asp-action="SortFeedback" asp-route-sortOrder="@ViewData["PodNameSortParm"]">Podcast Name</a></strong></th>
+        <th><strong><a asp-action="SortFeedback" asp-route-sortOrder="@ViewData["RatingSortParm"]">Rating</a></strong></th>
         <th><strong>Tags</strong></th>
         <th><strong>Review</strong></th>
         <th><strong>Edit Review</strong></th>
