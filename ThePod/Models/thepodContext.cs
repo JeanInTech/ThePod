@@ -31,8 +31,8 @@ namespace ThePod.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=thepod.database.windows.net,1433;Database=thepod;User ID = DJKP; Password=thepod1!;Trusted_Connection=False;Encrypt=True");
+
+                optionsBuilder.UseSqlServer(Secret.ConnectionString);
             }
         }
 
@@ -174,11 +174,16 @@ namespace ThePod.Models
 
                 entity.Property(e => e.AudioPreviewUrl).HasColumnName("AudioPreviewURL");
 
+
+                entity.Property(e => e.DatePosted).HasColumnType("datetime");
+
                 entity.Property(e => e.EpisodeId)
                     .IsRequired()
                     .HasMaxLength(50);
 
+
                 entity.Property(e => e.EpisodeName).HasMaxLength(50);
+
 
                 entity.Property(e => e.ExternalUrls).HasColumnName("ExternalURLS");
 

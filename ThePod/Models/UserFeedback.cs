@@ -20,6 +20,8 @@ namespace ThePod.Models
         public string ImageUrl { get; set; }
         public DateTime? ReleaseDate { get; set; }
         public string ExternalUrls { get; set; }
+        public DateTime? DatePosted { get; set; }
+
 
         public virtual AspNetUser User { get; set; }
     }
