@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace ThePod
+namespace ThePod.Models
 {
     public partial class AspNetUserLogin
     {

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace ThePod
+namespace ThePod.Models
 {
     public partial class thepodContext : DbContext
     {
@@ -173,11 +173,11 @@ namespace ThePod
 
                 entity.Property(e => e.AudioPreviewUrl).HasColumnName("AudioPreviewURL");
 
+                entity.Property(e => e.DatePosted).HasColumnType("datetime");
+
                 entity.Property(e => e.EpisodeId)
                     .IsRequired()
                     .HasMaxLength(50);
-
-                entity.Property(e => e.EpisodeName).HasMaxLength(50);
 
                 entity.Property(e => e.ExternalUrls).HasColumnName("ExternalURLS");
 

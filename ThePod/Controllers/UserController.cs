@@ -152,11 +152,52 @@ namespace ThePod.Controllers
             feedback.ImageUrl = ImageUrl;
             feedback.ReleaseDate = ReleaseDate;
             feedback.ExternalUrls = ExternalURLS;
+            feedback.DatePosted = DateTime.Now;
+
 
             await _context.UserFeedbacks.AddAsync(feedback);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index", "Home");
         }
+
+        public IActionResult ViewFeedBack()
+        {
+            string user = FindUser();
+            List<UserFeedback> feedback = _context.UserFeedbacks.ToList();
+            List<UserFeedback> usersFeedback = feedback.Where(x => x.UserId == user).ToList(); //used LINQ to show only user's feedback
+
+            return View(usersFeedback);
+        }
+
+        public async Task<IActionResult> DeleteReview(int Id)
+        {
+            var userReview = await _context.UserFeedbacks.FindAsync(Id);
+            _context.UserFeedbacks.Remove(userReview);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ViewFeedBack");
+        }
+
+        public async Task<IActionResult> EditReview(int Id)
+        {
+            var userReview = await _context.UserFeedbacks.FindAsync(Id);
+            return View(userReview);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditReview(int Id, int UserId, string EpisodeId, int Rating, string Tags, string Review, string EpisodeName, string PodcastName, string Description, string AudioPreviewURL, string ImageUrl, DateTime ReleaseDate, string ExternalURLS)
+        {
+            UserFeedback feedback1 = await _context.UserFeedbacks.FindAsync(Id);
+            //feedback.Id = Id;
+            //feedback.UserId = 
+            feedback1.Tags = Tags;
+            feedback1.Rating = (byte?)Rating;
+            feedback1.Review = Review;
+            feedback1.DatePosted = DateTime.Now;
+            await _context.SaveChangesAsync();
+            return RedirectToAction("ViewFeedBack");
+        }
+
     }
 }

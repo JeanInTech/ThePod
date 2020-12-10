@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace ThePod
+namespace ThePod.Models
 {
     public partial class UserFeedback
     {
@@ -20,6 +20,7 @@ namespace ThePod
         public string ImageUrl { get; set; }
         public DateTime? ReleaseDate { get; set; }
         public string ExternalUrls { get; set; }
+        public DateTime? DatePosted { get; set; }
 
         public virtual AspNetUser User { get; set; }
     }
