@@ -1,0 +1,29 @@
+﻿@model List<UserFeedback>
+
+
+<table class="table-striped, table-hover" border="1">
+    <tr>
+        <th><strong>Episode Id</strong></th>
+        <th><strong>User Id</strong></th>
+        <th><strong>Rating</strong></th>
+        <th><strong>Tags</strong></th>
+        <th><strong>Review</strong></th>
+        <th><strong>Edit Review</strong></th>
+        <th><strong>Delete Review</strong></th>
+    </tr>
+
+
+    @foreach (var u in Model)
+    {
+        <tr>
+            <td>@u.EpisodeId</td>
+            <td>@u.UserId</td>
+            <td>@u.Rating/5</td>
+            <td>@u.Tags</td>
+            <td>@u.Review</td>
+            <td><a asp-controller="User" asp-action="DeleteReview" asp-route-Id="@u.Id">Delete Review</a></td>
+            <td><a asp-controller="User" asp-action="UpdateReview" asp-route-Id="@u.Id">Edit Review</a></td>
+        </tr>
+    }
+
+</table>

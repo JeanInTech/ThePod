@@ -115,6 +115,31 @@ namespace ThePod.Controllers
             return View("Index");
         }
 
+        public IActionResult ViewFeedBack()
+        {
+            string user = FindUser();
+            List<UserFeedback> feedback = _context.UserFeedbacks.ToList();
+
+            List<UserFeedback> usersFeedback = feedback.Where(x => x.UserId == user).ToList(); //used LINQ to show only user's feedback
+
+
+            return View(usersFeedback);
+        }
+
+        public async Task<IActionResult> DeleteReview(int Id)
+        {
+            var userReview = await _context.UserFeedbacks.FindAsync(Id);
+            _context.UserFeedbacks.Remove(userReview);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("ViewFeedBack");
+        }
+
+        public async Task<IActionResult> UpdateReview(int Id)
+        {
+            var userReview = await _context.UserFeedbacks.FindAsync(Id);
+            return View(userReview);
+        }
 
     }
 }
