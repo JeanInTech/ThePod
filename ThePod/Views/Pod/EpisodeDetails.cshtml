@@ -1,7 +1,12 @@
 ﻿@model RootEpisodes
-
 @{
+    ViewData["EpisodeDetails"] = "Episode Details";
     List<string> uniqueEpisodeIDs = new List<string>();
+    string userQuery = TempData.Peek("UserQuery").ToString();
+    string totalResults = TempData.Peek("TotalResults").ToString();
+    var nextPage = TempData.Peek("NextPage");
+    var previousPage = TempData.Peek("PreviousPage");
+    var offset = TempData["Offset"].ToString();
 }
 
 @foreach (Episode e in Model.episodes)
@@ -9,26 +14,57 @@
     @if (!uniqueEpisodeIDs.Contains(e.name))
     {
         <p>Episode name: @e.name</p> //this needs to be cleaned up to make sure it returns relevant results and no duplicates (so far it doesn't seem to show duplicates)
+        @*<p>Name of podcast: @e.show.name</p>
         <p>Name of podcast: <a asp-controller="pod" asp-action="searchresults" asp-route-query="@e.show.name" asp-route-searchType="podcast">@e.show.name</a></p> 
-        <p>Episode description: @e.description</p>
-        <p>Release date: @e.release_date</p>
-        <p>Contains explicit content? @e._explicit</p>
-        <p>Languages:</p>
-        foreach (var x in @e.languages)
-        {
-            <p>@x</p> //we could clean up the way this displays the languages, like display the whole word
-        }
-        <p>Episode images:</p>
-        foreach (var i in @e.images) //this is an array of 3 images for the episode- we could decide which size we want to use wherever and display it
-        {
-            <img src="@i.url" height="@i.height" width="@i.width" />
-        }
-        <p>Here's a 30 second clip of the episode:</p>
-        <audio controls>
-            <source src="@e.audio_preview_url" type="audio/mpeg">
-        </audio>
+            <p>Episode description: @e.description</p>
+            <p>Release date: @e.release_date</p>
+            <p>Contains explicit content? @e._explicit</p>
+            <p>Languages:</p>
+            foreach (var x in @e.languages)
+            {
+                <p>@x</p> //we could clean up the way this displays the languages, like display the whole word
+            }
+            <p>Episode images:</p>
+            foreach (var i in @e.images) //this is an array of 3 images for the episode- we could decide which size we want to use wherever and display it
+            {
+                <img src="@i.url" height="@i.height" width="@i.width" />
+            }
+            <p>Here's a 30 second clip of the episode:</p>
+            <audio controls>
+                <source src="@e.audio_preview_url" type="audio/mpeg">
+            </audio>*@
         uniqueEpisodeIDs.Add(e.name);
         <hr>
     }
 }
 
+@if (previousPage != null)
+{
+    int convert = int.Parse(offset);
+    <form asp-controller="Pod" asp-action="GetPreviousEpisode" method="post">
+        <input type="hidden" name="query" value="@userQuery" />
+        <input type="hidden" name="offset" value="@convert" />
+        <input type="hidden" name="type" value="episode" />
+        <input type="submit" value="Previous" />
+    </form>
+
+}
+@if (nextPage != null)
+{
+    int convert = int.Parse(offset);
+    <form asp-controller="Pod" asp-action="GetNextEpisode" method="post">
+        <input type="hidden" name="query" value="@userQuery" />
+        <input type="hidden" name="offset" value="@offset" />
+        <input type="hidden" name="type" value="episode" />
+        <input type="submit" value="Next" />
+    </form>
+}
+@*<p>Here's a 30 second clip of the episode:</p>
+    <audio controls>
+        <source src="@e.audio_preview_url" type="audio/mpeg">
+    </audio>
+    <form asp-controller="User" asp-action="ReviewEpisode" method="get">
+        <input type="hidden" name="id" value="@e.id" />
+        <input type="submit" name="data" value="Review Episode" />
+    </form>
+    <hr>*@

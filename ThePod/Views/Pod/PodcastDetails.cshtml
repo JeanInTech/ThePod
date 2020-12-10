@@ -1,13 +1,18 @@
-﻿@{
+﻿@model RootShows
+@{
+    ViewData["PodcastDetails"] = "Podcast Details";
     List<string> uniqueEpisodeIDs = new List<string>();
+    string userQuery = TempData.Peek("UserQuery").ToString();
+    string totalResults = TempData.Peek("TotalResults").ToString();
+    var nextPage = TempData.Peek("NextPage");
+    var previousPage = TempData.Peek("PreviousPage");
+    var offset = TempData["Offset"].ToString();
 }
-
-
 
 @foreach (RootShow e in Model.shows)
 {
-    bool containsSearchTerm = @e.name.ToLower().Contains(ViewBag.Podcast);
-    if (!uniqueEpisodeIDs.Contains(e.name) && containsSearchTerm == true)
+    //bool containsSearchTerm = @e.name.ToLower().Contains(ViewBag.Podcast);
+    if (!uniqueEpisodeIDs.Contains(e.name)) // && containsSearchTerm == true
     {
         <p>Name of podcast: @e.name</p>
         <p>Producer: <a asp-controller="pod" asp-action="searchresults" asp-route-query="@e.publisher" asp-route-searchType="episodes">@e.publisher </a></p>//there is no "else" that clearly defines "allcontent" so we need to fix this in the controller
@@ -26,10 +31,32 @@
         <hr>
     }
 
-    else
-    {
-        <a asp-action="index" asp-controller="home">No results found - Search again</a>
-        break;
-    }
+}
 
+@*else
+{
+<a asp-action="index" asp-controller="home">No results found - Search again</a>
+    break;
+}
+
+}*@
+
+@if (previousPage != null)
+{
+    int convert = int.Parse(offset);
+    <form asp-controller="Pod" asp-action="GetPreviousPodcast" method="post">
+        <input type="hidden" name="query" value="@userQuery" />
+        <input type="hidden" name="offset" value="@convert" />
+        <input type="submit" value="Previous" />
+    </form>
+
+}
+@if (nextPage != null)
+{
+    int convert = int.Parse(offset);
+    <form asp-controller="Pod" asp-action="GetNextPodcast" method="post">
+        <input type="hidden" name="query" value="@userQuery" />
+        <input type="hidden" name="offset" value="@offset" />
+        <input type="submit" value="Next" />
+    </form>
 }
