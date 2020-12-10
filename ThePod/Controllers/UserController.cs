@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using ThePod.DataAccess;
 using ThePod.Models;
 
+
 namespace ThePod.Controllers
 {
     [Authorize]
@@ -26,6 +27,8 @@ namespace ThePod.Controllers
         {
             return View(_context.SavedPodcasts.ToList());
         }
+
+      
 
         //public async Task<IActionResult> IndexAsync()
         //{
@@ -96,8 +99,47 @@ namespace ThePod.Controllers
             return RedirectToAction("Index", "User");
         }
 
-       
-       
+        public async Task<IActionResult> SortFavorites(string sortOrder, string searchString)
+        {
+            string user = FindUser();
+            ViewData["EpNameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "epname_desc" : "";
+            ViewData["PodNameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "podname_desc" : "";
+            ViewData["PublisherSortParm"] = String.IsNullOrEmpty(sortOrder) ? "publisher_sort" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewData["CurrentFilter"] = searchString;
+
+            var podcast = from p in _context.SavedPodcasts
+                           select p;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                podcast = podcast.Where(p => p.Description.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "Date":
+                    podcast = podcast.OrderBy(p => p.ReleaseDate);
+                    break;
+                case "date_desc":
+                    podcast = podcast.OrderByDescending(p => p.ReleaseDate);
+                    break;
+                case "epname_desc":
+                    podcast = podcast.OrderBy(p => p.EpisodeName);
+                    break;
+                case "podname_desc":
+                    podcast = podcast.OrderBy(p => p.PodcastName);
+                    break;
+                case "publisher_sort":
+                    podcast = podcast.OrderByDescending(p => p.Publisher);
+                    break;
+                default:
+                    podcast = podcast.OrderBy(p =>p.PodcastName);
+                    break;
+            }
+            return View("Index", await podcast.Where(x => x.UserId == user).AsNoTracking().ToListAsync());
+        }
+
+
+
         public async Task<IActionResult> Delete(int? id)
         {
             
