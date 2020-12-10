@@ -1,5 +1,4 @@
-﻿
-@{foreach (EpByPodItem e in Model)
+﻿@{foreach (EpByPodItem e in Model.items)
 
     {
         <p>Episode name: @e.name</p> //this needs to be cleaned up to make sure it returns relevant results and no duplicates (so far it doesn't seem to show duplicates)

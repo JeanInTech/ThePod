@@ -92,7 +92,7 @@ namespace ThePod.Controllers
                 {
                     string shoId = x.id;
                     var episodesByPodcast = await _dal.SearchEpbyPodIdAsync(shoId);
-                    return View("episodedetails", episodesByPodcast);
+                    return View("episodesbypodcast", episodesByPodcast);
                 }
             }
             return View(); // I need to put something else here- if I do not meet the conditions above, I will end up here, and this view does not exist
