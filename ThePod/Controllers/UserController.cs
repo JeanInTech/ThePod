@@ -56,7 +56,7 @@ namespace ThePod.Controllers
         //}
 
 
-        [HttpPost]
+        //[HttpPost]
         public async Task<IActionResult> AddFavorite(string id)
         {
             string user = FindUser();
