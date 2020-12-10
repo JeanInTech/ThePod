@@ -89,13 +89,10 @@ namespace ThePod.Controllers
                 {
                     await _context.SavedPodcasts.AddAsync(favorite);
                     await _context.SaveChangesAsync();
-              
                 }
             }
-
             return RedirectToAction("Index", "User");
         }
-
         [HttpDelete]
         public async Task<IActionResult> DeleteFromFavorites(int id)
         {

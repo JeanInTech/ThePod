@@ -1,11 +1,44 @@
-﻿#indexContainer {
-    color: grey;
+﻿
+#indexContainer {
+    color: white;
 }
 
-/*#searchIndex {
+#searchIndex {
     border-radius: 25px;
-    background-color: rgba(12, 12, 12, 0.6);
+    background-color: rgba(12, 12, 12, 0.7);
     padding: 50px;
+}
+/** {
+    box-sizing: border-box;
+}
+form.searchForm input[type=text] {
+    padding: 10px;
+    font-size: 17px;
+    border: 1px solid grey;
+    float: left;
+    width: 80%;
+    background: #f1f1f1;
+}
+form.searchForm {
+    float: left;
+    width: 20%;
+    padding: 10px;
+    background: #2196F3;
+    color: white;
+    font-size: 17px;
+    border: 1px solid grey;
+    border-left: none;*/ /* Prevent double borders */
+    /*cursor: pointer;
+}
+form.searchForm button:hover {
+    background: #0b7dda;
+}*/
+
+/* Clear floats */
+/*form.searchForm::after {
+    content: "";
+    clear: both;
+    display: table;
 }*/
 
 
