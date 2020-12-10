@@ -1,4 +1,14 @@
 ﻿@model EpisodesByPodId
+@{
+    ViewData["PodcastDetails"] = "Podcast Details";
+    List<string> uniqueEpisodeIDs = new List<string>();
+    string shoId = TempData["ShowId"].ToString();
+    string totalResults = TempData.Peek("TotalResults").ToString();
+    var nextPage = TempData.Peek("NextPage");
+    var previousPage = TempData.Peek("PreviousPage");
+    var offset = TempData["Offset"].ToString();
+}
+
 @{foreach (EpByPodItem e in Model.items)
 
     {
@@ -35,3 +45,29 @@
         <hr>
     }
 }
+
+
+@if (previousPage != null)
+{
+    int convert = int.Parse(offset);
+    <form asp-controller="Pod" asp-action="GetPreviousEpByPod" method="post">
+        <input type="hidden" name="shoId" value="@shoId" />
+        <input type="hidden" name="offset" value="@convert" />
+        <input type="submit" value="Previous" class="btn btn-outline-dark btn-group-lg float-lg-left" />
+    </form>
+
+}
+@if (nextPage != null)
+{
+    int convert = int.Parse(offset);
+    <form asp-controller="Pod" asp-action="GetNextEpByPod" method="post">
+        <input type="hidden" name="shoId" value="@shoId" />
+        <input type="hidden" name="offset" value="@convert" />
+        <input type="submit" value="Next" class="btn btn-outline-dark btn-group-lg float-lg-right" />
+    </form>
+}
+
+<br />
+<br />
+<br />
+<br />
