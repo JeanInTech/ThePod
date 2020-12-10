@@ -17,8 +17,10 @@
     <thead class="thead-dark">
         <tr class="thead-dark">
             <th class="text-center">Podcast</th>
-            <th class="text-center">Favorite</th>
+            @*<th class="text-center">Favorite</th>*@
             <th class="text-center">Episode Description</th>
+            <th class="text-center">Favorite</th>
+            <th class="text-center">Review</th>
         </tr>
     </thead>
 
@@ -43,13 +45,26 @@
                         <figcaption class="figure-caption text-right">Released: @e.release_date <br />Length: @minutes minutes</figcaption>
                     </figure>
                 </td>
-                <td style="padding: 2em 2em 2em 2em" id="favoritebtn">
-                    <a asp-controller="User" asp-action="AddFavorite" asp-route-id="@e.id" style="font-size: 3em; color: black; text-transform:none" class="text-decoration-none">♥</a>
-                </td>
                 <td style="padding: 2em 2em 2em 2em">
                     <p style="font-weight: bold; font-size: 1em;">@e.name</p>
                     <hr />
                     <p>@e.description</p>
+                </td>
+                @*<td style="padding: 2em 2em 2em 2em" id="favoritebtn">
+                        <a asp-controller="User" asp-action="AddFavorite" asp--route-id="@e.id" style="font-size: 3em; color: black; text-transform:none" class="text-decoration-none">♥</a>
+                    </td>*@
+                <td>
+                    <form asp-controller="User" asp-action="AddFavorite" method="post">
+                        <input type="hidden" name="id" value="@e.id" />
+                        <input type="submit" name="data" value="Add to Favorites" />
+                        <a asp-action="Index"></a>
+                    </form>
+                </td>
+                <td>
+                    <form asp-controller="User" asp-action="ReviewEpisode" method="get">
+                        <input type="hidden" name="id" value="@e.id" />
+                        <input type="submit" name="data" value="Review Episode" />
+                    </form>
                 </td>
             </tr>
             uniqueEpisodeIDs.Add(e.name);
@@ -80,13 +95,3 @@
 <br />
 <br />
 <br />
-
-@*<p>Here's a 30 second clip of the episode:</p>
-    <audio controls>
-        <source src="@e.audio_preview_url" type="audio/mpeg">
-    </audio>
-    <form asp-controller="User" asp-action="ReviewEpisode" method="get">
-        <input type="hidden" name="id" value="@e.id" />
-        <input type="submit" name="data" value="Review Episode" />
-    </form>
-    <hr>*@
