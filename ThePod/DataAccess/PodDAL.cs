@@ -133,7 +133,7 @@ namespace ThePod.DataAccess
 
             return re;
         }
-        public async Task<EpisodesByPodId> SearchEpbyPodIdAsync(string shoId) // returns object that is model type: "Rootshows"
+        public async Task<EpisodesByPodId> SearchEpbyPodIdAsync(string shoId) // returns object that is model type: "EpisodesByPodId"
         {
             var token = await GetToken();
             HttpClient client = new HttpClient();
@@ -141,7 +141,7 @@ namespace ThePod.DataAccess
 
             client.BaseAddress = new Uri("https://api.spotify.com/v1/");
             client.DefaultRequestHeaders.Add("Authorization", $"{token.token_type} {token.access_token}");
-            var response = await client.GetAsync($"shows/{shoId}/episodes");
+            var response = await client.GetAsync($"shows/{shoId}/episodes?market=US");
             var jsonData = await response.Content.ReadAsStringAsync();
 
             EpisodesByPodId ebp = JsonSerializer.Deserialize<EpisodesByPodId>(jsonData);

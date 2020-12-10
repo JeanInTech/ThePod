@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 namespace ThePod.Models
 {
-
+    /* This class is used to obtain episode data when you are using the GetEpisodeByPodcast method
+     * That method calls the API at a new endpoint using SearchEpbyPodIdAsync in the DAL
+     * and this is what it returns*/
     public class EpisodesByPodId
     {
         public string href { get; set; }
