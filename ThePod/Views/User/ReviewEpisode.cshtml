@@ -13,6 +13,13 @@
 
 <form asp-controller="User" asp-action="ReviewEpisode" method="post">
     <input type="hidden" name="EpisodeId" value="@Model.id" />
+    <input type="hidden" name="EpisodeName" value="@Model.name" />
+    <input type="hidden" name="PodcastName" value="@Model.show.name" />
+    <input type="hidden" name="Description" value="@Model.description" />
+    <input type="hidden" name="AudioPreviewURL" value="@Model.audio_preview_url" />
+    <input type="hidden" name="ImageUrl" value="@Model.images[0].url" />
+    <input type="hidden" name="ReleaseDate" value="@Model.release_date" />
+    <input type="hidden" name="ExternalURLS" value="@Model.external_urls.spotify" />
     <p>
         Rating: <input type="number" name="Rating" required min="1" max="5" /> /5
     </p><br />

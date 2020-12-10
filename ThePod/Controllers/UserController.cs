@@ -131,25 +131,32 @@ namespace ThePod.Controllers
         public async Task<IActionResult> ReviewEpisode(string id)
         {
             var results = await _dal.SearchEpisodeIdAsync(id);
-            var ep = results.episodes.ToList().First();
+            var ep = results.episodes.First();
             return View(ep);
         }
 
         [HttpPost]
-        public async Task<IActionResult> ReviewEpisode(string EpisodeId, int Rating, string Tags, string Review)
+        public async Task<IActionResult> ReviewEpisode(string EpisodeId, int Rating, string Tags, string Review, string EpisodeName, string PodcastName, string Description, string AudioPreviewURL, string ImageUrl, DateTime ReleaseDate, string ExternalURLS)
         {
             string user = FindUser();
-            UserFeedback u = new UserFeedback();
-            u.UserId = user;
-            u.EpisodeId = EpisodeId;
-            u.Rating = (byte)Rating;
-            u.Tags = Tags;
-            u.Review = Review;
+            UserFeedback feedback = new UserFeedback();
+            feedback.UserId = user;
+            feedback.EpisodeId = EpisodeId;
+            feedback.Rating = (byte)Rating;
+            feedback.Tags = Tags;
+            feedback.Review = Review;
+            feedback.EpisodeName = EpisodeName;
+            feedback.PodcastName = PodcastName;
+            feedback.Description = Description;
+            feedback.AudioPreviewUrl = AudioPreviewURL;
+            feedback.ImageUrl = ImageUrl;
+            feedback.ReleaseDate = ReleaseDate;
+            feedback.ExternalUrls = ExternalURLS;
 
-            await _context.UserFeedbacks.AddAsync(u);
+            await _context.UserFeedbacks.AddAsync(feedback);
             await _context.SaveChangesAsync();
 
-            return View("Index");
+            return RedirectToAction("Index", "Home");
         }
     }
 }
