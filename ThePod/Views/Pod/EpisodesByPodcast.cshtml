@@ -1,0 +1,37 @@
+﻿@model EpisodesByPodId
+@{foreach (EpByPodItem e in Model.items)
+
+    {
+        <p>Episode name: @e.name</p>
+        //<p>Name of podcast: @e.name</p> //this cannot be accessed from this model - I'll need the view models to work so I can get into show or root episodes
+        @*<p>Name of podcast: <a asp-controller="pod" asp-action="searchresults" asp-route-query="@e.show.name" asp-route-searchType="podcast">@e.show.name</a></p> saving this so that once I have access, I can make a link*@
+        <p>Episode description: @e.description</p>
+        <p>Release date: @e.release_date</p>
+        <p>Contains explicit content? @e._explicit</p>
+        <p>Languages:</p>
+        foreach (var x in @e.languages)
+        {
+            <p>@x</p> //we could clean up the way this displays the languages, like display the whole word
+        }
+        <p>Episode images:</p>
+        foreach (var i in @e.images) //this is an array of 2 images for the episode- we could decide which size we want to use wherever and display it
+        {
+            <img src="@i.url" height="@i.height" width="@i.width" />
+        }
+        <p>Here's a 30 second clip of the episode:</p>
+        <audio controls>
+            <source src="@e.audio_preview_url" type="audio/mpeg">
+        </audio>
+        <hr>
+        <form asp-controller="User" asp-action="ReviewEpisode" method="get">
+            <input type="hidden" name="id" value="@e.id" />
+            <input type="submit" name="data" value="Review Episode" />
+        </form>
+        <form asp-controller="User" asp-action="AddFavorite" method="post">
+            <input type="hidden" name="id" value="@e.id" />
+            <input type="submit" name="data" value="Add to Favorites" />
+            <a asp-action="Index"></a>
+        </form>
+        <hr>
+    }
+}

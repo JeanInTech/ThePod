@@ -26,7 +26,7 @@ namespace ThePod.Controllers
             TempData["SearchType"] = searchType;
             if (searchType == "podcast")
             {
-                ViewBag.Podcast = query.ToLower();
+                TempData["UserQuery"] = query;
                 var showResults = await _dal.SearchShowNameAsync(query); //this is where you can access the "next" property to see the next 20 Podcast-show results from your search
                 List<Item> i = showResults.shows.items.ToList();
 
@@ -35,7 +35,6 @@ namespace ThePod.Controllers
                 TempData["PreviousPage"] = showResults.shows.previous;
                 TempData["Offset"] = showResults.shows.offset;
                 
-                List<string> showIds = new List<string>();
                 var showId = ConvertToIdString(i).ToString();
 
                 var eachShow = await _dal.SearchShowIdAsync(showId);
@@ -53,7 +52,6 @@ namespace ThePod.Controllers
                 TempData["PreviousPage"] = episodeResults.episodes.previous;
                 TempData["Offset"] = episodeResults.episodes.offset;
 
-                List<string> episodeIds = new List<string>();
                 var epId = ConvertToIdString(s).ToString();
                 var eachEpisode = await _dal.SearchEpisodeIdAsync(epId);
 
@@ -187,5 +185,22 @@ namespace ThePod.Controllers
 
             return shId;
         }
+        public async Task<IActionResult> GetEpisodeByPodcast(string query)
+        {
+            var showResults = await _dal.SearchShowNameAsync(query);
+            List<Item> i = showResults.shows.items.ToList();
+            foreach (Item x in i)
+            {
+                if (x.name == query)
+                {
+                    string shoId = x.id;
+                    var episodesByPodcast = await _dal.SearchEpbyPodIdAsync(shoId);
+                    return View("episodesbypodcast", episodesByPodcast);
+                }
+            }
+            return View(); // I need to put something else here- if I do not meet the conditions above, I will end up here, and this view does not exist
+
+        }
+
     }
 }
