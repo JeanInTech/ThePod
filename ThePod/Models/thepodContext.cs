@@ -31,6 +31,7 @@ namespace ThePod.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
+
                 optionsBuilder.UseSqlServer(Secret.ConnectionString);
             }
         }
@@ -173,13 +174,16 @@ namespace ThePod.Models
 
                 entity.Property(e => e.AudioPreviewUrl).HasColumnName("AudioPreviewURL");
 
+
                 entity.Property(e => e.DatePosted).HasColumnType("datetime");
 
                 entity.Property(e => e.EpisodeId)
                     .IsRequired()
                     .HasMaxLength(50);
 
+
                 entity.Property(e => e.EpisodeName).HasMaxLength(50);
+
 
                 entity.Property(e => e.ExternalUrls).HasColumnName("ExternalURLS");
 
