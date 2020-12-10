@@ -22,14 +22,13 @@ namespace ThePod.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
-        {
-            return View(_context.SavedPodcasts.ToList());
-        }
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(_context.SavedPodcasts.ToList());
+        //}
 
         //public async Task<IActionResult> IndexAsync()
         //{
-
         //    var thepodContext = _context.Favorites.Include(f => f.User);
         //    return View(await thepodContext.ToListAsync());
         //}
@@ -134,7 +133,6 @@ namespace ThePod.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
         public string FindUser()
         {
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
@@ -142,7 +140,6 @@ namespace ThePod.Controllers
             var userId = claim.Value;
             return userId;
         }
-
         [HttpGet]
         public async Task<IActionResult> ReviewEpisode(string id)
         {
@@ -167,7 +164,5 @@ namespace ThePod.Controllers
 
             return View("Index");
         }
-
-
     }
 }

@@ -4,38 +4,31 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace ThePod.Models
-{ 
-    /* Helper class exists for the sole purpose of obtaining an ID to feed into the 
-     * SearchEpisodeIdAsync to retrieve Episode AND Show data 
-     * This class is also required to get us the "next" property for episodes so that 
-     * We can obtain the next set of 20 results*/
-
-    public class RootobjectEpisodes
-    {
-        public Episodes episodes { get; set; }
-    }
-
-    public class Episodes //Paging object
+{
+    /* This class is used to obtain episode data when you are using the GetEpisodeByPodcast method
+     * That method calls the API at a new endpoint using SearchEpbyPodIdAsync in the DAL
+     * and this is what it returns*/
+    public class EpisodesByPodId
     {
         public string href { get; set; }
-        public EpisodeItem[] items { get; set; }
+        public EpByPodItem[] items { get; set; }
         public int limit { get; set; }
         public string next { get; set; }
         public int offset { get; set; }
-        public string previous { get; set; }
+        public object previous { get; set; }
         public int total { get; set; }
     }
 
-    public class EpisodeItem
+    public class EpByPodItem
     {
         public string audio_preview_url { get; set; }
         public string description { get; set; }
         public int duration_ms { get; set; }
         public bool _explicit { get; set; }
-        public Episode_External_Urls external_urls { get; set; } //Tuesday-> added Episode_ to the beginning
+        public External_Urls external_urls { get; set; }
         public string href { get; set; }
         public string id { get; set; }
-        public EpisodeImage[] images { get; set; } //Tuesday-> I added Episode to Image
+        public Image[] images { get; set; }
         public bool is_externally_hosted { get; set; }
         public bool is_playable { get; set; }
         public string language { get; set; }
@@ -43,22 +36,23 @@ namespace ThePod.Models
         public string name { get; set; }
         public string release_date { get; set; }
         public string release_date_precision { get; set; }
+        public Resume_Point resume_point { get; set; }
         public string type { get; set; }
         public string uri { get; set; }
-        public Restriction restriction { get; set; }
     }
 
-    public class Episode_External_Urls
+    public class EpByPodExternal_Urls
     {
         public string spotify { get; set; }
     }
 
-    public class Restriction
+    public class Resume_Point
     {
-        public string reason { get; set; }
+        public bool fully_played { get; set; }
+        public int resume_position_ms { get; set; }
     }
 
-    public class EpisodeImage
+    public class EpByPodImage
     {
         public int height { get; set; }
         public string url { get; set; }

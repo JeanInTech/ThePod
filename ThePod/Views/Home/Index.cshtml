@@ -1,12 +1,11 @@
-
 ﻿<form asp-controller="Pod" asp-action="SearchResults" method="post">
     <h4>Find your next podcast</h4><br />
-    <select name="searchType" id="searchType">
-    <option value="podcast">Podcasts</option>
-    <option value="episode">Episodes</option>
-    <option value="content">All Content</option>
+    <select name="searchType" id="searchType" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <option class="dropdown-item-text" value="podcast">Podcasts</option>
+    <option class="dropdown-item-text" value="episode">Episodes</option>
+    <option class="dropdown-item-text" value="content">All Content</option>
     @*<option value="tags">Tags</option> keywords and stuff*@
 </select>
-    <input type="text" name="query" placeholder="Whatever sounds good"/>
-    <input type="submit" value="Submit"/>
+    <input type="text" name="query" placeholder="Whatever sounds good" required/>
+    <input type="submit" class="btn-dark" value="Submit"/>
 </form>

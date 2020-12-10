@@ -27,13 +27,12 @@ namespace ThePod.Models
         public virtual DbSet<SavedPodcast> SavedPodcasts { get; set; }
         public virtual DbSet<UserFeedback> UserFeedbacks { get; set; }
 
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-
-                optionsBuilder.UseSqlServer("AzureString");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=thepod.database.windows.net,1433;Database=thepod;User ID = DJKP; Password=thepod1!;Trusted_Connection=False;Encrypt=True");
             }
         }
 
@@ -173,9 +172,19 @@ namespace ThePod.Models
             {
                 entity.ToTable("UserFeedback");
 
+                entity.Property(e => e.AudioPreviewUrl).HasColumnName("AudioPreviewURL");
+
                 entity.Property(e => e.EpisodeId)
                     .IsRequired()
                     .HasMaxLength(50);
+
+                entity.Property(e => e.EpisodeName).HasMaxLength(50);
+
+                entity.Property(e => e.ExternalUrls).HasColumnName("ExternalURLS");
+
+                entity.Property(e => e.PodcastName).HasMaxLength(50);
+
+                entity.Property(e => e.ReleaseDate).HasColumnType("date");
 
                 entity.Property(e => e.Tags).HasMaxLength(150);
 

@@ -1,34 +1,62 @@
-﻿@{
+﻿@model RootShows
+@{
+    ViewData["PodcastDetails"] = "Podcast Details";
     List<string> uniqueEpisodeIDs = new List<string>();
+    string userQuery = TempData.Peek("UserQuery").ToString();
+    string totalResults = TempData.Peek("TotalResults").ToString();
+    var nextPage = TempData.Peek("NextPage");
+    var previousPage = TempData.Peek("PreviousPage");
+    var offset = TempData["Offset"].ToString();
 }
-
-
 
 @foreach (RootShow e in Model.shows)
 {
-    bool containsSearchTerm = @e.name.ToLower().Contains(ViewBag.Podcast);
-    if (!uniqueEpisodeIDs.Contains(e.name) && containsSearchTerm == true)
-    {<p>Name of podcast: @e.name</p>
-    <p>Producer: @e.publisher</p>
-    <p>Number of episodes: @e.total_episodes</p>
-    <p>Description of show: @e.description</p>
-    <p>Available images: </p>
-    foreach (var i in @e.images) //this is an array of 3 images for the episode- we could decide which size we want to use wherever and display it
+    bool containsSearchTerm = @e.name.ToLower().Contains(ViewBag.Podcast); //this is used to make sure that the names of the podcast shows include the search term the user entered
+    if (!uniqueEpisodeIDs.Contains(e.name) && containsSearchTerm == true) 
     {
-        <img src="@i.url" height="@i.height" width="@i.width" />
+        <p>Name of podcast: @e.name</p>
+        <p>Producer: <a asp-controller="pod" asp-action="searchresults" asp-route-query="@e.publisher" asp-route-searchType="episodes">@e.publisher </a></p>//there is no "else" that clearly defines "allcontent" so we need to fix this in the controller
+        <p>Number of episodes: <a asp-controller="pod" asp-action="GetEpisodeByPodcast" asp-route-query="@e.name" asp-route-searchType="episodes">@e.total_episodes </a></p>
+        <p>Description of show: @e.description</p>
+        <p>Available images: </p>
+        foreach (var i in @e.images) //this is an array of 3 images for the episode- we could decide which size we want to use wherever and display it
+        {
+            <img src="@i.url" height="@i.height" width="@i.width" />
+        }
+        uniqueEpisodeIDs.Add(e.name);
+        <form asp-controller="User" asp-action="AddFavorite" method="post">
+            <input type="hidden" name="id" value="@e.id" />
+            <input type="submit" name="data" value="Add to Favorites" />
+        </form>
+        <hr>
     }
-    uniqueEpisodeIDs.Add(e.name);
-    <form asp-controller="User" asp-action="AddFavorite" method="post">
-        <input type="hidden" name="id" value="@e.id" />
-        <input type="submit" name="data" value="Add to Favorites" />
-    </form>
-    <hr>
+
 }
 
-else
+@*else
 {
-    <a asp-action="index" asp-controller="home">No results found - Search again</a>
+<a asp-action="index" asp-controller="home">No results found - Search again</a>
     break;
 }
 
+}*@
+
+@if (previousPage != null)
+{
+    int convert = int.Parse(offset);
+    <form asp-controller="Pod" asp-action="GetPreviousPodcast" method="post">
+        <input type="hidden" name="query" value="@userQuery" />
+        <input type="hidden" name="offset" value="@convert" />
+        <input type="submit" value="Previous" />
+    </form>
+
+}
+@if (nextPage != null)
+{
+    int convert = int.Parse(offset);
+    <form asp-controller="Pod" asp-action="GetNextPodcast" method="post">
+        <input type="hidden" name="query" value="@userQuery" />
+        <input type="hidden" name="offset" value="@offset" />
+        <input type="submit" value="Next" />
+    </form>
 }
