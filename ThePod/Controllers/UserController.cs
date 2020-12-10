@@ -97,9 +97,10 @@ namespace ThePod.Controllers
         }
 
        
-
+        [HttpDelete]
         public async Task<IActionResult> Delete(int? id)
         {
+            
             if (id == null)
             {
                 return NotFound();
@@ -167,6 +168,49 @@ namespace ThePod.Controllers
 
             return View(usersFeedback);
         }
+
+        
+        public async Task<IActionResult> SortFeedback(string sortOrder, string searchString)
+        {
+            string user = FindUser();
+            ViewData["EpNameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "epname_desc" : "";
+            ViewData["PodNameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "podname_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+            ViewData["RatingSortParm"] = String.IsNullOrEmpty(sortOrder) ? "sort_rating" : "";
+            ViewData["CurrentFilter"] = searchString;
+            
+            var feedback = from f in _context.UserFeedbacks
+                           select f;
+            if(!String.IsNullOrEmpty(searchString))
+            {
+                feedback = feedback.Where(f => f.Tags.Contains(searchString));
+            }
+            switch(sortOrder)
+            {
+                case "Date":
+                    feedback = feedback.OrderBy(f => f.DatePosted);
+                    break;
+                case "date_desc":
+                    feedback = feedback.OrderByDescending(f => f.DatePosted);
+                    break;
+                case "epname_desc":
+                    feedback = feedback.OrderBy(f => f.EpisodeName);
+                    break;
+                case "podname_desc":
+                    feedback = feedback.OrderBy(f => f.PodcastName);
+                    break;
+                case "sort_rating":
+                    feedback = feedback.OrderByDescending(f => f.Rating);
+                    break;
+                default:
+                    feedback = feedback.OrderBy(f => f.DatePosted);
+                    break;
+            }
+
+
+            return View("ViewFeedback", await feedback.Where(x => x.UserId == user).AsNoTracking().ToListAsync());
+        }
+
 
         public async Task<IActionResult> DeleteReview(int Id)
         {
