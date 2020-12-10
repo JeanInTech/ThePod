@@ -1,6 +1,6 @@
 ﻿@model RootEpisodes
 @{
-    ViewData["AllContent"] = "All Content Details";
+    ViewData["EpisodeDetails"] = "Episode Details";
     List<string> uniqueEpisodeIDs = new List<string>();
     string userQuery = TempData.Peek("UserQuery").ToString();
     string totalResults = TempData.Peek("TotalResults").ToString();
@@ -9,37 +9,73 @@
     var offset = TempData["Offset"].ToString();
 }
 
-@foreach (Episode e in Model.episodes)
-{
-    <p>Name of Podcast: @e.show.name</p>
-    <p>Episode Name: @e.name</p>
-    <p>Description of episode: @e.description</p>
-    <p>Episode release date: @e.release_date</p> //might be nice to display this the way we are used to seeing: mm/dd/yyyy or December 1, 2020
-    <p>Does the episode contain explicit content: @e._explicit</p>
-    <p>
-        Length of episode:
-        @{double minutes = e.duration_ms / 60000;
-            @Math.Round(minutes) //this method always rounds down to the lower whole number.  using Math.Ceiling did not work for me either
-        } minutes
-    </p>
+<div class="searchresults">
+    <h5 class="text-left text-capitalize" style="color: grey; letter-spacing: 2px">Search Results For "@userQuery"</h5>
+</div>
 
-    <p>Publisher: @e.show.publisher</p>
-    <p>Here is a 30 second clip of the episode:</p>
-    <audio controls>
-        <source src="@e.audio_preview_url" type="audio/mpeg">
-    </audio>
-    <p>Languages:</p>
-    foreach (var x in @e.languages)
-    {
-        <p>@x</p> //we could clean up the way this displays the languages, like display the whole word
-    }
-    foreach (var i in @e.images) //this is an array of 3 images for the episode- we could decide which size we want to use wherever and display it
-    {
-        <img src="@i.url" height="@i.height" width="@i.width" />
-    }
-    <hr />
+<table class="table table-hover table-responsive">
+    <thead class="thead-dark">
+        <tr class="thead-dark">
+            <th class="text-center">Podcast</th>
+            <th class="text-center">Favorite</th>
+            <th class="text-center">Episode Description</th>
+        </tr>
+    </thead>
 
-}
+    @foreach (Episode e in Model.episodes)
+    {
+        @if (!uniqueEpisodeIDs.Contains(e.name))
+        {
+            <tr>
+                <td>
+                    @{
+                        List<Image1> img = new List<Image1>(e.images.ToList());
+                        var firstPic = img.First();
+                        uniqueEpisodeIDs.Add(e.name);
+                        int minutes = (e.duration_ms / 1000) / 60;
+                    }
+                    <figure class="figure">
+                        <a href="@e.external_urls.spotify" alt="@e.show.name" target="_blank"><img src="@firstPic.url" style="height: 250px; width:250px;" class="figure-img" /></a>
+                        <audio controls style="width: 100%; align-content: start">
+                            <source src="@e.audio_preview_url" type="audio/mpeg">
+                        </audio>
+                        <figcaption class="figure-caption text-right">Released: @e.release_date <br />Length: @minutes minutes</figcaption>
+                    </figure>
+                </td>
+                <td style="padding: 2em 2em 2em 2em" id="favoritebtn">
+                    <a asp-controller="User" asp-action="AddFavorite" asp-route-id="@e.id" style="font-size: 3em; color: black; text-transform:none" class="text-decoration-none">♥</a>
+                    @*<form asp-controller="User" asp-action="AddFavorite" method="post">
+                            <input type="hidden" name="id" value="@e.id" />
+                            <input type="submit" name="data" value="♥" />
+                        </form>*@
+                </td>
+                <td style="padding: 2em 2em 2em 2em">
+                    <p style="font-weight: bold; font-size: 1em;">@e.name</p>
+                    <hr />
+                    <p>@e.description</p>
+                </td>
+            </tr>
+            @*<p>Episode name: @e.name</p>*@
+            //this needs to be cleaned up to make sure it returns relevant results and no duplicates (so far it doesn't seem to show duplicates)
+            @*<p>Name of podcast: @e.show.name</p>
+                <p>Episode description: @e.description</p>
+                <p>Release date: @e.release_date</p>
+                <p>Contains explicit content? @e._explicit</p>
+                <p>Languages:</p>
+                foreach (var x in @e.languages)
+                {
+                    <p>@x</p> //we could clean up the way this displays the languages, like display the whole word
+                }
+                <p>Episode images:</p>
+                foreach (var i in @e.images) //this is an array of 3 images for the episode- we could decide which size we want to use wherever and display it
+                {
+                    <img src="@i.url" height="@i.height" width="@i.width" />
+                }
+            *@
+            uniqueEpisodeIDs.Add(e.name);
+        }
+    }
+</table>
 
 @if (previousPage != null)
 {
@@ -47,8 +83,7 @@
     <form asp-controller="Pod" asp-action="GetPreviousEpisode" method="post">
         <input type="hidden" name="query" value="@userQuery" />
         <input type="hidden" name="offset" value="@convert" />
-        <input type="hidden" name="type" value="allcontent" />
-        <input type="submit" value="Previous" />
+        <input type="submit" value="Previous" class="btn btn-outline-dark btn-group-lg float-lg-left" />
     </form>
 
 }
@@ -57,8 +92,21 @@
     int convert = int.Parse(offset);
     <form asp-controller="Pod" asp-action="GetNextEpisode" method="post">
         <input type="hidden" name="query" value="@userQuery" />
-        <input type="hidden" name="offset" value="@offset" />
-        <input type="hidden" name="type" value="allcontent" />
-        <input type="submit" value="Next" />
+        <input type="hidden" name="offset" value="@convert" />
+        <input type="submit" value="Next" class="btn btn-outline-dark btn-group-lg float-lg-right" />
     </form>
 }
+<br />
+<br />
+<br />
+<br />
+
+@*<p>Here's a 30 second clip of the episode:</p>
+    <audio controls>
+        <source src="@e.audio_preview_url" type="audio/mpeg">
+    </audio>
+    <form asp-controller="User" asp-action="ReviewEpisode" method="get">
+        <input type="hidden" name="id" value="@e.id" />
+        <input type="submit" name="data" value="Review Episode" />
+    </form>
+    <hr>*@
