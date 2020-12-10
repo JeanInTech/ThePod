@@ -9,6 +9,8 @@ namespace ThePod.Models
     {
         public List<Show> Shows { get; set; }
         public List<RootEpisodes> Episodes { get; set; }
-        public SavedPodcast SavedPodcast { get; set; }
+        public List<SavedPodcast> SavedPodcast { get; set; }
+        public List<UserFeedback> UserFeedback { get; set; }
+
     }
 }

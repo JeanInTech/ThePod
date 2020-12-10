@@ -22,10 +22,10 @@ namespace ThePod.Controllers
             _context = context;
         }
 
-        //public async Task<IActionResult> Index()
-        //{
-        //    return View(_context.SavedPodcasts.ToList());
-        //}
+        public async Task<IActionResult> Index()
+        {
+            return View(_context.SavedPodcasts.ToList());
+        }
 
         //public async Task<IActionResult> IndexAsync()
         //{
@@ -56,7 +56,7 @@ namespace ThePod.Controllers
         //}
 
 
-        [HttpPost]
+        //[HttpPost]
         public async Task<IActionResult> AddFavorite(string id)
         {
             string user = FindUser();
@@ -77,10 +77,23 @@ namespace ThePod.Controllers
             favorite.ImageUrl = firstPic.url;
             favorite.Duration = ep.duration_ms;
             favorite.ReleaseDate = DateTime.Parse(ep.release_date);
-            await _context.SavedPodcasts.AddAsync(favorite);
-            await _context.SaveChangesAsync();
+           
 
-            return RedirectToAction("Index");
+            if(ModelState.IsValid)
+            {
+                if(_context.SavedPodcasts.Any(id=>id.EpisodeId.Equals(ep.id)))
+                {
+                    return View("Error");
+                }
+                else
+                {
+                    await _context.SavedPodcasts.AddAsync(favorite);
+                    await _context.SaveChangesAsync();
+              
+                }
+            }
+
+            return RedirectToAction("Index", "User");
         }
 
         [HttpDelete]
