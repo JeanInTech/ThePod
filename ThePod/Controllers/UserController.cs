@@ -97,7 +97,7 @@ namespace ThePod.Controllers
         }
 
        
-        [HttpDelete]
+       
         public async Task<IActionResult> Delete(int? id)
         {
             
