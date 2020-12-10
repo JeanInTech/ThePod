@@ -21,14 +21,14 @@ namespace ThePod.Controllers
             _dal = dal;
             _context = context;
         }
-        public async Task<IActionResult> Index()
-        {
-            return View();
-        }
+
+        //public async Task<IActionResult> Index()
+        //{
+        //    return View(_context.SavedPodcasts.ToList());
+        //}
 
         //public async Task<IActionResult> IndexAsync()
         //{
-
         //    var thepodContext = _context.Favorites.Include(f => f.User);
         //    return View(await thepodContext.ToListAsync());
         //}
@@ -80,8 +80,46 @@ namespace ThePod.Controllers
             await _context.SavedPodcasts.AddAsync(favorite);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Favorites");
+            return RedirectToAction("Index");
         }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteFromFavorites(int id)
+        {
+            var favoriteItem = await _context.SavedPodcasts.FindAsync(id);
+            _context.SavedPodcasts.Remove(favoriteItem);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var favorites = await _context.SavedPodcasts
+                .Include(f => f.User)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (favorites == null)
+            {
+                return NotFound();
+            }
+
+            return View(favorites);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var favorites = await _context.SavedPodcasts.FindAsync(id);
+            _context.SavedPodcasts.Remove(favorites);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
         public string FindUser()
         {
             var claimsIdentity = (ClaimsIdentity)this.User.Identity;
@@ -89,39 +127,45 @@ namespace ThePod.Controllers
             var userId = claim.Value;
             return userId;
         }
-
         [HttpGet]
         public async Task<IActionResult> ReviewEpisode(string id)
         {
             var results = await _dal.SearchEpisodeIdAsync(id);
-            var ep = results.episodes.ToList().First();
+            var ep = results.episodes.First();
             return View(ep);
         }
 
         [HttpPost]
-        public async Task<IActionResult> ReviewEpisode(string EpisodeId, int Rating, string Tags, string Review)
+        public async Task<IActionResult> ReviewEpisode(string EpisodeId, int Rating, string Tags, string Review, string EpisodeName, string PodcastName, string Description, string AudioPreviewURL, string ImageUrl, DateTime ReleaseDate, string ExternalURLS)
         {
             string user = FindUser();
-            UserFeedback u = new UserFeedback();
-            u.UserId = user;
-            u.EpisodeId = EpisodeId;
-            u.Rating = (byte)Rating;
-            u.Tags = Tags;
-            u.Review = Review;
+            UserFeedback feedback = new UserFeedback();
+            feedback.UserId = user;
+            feedback.EpisodeId = EpisodeId;
+            feedback.Rating = (byte)Rating;
+            feedback.Tags = Tags;
+            feedback.Review = Review;
+            feedback.EpisodeName = EpisodeName;
+            feedback.PodcastName = PodcastName;
+            feedback.Description = Description;
+            feedback.AudioPreviewUrl = AudioPreviewURL;
+            feedback.ImageUrl = ImageUrl;
+            feedback.ReleaseDate = ReleaseDate;
+            feedback.ExternalUrls = ExternalURLS;
+            feedback.DatePosted = DateTime.Now;
 
-            await _context.UserFeedbacks.AddAsync(u);
+
+            await _context.UserFeedbacks.AddAsync(feedback);
             await _context.SaveChangesAsync();
 
-            return View("Index");
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult ViewFeedBack()
         {
             string user = FindUser();
             List<UserFeedback> feedback = _context.UserFeedbacks.ToList();
-
             List<UserFeedback> usersFeedback = feedback.Where(x => x.UserId == user).ToList(); //used LINQ to show only user's feedback
-
 
             return View(usersFeedback);
         }
@@ -135,10 +179,24 @@ namespace ThePod.Controllers
             return RedirectToAction("ViewFeedBack");
         }
 
-        public async Task<IActionResult> UpdateReview(int Id)
+        public async Task<IActionResult> EditReview(int Id)
         {
             var userReview = await _context.UserFeedbacks.FindAsync(Id);
             return View(userReview);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditReview(int Id, int UserId, string EpisodeId, int Rating, string Tags, string Review, string EpisodeName, string PodcastName, string Description, string AudioPreviewURL, string ImageUrl, DateTime ReleaseDate, string ExternalURLS)
+        {
+            UserFeedback feedback1 = await _context.UserFeedbacks.FindAsync(Id);
+            //feedback.Id = Id;
+            //feedback.UserId = 
+            feedback1.Tags = Tags;
+            feedback1.Rating = (byte?)Rating;
+            feedback1.Review = Review;
+            feedback1.DatePosted = DateTime.Now;
+            await _context.SaveChangesAsync();
+            return RedirectToAction("ViewFeedBack");
         }
 
     }

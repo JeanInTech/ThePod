@@ -27,13 +27,11 @@ namespace ThePod.Models
         public virtual DbSet<SavedPodcast> SavedPodcasts { get; set; }
         public virtual DbSet<UserFeedback> UserFeedbacks { get; set; }
 
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-
-                optionsBuilder.UseSqlServer("AzureString");
+                optionsBuilder.UseSqlServer(Secret.ConnectionString);
             }
         }
 
@@ -173,9 +171,19 @@ namespace ThePod.Models
             {
                 entity.ToTable("UserFeedback");
 
+                entity.Property(e => e.AudioPreviewUrl).HasColumnName("AudioPreviewURL");
+
+                entity.Property(e => e.DatePosted).HasColumnType("datetime");
+
                 entity.Property(e => e.EpisodeId)
                     .IsRequired()
                     .HasMaxLength(50);
+
+                entity.Property(e => e.ExternalUrls).HasColumnName("ExternalURLS");
+
+                entity.Property(e => e.PodcastName).HasMaxLength(50);
+
+                entity.Property(e => e.ReleaseDate).HasColumnType("date");
 
                 entity.Property(e => e.Tags).HasMaxLength(150);
 
