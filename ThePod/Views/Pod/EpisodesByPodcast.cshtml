@@ -10,7 +10,6 @@
 }
 
 @{foreach (EpByPodItem e in Model.items)
-
     {
         <p>Episode name: @e.name</p>
         //<p>Name of podcast: @e.name</p> //this cannot be accessed from this model - I'll need the view models to work so I can get into show or root episodes
@@ -46,28 +45,23 @@
     }
 }
 
-
-@if (previousPage != null)
-{
-    int convert = int.Parse(offset);
-    <form asp-controller="Pod" asp-action="GetPreviousEpByPod" method="post">
-        <input type="hidden" name="shoId" value="@shoId" />
-        <input type="hidden" name="offset" value="@convert" />
-        <input type="submit" value="Previous" class="btn btn-outline-dark btn-group-lg float-lg-left" />
-    </form>
-
-}
-@if (nextPage != null)
-{
-    int convert = int.Parse(offset);
-    <form asp-controller="Pod" asp-action="GetNextEpByPod" method="post">
-        <input type="hidden" name="shoId" value="@shoId" />
-        <input type="hidden" name="offset" value="@convert" />
-        <input type="submit" value="Next" class="btn btn-outline-dark btn-group-lg float-lg-right" />
-    </form>
-}
-
-<br />
-<br />
-<br />
-<br />
+<div>
+    @if (previousPage != null)
+    {
+        int convert = int.Parse(offset);
+        <form asp-controller="Pod" asp-action="GetPreviousEpByPod" method="post">
+            <input type="hidden" name="shoId" value="@shoId" />
+            <input type="hidden" name="offset" value="@convert" />
+            <input type="submit" value="Previous" class="btn btn-outline-dark btn-group-lg float-lg-left" />
+        </form>
+    }
+    @if (nextPage != null)
+    {
+        int convert = int.Parse(offset);
+        <form asp-controller="Pod" asp-action="GetNextEpByPod" method="post">
+            <input type="hidden" name="shoId" value="@shoId" />
+            <input type="hidden" name="offset" value="@convert" />
+            <input type="submit" value="Next" class="btn btn-outline-dark btn-group-lg float-lg-right" />
+        </form>
+    }
+</div>

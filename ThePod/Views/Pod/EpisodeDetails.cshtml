@@ -50,9 +50,6 @@
                     <hr />
                     <p>@e.description</p>
                 </td>
-                @*<td style="padding: 2em 2em 2em 2em" id="favoritebtn">
-                        <a asp-controller="User" asp-action="AddFavorite" asp--route-id="@e.id" style="font-size: 3em; color: black; text-transform:none" class="text-decoration-none">♥</a>
-                    </td>*@
                 <td>
                     <form asp-controller="User" asp-action="AddFavorite" method="post">
                         <input type="hidden" name="id" value="@e.id" />
@@ -72,6 +69,7 @@
     }
 </table>
 
+<div>
 @if (previousPage != null)
 {
     int convert = int.Parse(offset);
@@ -91,7 +89,4 @@
         <input type="submit" value="Next" class="btn btn-outline-dark btn-group-lg float-lg-right" />
     </form>
 }
-<br />
-<br />
-<br />
-<br />
+</div>
