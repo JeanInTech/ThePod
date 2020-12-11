@@ -22,8 +22,7 @@ namespace ThePod.Controllers
             _dal = dal;
             _context = context;
         }
-
-        public async Task<IActionResult> UserFavorites()
+        public IActionResult UserFavorites()
         {
             var user = FindUser();
             var podcasts = from r in _context.SavedPodcasts
@@ -66,7 +65,7 @@ namespace ThePod.Controllers
                     await _context.SaveChangesAsync();
                 }
             }
-            return RedirectToAction("Index", "User");
+            return RedirectToAction("UserFavorites");
         }
         public async Task<IActionResult> SortFavorites(string sortOrder, string searchString)
         {
@@ -120,7 +119,7 @@ namespace ThePod.Controllers
             {
                 return NotFound();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("UserFavorites");
         }
 
         [HttpGet]
@@ -132,14 +131,15 @@ namespace ThePod.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ReviewEpisode(string EpisodeId, int Rating, string Tags, string Review, string EpisodeName, string PodcastName, string Description, string AudioPreviewURL, string ImageUrl, DateTime ReleaseDate, string ExternalURLS)
+        public async Task<IActionResult> ReviewEpisode(string EpisodeId, int Rating, string[] Tags, string Review, string EpisodeName, string PodcastName, string Description, string AudioPreviewURL, string ImageUrl, DateTime ReleaseDate, string ExternalURLS)
         {
             string user = FindUser();
             UserFeedback feedback = new UserFeedback();
             feedback.UserId = user;
             feedback.EpisodeId = EpisodeId;
             feedback.Rating = (byte)Rating;
-            feedback.Tags = Tags;
+            string tag = string.Join(", ", Tags);
+            feedback.Tags = tag; 
             feedback.Review = Review;
             feedback.EpisodeName = EpisodeName;
             feedback.PodcastName = PodcastName;
@@ -221,13 +221,14 @@ namespace ThePod.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditReview(int Id, int UserId, string EpisodeId, int Rating, string Tags, string Review, string EpisodeName, string PodcastName, string Description, string AudioPreviewURL, string ImageUrl, DateTime ReleaseDate, string ExternalURLS)
+        public async Task<IActionResult> EditReview(int Id, int UserId, string EpisodeId, int Rating, string[] Tags, string Review, string EpisodeName, string PodcastName, string Description, string AudioPreviewURL, string ImageUrl, DateTime ReleaseDate, string ExternalURLS)
         {
             UserFeedback feedback1 = await _context.UserFeedbacks.FindAsync(Id);
             //feedback.Id = Id;
             //feedback.UserId = 
-            feedback1.Tags = Tags;
-            feedback1.Rating = (byte?)Rating;
+            string tag = string.Join(", ", Tags);
+            feedback1.Tags = tag;
+            feedback1.Rating = (byte)Rating;
             feedback1.Review = Review;
             feedback1.DatePosted = DateTime.Now;
             await _context.SaveChangesAsync();

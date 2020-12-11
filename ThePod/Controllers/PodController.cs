@@ -185,6 +185,9 @@ namespace ThePod.Controllers
 
             return shId;
         }
+        // ==============================================================
+        // Get Episode by Podcast Id and Page Navigation
+        // ==============================================================
         public async Task<IActionResult> GetEpisodeByPodcast(string query)
         {
             ViewBag.userQuery = query;

@@ -7,6 +7,11 @@ namespace ThePod.Models
 {
     public partial class UserFeedback
     {
+        public UserFeedback()
+        {
+            UserProfiles = new HashSet<UserProfile>();
+        }
+
         public int Id { get; set; }
         public string UserId { get; set; }
         public string EpisodeId { get; set; }
@@ -22,7 +27,7 @@ namespace ThePod.Models
         public string ExternalUrls { get; set; }
         public DateTime? DatePosted { get; set; }
 
-
         public virtual AspNetUser User { get; set; }
+        public virtual ICollection<UserProfile> UserProfiles { get; set; }
     }
 }
