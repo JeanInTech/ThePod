@@ -140,9 +140,20 @@ namespace ThePod.Controllers
         [HttpGet]
         public async Task<IActionResult> ReviewEpisode(string id)
         {
-            var results = await _dal.SearchEpisodeIdAsync(id);
-            var ep = results.episodes.First();
-            return View(ep);
+            string user = FindUser();
+            List<UserFeedback> feedbackList = _context.UserFeedbacks.ToList();
+            List<UserFeedback> feedbackMatch = feedbackList.Where(x => x.UserId == user && x.EpisodeId == id).ToList();
+            if (feedbackMatch.Count > 0)
+            {
+                UserFeedback duplicateReview = feedbackMatch.First();
+                return View("DuplicateReview", duplicateReview);
+            }
+            else
+            {
+                var results = await _dal.SearchEpisodeIdAsync(id);
+                var ep = results.episodes.First();
+                return View(ep);
+            }
         }
 
         [HttpPost]
@@ -189,6 +200,7 @@ namespace ThePod.Controllers
             return RedirectToAction("ViewFeedBack");
         }
 
+        [HttpGet]
         public async Task<IActionResult> EditReview(int Id)
         {
             var userReview = await _context.UserFeedbacks.FindAsync(Id);
