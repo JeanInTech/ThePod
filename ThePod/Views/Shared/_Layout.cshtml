@@ -24,7 +24,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Search</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Favorites</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="UserFavorites">Favorites</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="ViewFeedBack">My Reviews</a>
@@ -32,7 +32,7 @@
                     </ul>
                 </div>
 
-            <form name="searchForm" asp-controller="Pod" asp-action="SearchResults" method="POST" style="align-items: right;">
+            <form class="searchForm" asp-controller="Pod" asp-action="SearchResults" method="POST" style="align-items:flex-end">
                 <input type="text" name="query" class="small" required />
                 <input type="hidden" id="search_type" name="searchType" value="episodes">
                 <input type="submit" class="btn btn-sm btn-success" value="search" />
@@ -46,11 +46,11 @@
         </main>
     </div>
 
-    @*<footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2020 - ThePod - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>*@
+    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

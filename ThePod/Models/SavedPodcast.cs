@@ -17,8 +17,8 @@ namespace ThePod.Models
         public string AudioPreviewUrl { get; set; }
         public string ExternalUrls { get; set; }
         public string ImageUrl { get; set; }
-        public int? Duration { get; set; }
-        public DateTime? ReleaseDate { get; set; }
+        public int Duration { get; set; }
+        public DateTime ReleaseDate { get; set; }
 
         public virtual AspNetUser User { get; set; }
     }

@@ -9,6 +9,7 @@
     var offset = TempData["Offset"].ToString();
 }
 
+
 <div class="searchresults">
     <h5 class="text-left text-capitalize" style="color: grey; letter-spacing: 2px">Search Results For "@userQuery"</h5>
 </div>
@@ -17,7 +18,6 @@
     <thead class="thead-dark">
         <tr class="thead-dark">
             <th class="text-center">Podcast</th>
-            @*<th class="text-center">Favorite</th>*@
             <th class="text-center">Episode Description</th>
             <th class="text-center">Favorite</th>
             <th class="text-center">Review</th>
@@ -50,9 +50,6 @@
                     <hr />
                     <p>@e.description</p>
                 </td>
-                @*<td style="padding: 2em 2em 2em 2em" id="favoritebtn">
-                        <a asp-controller="User" asp-action="AddFavorite" asp--route-id="@e.id" style="font-size: 3em; color: black; text-transform:none" class="text-decoration-none">♥</a>
-                    </td>*@
                 <td>
                     <form asp-controller="User" asp-action="AddFavorite" method="post">
                         <input type="hidden" name="id" value="@e.id" />
@@ -70,28 +67,27 @@
             uniqueEpisodeIDs.Add(e.name);
         }
     }
+
 </table>
 
-@if (previousPage != null)
-{
-    int convert = int.Parse(offset);
-    <form asp-controller="Pod" asp-action="GetPreviousEpisode" method="post">
-        <input type="hidden" name="query" value="@userQuery" />
-        <input type="hidden" name="offset" value="@convert" />
-        <input type="submit" value="Previous" class="btn btn-outline-dark btn-group-lg float-lg-left" />
-    </form>
+<div class="pagebuttons">
+    @if (previousPage != null)
+    {
+        int convert = int.Parse(offset);
+        <form asp-controller="Pod" asp-action="GetPreviousPodcast" method="post">
+            <input type="hidden" name="query" value="@userQuery" />
+            <input type="hidden" name="offset" value="@convert" />
+            <input type="submit" value="Previous" class="btn btn-outline-dark btn-group-lg float-lg-left" />
+        </form>
 
-}
-@if (nextPage != null)
-{
-    int convert = int.Parse(offset);
-    <form asp-controller="Pod" asp-action="GetNextEpisode" method="post">
-        <input type="hidden" name="query" value="@userQuery" />
-        <input type="hidden" name="offset" value="@convert" />
-        <input type="submit" value="Next" class="btn btn-outline-dark btn-group-lg float-lg-right" />
-    </form>
-}
-<br />
-<br />
-<br />
-<br />
+    }
+    @if (nextPage != null)
+    {
+        int convert = int.Parse(offset);
+        <form asp-controller="Pod" asp-action="GetNextPodcast" method="post">
+            <input type="hidden" name="query" value="@userQuery" />
+            <input type="hidden" name="offset" value="@convert" />
+            <input type="submit" value="Next" class="btn btn-outline-dark btn-group-lg float-lg-right" />
+        </form>
+    }
+</div>
