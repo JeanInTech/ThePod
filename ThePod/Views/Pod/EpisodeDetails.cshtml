@@ -1,4 +1,5 @@
 ﻿@model RootEpisodes
+
 @{
     ViewData["EpisodeDetails"] = "Episode Details";
     List<string> uniqueEpisodeIDs = new List<string>();
@@ -8,6 +9,7 @@
     var previousPage = TempData.Peek("PreviousPage");
     var offset = TempData["Offset"].ToString();
 }
+
 
 <div class="searchresults">
     <h5 class="text-left text-capitalize" style="color: grey; letter-spacing: 2px">Search Results For "@userQuery"</h5>

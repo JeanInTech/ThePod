@@ -39,5 +39,14 @@ namespace ThePod.Models
         public virtual ICollection<AspNetUserToken> AspNetUserTokens { get; set; }
         public virtual ICollection<SavedPodcast> SavedPodcasts { get; set; }
         public virtual ICollection<UserFeedback> UserFeedbacks { get; set; }
+
+
+        public void CutEmailDisplayName(string newUserName)
+        {
+            newUserName = UserName.Substring(0, UserName.IndexOf('@'));
+        }
+
     }
+
+  
 }

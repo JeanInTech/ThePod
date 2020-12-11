@@ -22,5 +22,7 @@ namespace ThePod.Models
         public DateTime? ReleaseDate { get; set; }
 
         public virtual AspNetUser User { get; set; }
+
+       
     }
 }

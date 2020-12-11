@@ -51,7 +51,7 @@ namespace ThePod
                 {
                     options.ClientId = Secret.ClientId;
                     options.ClientSecret = Secret.ClientSecret;
-                    options.CallbackPath = "/Index";
+                    options.CallbackPath = "/Home/Index";
                     options.Events.OnRemoteFailure = (context) =>
                     {
                         //Handle fail login attempts here

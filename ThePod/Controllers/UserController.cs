@@ -98,8 +98,7 @@ namespace ThePod.Controllers
         }
 
         public async Task<IActionResult> SortFavorites(string sortOrder, string searchString)
-        public async Task<IActionResult> DeleteFromFavorites(int id)
-        public async Task<IActionResult> DeleteFromFavorites(int id)
+
         {
             string user = FindUser();
             ViewData["EpNameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "epname_desc" : "";
