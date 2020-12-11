@@ -187,6 +187,7 @@ namespace ThePod.Controllers
         }
         public async Task<IActionResult> GetEpisodeByPodcast(string query)
         {
+            ViewBag.userQuery = query;
             var showResults = await _dal.SearchShowNameAsync(query);
             List<Item> i = showResults.shows.items.ToList();
 
@@ -206,6 +207,7 @@ namespace ThePod.Controllers
                     return View("EpisodesByPodcast", episodesByPodcast);
                 }
             }
+
             return View(); // I need to put something else here- if I do not meet the conditions above, I will end up here, and this view does not exist
         }
         [HttpPost]

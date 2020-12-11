@@ -9,6 +9,7 @@
     var offset = TempData["Offset"].ToString();
 }
 
+
 <div class="searchresults">
     <h5 class="text-left text-capitalize" style="color: grey; letter-spacing: 2px">Search Results For "@userQuery"</h5>
 </div>
@@ -69,7 +70,7 @@
     }
 </table>
 
-<div>
+<div class="pagebuttons">
 @if (previousPage != null)
 {
     int convert = int.Parse(offset);
