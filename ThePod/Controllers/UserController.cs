@@ -196,10 +196,25 @@ namespace ThePod.Controllers
 
 
             await _context.UserFeedbacks.AddAsync(feedback);
+
+          
+
+            UserProfile userProfile = new UserProfile();
+            userProfile.EpisodeId = EpisodeId;
+            userProfile.Rating = (byte)Rating;
+            userProfile.Tag = Tags;
+            userProfile.UserId = user;
+
+
+            await _context.UserProfiles.AddAsync(userProfile);
+           
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index", "Home");
         }
+
+       
+
 
         public IActionResult ViewFeedBack()
         {

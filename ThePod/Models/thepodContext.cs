@@ -32,7 +32,6 @@ namespace ThePod.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer(Secret.ConnectionString);
             }
         }
@@ -209,8 +208,7 @@ namespace ThePod.Models
                 entity.HasOne(d => d.UserFeedback)
                     .WithMany(p => p.UserProfiles)
                     .HasForeignKey(d => d.UserFeedbackId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserProfi__UserF__7E37BEF6");
+                    .HasConstraintName("FK__UserProfi__UserF__01142BA1");
             });
 
             OnModelCreatingPartial(modelBuilder);
