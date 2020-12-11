@@ -208,8 +208,7 @@ namespace ThePod.Models
                 entity.HasOne(d => d.UserFeedback)
                     .WithMany(p => p.UserProfiles)
                     .HasForeignKey(d => d.UserFeedbackId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserProfi__UserF__7E37BEF6");
+                    .HasConstraintName("FK__UserProfi__UserF__01142BA1");
             });
 
             OnModelCreatingPartial(modelBuilder);

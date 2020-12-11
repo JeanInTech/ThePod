@@ -51,7 +51,6 @@ namespace ThePod.Controllers
             favorite.ImageUrl = firstPic.url;
             favorite.Duration = ep.duration_ms;
             favorite.ReleaseDate = DateTime.Parse(ep.release_date);
-           
 
             if(ModelState.IsValid)
             {
