@@ -44,10 +44,6 @@
                 </td>
                 <td style="padding: 2em 2em 2em 2em" id="favoritebtn">
                     <a asp-controller="User" asp-action="AddFavorite" asp-route-id="@e.id" style="font-size: 3em; color: black; text-transform:none" class="text-decoration-none">♥</a>
-                    @*<form asp-controller="User" asp-action="AddFavorite" method="post">
-                            <input type="hidden" name="id" value="@e.id" />
-                            <input type="submit" name="data" value="♥" />
-                        </form>*@
                 </td>
                 <td style="padding: 2em 2em 2em 2em">
                     <p style="font-weight: bold; font-size: 1em;">@e.name</p>
@@ -55,58 +51,29 @@
                     <p>@e.description</p>
                 </td>
             </tr>
-            @*<p>Episode name: @e.name</p>*@
-            //this needs to be cleaned up to make sure it returns relevant results and no duplicates (so far it doesn't seem to show duplicates)
-            @*<p>Name of podcast: @e.show.name</p>
-                <p>Episode description: @e.description</p>
-                <p>Release date: @e.release_date</p>
-                <p>Contains explicit content? @e._explicit</p>
-                <p>Languages:</p>
-                foreach (var x in @e.languages)
-                {
-                    <p>@x</p> //we could clean up the way this displays the languages, like display the whole word
-                }
-                <p>Episode images:</p>
-                foreach (var i in @e.images) //this is an array of 3 images for the episode- we could decide which size we want to use wherever and display it
-                {
-                    <img src="@i.url" height="@i.height" width="@i.width" />
-                }
-            *@
             uniqueEpisodeIDs.Add(e.name);
         }
     }
 </table>
 
-@if (previousPage != null)
-{
-    int convert = int.Parse(offset);
-    <form asp-controller="Pod" asp-action="GetPreviousEpisode" method="post">
-        <input type="hidden" name="query" value="@userQuery" />
-        <input type="hidden" name="offset" value="@convert" />
-        <input type="submit" value="Previous" class="btn btn-outline-dark btn-group-lg float-lg-left" />
-    </form>
+<div class="pagebuttons">
+    @if (previousPage != null)
+    {
+        int convert = int.Parse(offset);
+        <form asp-controller="Pod" asp-action="GetPreviousEpisode" method="post">
+            <input type="hidden" name="query" value="@userQuery" />
+            <input type="hidden" name="offset" value="@convert" />
+            <input type="submit" value="Previous" class="btn btn-outline-dark btn-group-lg float-lg-left" />
+        </form>
 
-}
-@if (nextPage != null)
-{
-    int convert = int.Parse(offset);
-    <form asp-controller="Pod" asp-action="GetNextEpisode" method="post">
-        <input type="hidden" name="query" value="@userQuery" />
-        <input type="hidden" name="offset" value="@convert" />
-        <input type="submit" value="Next" class="btn btn-outline-dark btn-group-lg float-lg-right" />
-    </form>
-}
-<br />
-<br />
-<br />
-<br />
-
-@*<p>Here's a 30 second clip of the episode:</p>
-    <audio controls>
-        <source src="@e.audio_preview_url" type="audio/mpeg">
-    </audio>
-    <form asp-controller="User" asp-action="ReviewEpisode" method="get">
-        <input type="hidden" name="id" value="@e.id" />
-        <input type="submit" name="data" value="Review Episode" />
-    </form>
-    <hr>*@
+    }
+    @if (nextPage != null)
+    {
+        int convert = int.Parse(offset);
+        <form asp-controller="Pod" asp-action="GetNextEpisode" method="post">
+            <input type="hidden" name="query" value="@userQuery" />
+            <input type="hidden" name="offset" value="@convert" />
+            <input type="submit" value="Next" class="btn btn-outline-dark btn-group-lg float-lg-right" />
+        </form>
+    }
+</div>

@@ -22,10 +22,14 @@ namespace ThePod.Controllers
             _dal = dal;
             _context = context;
         }
-
-        public async Task<IActionResult> Index()
+        public IActionResult UserFavorites()
         {
-            return View(_context.SavedPodcasts.ToList());
+            var user = FindUser();
+            var podcasts = from r in _context.SavedPodcasts
+                           where r.UserId.Equals(user)
+                           select r;
+
+            return View(podcasts.ToList());
         }
         public async Task<IActionResult> AddFavorite(string id)
         {
@@ -61,7 +65,7 @@ namespace ThePod.Controllers
                     await _context.SaveChangesAsync();
                 }
             }
-            return RedirectToAction("Index", "User");
+            return RedirectToAction("UserFavorites");
         }
         public async Task<IActionResult> SortFavorites(string sortOrder, string searchString)
         {
@@ -102,8 +106,6 @@ namespace ThePod.Controllers
             return View("Index", await podcast.Where(x => x.UserId == user).AsNoTracking().ToListAsync());
         }
 
-
-
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -117,16 +119,9 @@ namespace ThePod.Controllers
             {
                 return NotFound();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("UserFavorites");
         }
 
-        public string FindUser()
-        {
-            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
-            var claim = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
-            var userId = claim.Value;
-            return userId;
-        }
         [HttpGet]
         public async Task<IActionResult> ReviewEpisode(string id)
         {
@@ -146,6 +141,7 @@ namespace ThePod.Controllers
             feedback.EpisodeId = EpisodeId;
             feedback.Rating = (byte)Rating;
             feedback.Tags = stringTags;
+
             feedback.Review = Review;
             feedback.EpisodeName = EpisodeName;
             feedback.PodcastName = PodcastName;
@@ -184,7 +180,6 @@ namespace ThePod.Controllers
             return View(usersFeedback);
         }
 
-
         public async Task<IActionResult> SortFeedback(string sortOrder, string searchString)
         {
             string user = FindUser();
@@ -221,11 +216,8 @@ namespace ThePod.Controllers
                     feedback = feedback.OrderBy(f => f.DatePosted);
                     break;
             }
-
-
             return View("ViewFeedback", await feedback.Where(x => x.UserId == user).AsNoTracking().ToListAsync());
         }
-
 
         public async Task<IActionResult> DeleteReview(int Id)
         {
@@ -244,18 +236,25 @@ namespace ThePod.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditReview(int Id, int UserId, string EpisodeId, int Rating, string Tags, string Review, string EpisodeName, string PodcastName, string Description, string AudioPreviewURL, string ImageUrl, DateTime ReleaseDate, string ExternalURLS)
+        public async Task<IActionResult> EditReview(int Id, int UserId, string EpisodeId, int Rating, string[] Tags, string Review, string EpisodeName, string PodcastName, string Description, string AudioPreviewURL, string ImageUrl, DateTime ReleaseDate, string ExternalURLS)
         {
             UserFeedback feedback1 = await _context.UserFeedbacks.FindAsync(Id);
             //feedback.Id = Id;
             //feedback.UserId = 
-            feedback1.Tags = Tags;
+            string tag = string.Join(", ", Tags);
+            feedback1.Tags = tag;
             feedback1.Rating = (byte)Rating;
             feedback1.Review = Review;
             feedback1.DatePosted = DateTime.Now;
             await _context.SaveChangesAsync();
             return RedirectToAction("ViewFeedBack");
         }
-
+        public string FindUser()
+        {
+            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+            var claim = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+            var userId = claim.Value;
+            return userId;
+        }
     }
 }

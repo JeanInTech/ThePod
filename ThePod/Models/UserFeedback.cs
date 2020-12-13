@@ -27,6 +27,7 @@ namespace ThePod.Models
         public string ExternalUrls { get; set; }
         public DateTime DatePosted { get; set; }
 
+
         public virtual AspNetUser User { get; set; }
         public virtual ICollection<UserProfile> UserProfiles { get; set; }
     }

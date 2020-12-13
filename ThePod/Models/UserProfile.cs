@@ -14,6 +14,7 @@ namespace ThePod.Models
         public string Tag { get; set; }
         public int Rating { get; set; }
 
+
         public virtual UserFeedback UserFeedback { get; set; }
     }
 }

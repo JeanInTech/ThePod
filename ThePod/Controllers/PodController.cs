@@ -185,6 +185,9 @@ namespace ThePod.Controllers
 
             return shId;
         }
+        // ==============================================================
+        // Get Episode by Podcast Id and Page Navigation
+        // ==============================================================
         public async Task<IActionResult> GetEpisodeByPodcast(string query)
         {
             ViewBag.userQuery = query;
@@ -215,16 +218,12 @@ namespace ThePod.Controllers
         {
             int increment = offset + 20;
             var showResults = await _dal.MoreEpbyPodIdAsync(shoId, increment);
-            //List<Item> i = showResults.shows.items.ToList();
 
             TempData["ShowId"] = shoId;
             TempData["TotalResults"] = showResults.total;
             TempData["NextPage"] = showResults.next;
             TempData["PreviousPage"] = showResults.previous;
             TempData["Offset"] = increment;
-
-            //var epId = ConvertToIdString(i);
-            //var nextShows = await _dal.SearchEpisodeIdAsync(epId);
 
             return View("EpisodesByPodcast", showResults);
         }
@@ -233,16 +232,12 @@ namespace ThePod.Controllers
         {
             int decrement = offset - 20;
             var showResults = await _dal.MoreEpbyPodIdAsync(shoId, decrement);
-            //List<Item> i = showResults.shows.items.ToList();
 
             TempData["ShowId"] = shoId;
             TempData["TotalResults"] = showResults.total;
             TempData["NextPage"] = showResults.next;
             TempData["PreviousPage"] = showResults.previous;
             TempData["Offset"] = decrement;
-
-            //var epId = ConvertToIdString(i);
-            //var previousShows = await _dal.SearchEpbyPodIdAsync(epId);
 
             return View("EpisodesByPodcast", showResults);
         }
