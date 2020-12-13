@@ -39,7 +39,11 @@
                         <audio controls style="width: 100%; align-content: start">
                             <source src="@e.audio_preview_url" type="audio/mpeg">
                         </audio>
-                        <figcaption class="figure-caption text-right">Released: @e.release_date <br />Length: @minutes minutes</figcaption>
+                        @{ 
+                            DateTime date = e.release_date;
+                            string formattedDate = date.ToShortDateString();
+                        }
+                        <figcaption class="figure-caption text-right">Released: @formattedDate <br />Length: @minutes minutes</figcaption>
                     </figure>
                 </td>
                 <td style="padding: 2em 2em 2em 2em">
@@ -50,14 +54,14 @@
                 <td>
                     <form asp-controller="User" asp-action="AddFavorite" method="post">
                         <input type="hidden" name="id" value="@e.id" />
-                        <input type="submit" name="data" value="Add to Favorites" />
+                        <input type="submit" name="data" value="Add to Favorites" class="btn btn-outline-dark btn-group-lg" />
                         <a asp-action="Index"></a>
                     </form>
                 </td>
                 <td>
                     <form asp-controller="User" asp-action="ReviewEpisode" method="get">
                         <input type="hidden" name="id" value="@e.id" />
-                        <input type="submit" name="data" value="Review Episode" />
+                        <input type="submit" name="data" value="Review Episode" class="btn btn-outline-dark btn-group-lg" />
                     </form>
                 </td>
             </tr>

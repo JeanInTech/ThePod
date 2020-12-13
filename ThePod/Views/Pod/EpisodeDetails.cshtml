@@ -57,14 +57,14 @@
                 <td>
                     <form asp-controller="User" asp-action="AddFavorite" method="post">
                         <input type="hidden" name="id" value="@e.id" />
-                        <input type="submit" name="data" value="Add to Favorites" />
+                        <input type="submit" name="data" value="Add to Favorites" class="btn btn-outline-dark btn-group-lg float-lg-left" />
                         <a asp-action="Index"></a>
                     </form>
                 </td>
                 <td>
                     <form asp-controller="User" asp-action="ReviewEpisode" method="get">
                         <input type="hidden" name="id" value="@e.id" />
-                        <input type="submit" name="data" value="Review Episode" />
+                        <input type="submit" name="data" value="Review Episode" class="btn btn-outline-dark btn-group-lg float-lg-left" />
                     </form>
                 </td>
             </tr>

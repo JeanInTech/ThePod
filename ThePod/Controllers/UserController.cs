@@ -47,11 +47,11 @@ namespace ThePod.Controllers
             favorite.ImageUrl = firstPic.url;
             favorite.Duration = ep.duration_ms;
             favorite.ReleaseDate = DateTime.Parse(ep.release_date);
-           
 
-            if(ModelState.IsValid)
+
+            if (ModelState.IsValid)
             {
-                if(_context.SavedPodcasts.Any(id=>id.EpisodeId.Equals(ep.id)))
+                if (_context.SavedPodcasts.Any(id => id.EpisodeId.Equals(ep.id)))
                 {
                     return View("Error");
                 }
@@ -73,7 +73,7 @@ namespace ThePod.Controllers
             ViewData["CurrentFilter"] = searchString;
 
             var podcast = from p in _context.SavedPodcasts
-                           select p;
+                          select p;
             if (!String.IsNullOrEmpty(searchString))
             {
                 podcast = podcast.Where(p => p.Description.Contains(searchString));
@@ -96,7 +96,7 @@ namespace ThePod.Controllers
                     podcast = podcast.OrderByDescending(p => p.Publisher);
                     break;
                 default:
-                    podcast = podcast.OrderBy(p =>p.PodcastName);
+                    podcast = podcast.OrderBy(p => p.PodcastName);
                     break;
             }
             return View("Index", await podcast.Where(x => x.UserId == user).AsNoTracking().ToListAsync());
@@ -136,14 +136,16 @@ namespace ThePod.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ReviewEpisode(string EpisodeId, int Rating, string Tags, string Review, string EpisodeName, string PodcastName, string Description, string AudioPreviewURL, string ImageUrl, DateTime ReleaseDate, string ExternalURLS)
+        public async Task<IActionResult> ReviewEpisode(string EpisodeId, int Rating, string[] Tags, string Review, string EpisodeName, string PodcastName, string Description, string AudioPreviewURL, string ImageUrl, DateTime ReleaseDate, string ExternalURLS)
         {
+            string stringTags = String.Join(", ", Tags);
+
             string user = FindUser();
             UserFeedback feedback = new UserFeedback();
             feedback.UserId = user;
             feedback.EpisodeId = EpisodeId;
             feedback.Rating = (byte)Rating;
-            feedback.Tags = Tags;
+            feedback.Tags = stringTags;
             feedback.Review = Review;
             feedback.EpisodeName = EpisodeName;
             feedback.PodcastName = PodcastName;
@@ -154,10 +156,22 @@ namespace ThePod.Controllers
             feedback.ExternalUrls = ExternalURLS;
             feedback.DatePosted = DateTime.Now;
 
-
             await _context.UserFeedbacks.AddAsync(feedback);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(); //saving the review to the UserFeedback table
 
+            for (int i = 0; i < Tags.Length; i++) //looping through each item in the Tags array so that we can add a new entry for each tag
+            {
+                
+                UserProfile profile = new UserProfile();
+                profile.UserFeedbackId = feedback.Id;
+                profile.UserId = user;
+                profile.EpisodeId = EpisodeId;
+                profile.Tag = Tags[i];
+                profile.Rating = Rating;
+                await _context.UserProfiles.AddAsync(profile);
+                await _context.SaveChangesAsync(); //saving the entries to the UserProfile table
+
+            }
             return RedirectToAction("Index", "Home");
         }
 
@@ -170,7 +184,7 @@ namespace ThePod.Controllers
             return View(usersFeedback);
         }
 
-        
+
         public async Task<IActionResult> SortFeedback(string sortOrder, string searchString)
         {
             string user = FindUser();
@@ -179,14 +193,14 @@ namespace ThePod.Controllers
             ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
             ViewData["RatingSortParm"] = String.IsNullOrEmpty(sortOrder) ? "sort_rating" : "";
             ViewData["CurrentFilter"] = searchString;
-            
+
             var feedback = from f in _context.UserFeedbacks
                            select f;
-            if(!String.IsNullOrEmpty(searchString))
+            if (!String.IsNullOrEmpty(searchString))
             {
                 feedback = feedback.Where(f => f.Tags.Contains(searchString));
             }
-            switch(sortOrder)
+            switch (sortOrder)
             {
                 case "Date":
                     feedback = feedback.OrderBy(f => f.DatePosted);
@@ -226,6 +240,7 @@ namespace ThePod.Controllers
         {
             var userReview = await _context.UserFeedbacks.FindAsync(Id);
             return View(userReview);
+
         }
 
         [HttpPost]
@@ -235,7 +250,7 @@ namespace ThePod.Controllers
             //feedback.Id = Id;
             //feedback.UserId = 
             feedback1.Tags = Tags;
-            feedback1.Rating = (byte?)Rating;
+            feedback1.Rating = (byte)Rating;
             feedback1.Review = Review;
             feedback1.DatePosted = DateTime.Now;
             await _context.SaveChangesAsync();

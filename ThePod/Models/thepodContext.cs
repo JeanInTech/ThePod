@@ -26,13 +26,13 @@ namespace ThePod.Models
         public virtual DbSet<AspNetUserToken> AspNetUserTokens { get; set; }
         public virtual DbSet<SavedPodcast> SavedPodcasts { get; set; }
         public virtual DbSet<UserFeedback> UserFeedbacks { get; set; }
+        public virtual DbSet<UserProfile> UserProfiles { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-
-                optionsBuilder.UseSqlServer(Secret.ConnectionString);
+                optionsBuilder.UseSqlServer("ConnectionStrings");
             }
         }
 
@@ -143,15 +143,7 @@ namespace ThePod.Models
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.Property(e => e.EpisodeName)
-                    .IsRequired()
-                    .HasMaxLength(100);
-
                 entity.Property(e => e.ExternalUrls).HasColumnName("ExternalURLs");
-
-                entity.Property(e => e.PodcastName)
-                    .IsRequired()
-                    .HasMaxLength(50);
 
                 entity.Property(e => e.Publisher).HasMaxLength(50);
 
@@ -174,16 +166,11 @@ namespace ThePod.Models
 
                 entity.Property(e => e.AudioPreviewUrl).HasColumnName("AudioPreviewURL");
 
-
                 entity.Property(e => e.DatePosted).HasColumnType("datetime");
 
                 entity.Property(e => e.EpisodeId)
                     .IsRequired()
                     .HasMaxLength(50);
-
-
-                entity.Property(e => e.EpisodeName).HasMaxLength(50);
-
 
                 entity.Property(e => e.ExternalUrls).HasColumnName("ExternalURLS");
 
@@ -202,6 +189,26 @@ namespace ThePod.Models
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__UserFeedb__UserI__71D1E811");
+            });
+
+            modelBuilder.Entity<UserProfile>(entity =>
+            {
+                entity.ToTable("UserProfile");
+
+                entity.Property(e => e.EpisodeId)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.Tag).HasMaxLength(50);
+
+                entity.Property(e => e.UserId)
+                    .IsRequired()
+                    .HasMaxLength(450);
+
+                entity.HasOne(d => d.UserFeedback)
+                    .WithMany(p => p.UserProfiles)
+                    .HasForeignKey(d => d.UserFeedbackId)
+                    .HasConstraintName("FK__UserProfi__UserF__01142BA1");
             });
 
             OnModelCreatingPartial(modelBuilder);

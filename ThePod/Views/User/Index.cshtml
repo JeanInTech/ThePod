@@ -17,12 +17,15 @@
     {
         <tr>
             <td>
+                @{ 
+                    int minutes = (@s.Duration / 1000) / 60;
+                }
                 <figure class="figure">
                     <a href="@s.ImageUrl" alt="@s.PodcastName" target="_blank"><img src="@s.ImageUrl" style="height: 250px; width:250px;" class="figure-img" /></a>
                     <audio controls style="width: 100%; align-content: start">
                         <source src="@s.AudioPreviewUrl" type="audio/mpeg">
                     </audio>
-                    <figcaption class="figure-caption text-right">Released: no data available <br />Length: @s.Duration minutes</figcaption>
+                    <figcaption class="figure-caption text-right">Released: @s.ReleaseDate <br />Length: @minutes minutes</figcaption>
                 </figure>
 <td style="padding: 2em 2em 2em 2em">
                 <p style="font-weight: bold; font-size: 1em;">@s.EpisodeName<p>
