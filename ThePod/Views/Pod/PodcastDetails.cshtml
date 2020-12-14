@@ -51,28 +51,24 @@
     }
 </table>
 
+<div class="pagebuttons">
+    @if (previousPage != null)
+    {
+        int convert = int.Parse(offset);
+        <form asp-controller="Pod" asp-action="GetPreviousPodcast" method="post">
+            <input type="hidden" name="query" value="@userQuery" />
+            <input type="hidden" name="offset" value="@convert" />
+            <input type="submit" value="Previous" class="btn btn-outline-dark btn-group-lg float-lg-left" />
+        </form>
 
-@if (previousPage != null)
-{
-    int convert = int.Parse(offset);
-    <form asp-controller="Pod" asp-action="GetPreviousPodcast" method="post">
-        <input type="hidden" name="query" value="@userQuery" />
-        <input type="hidden" name="offset" value="@convert" />
-        <input type="submit" value="Previous" class="btn btn-outline-dark btn-group-lg float-lg-left" />
-    </form>
-
-}
-@if (nextPage != null)
-{
-    int convert = int.Parse(offset);
-    <form asp-controller="Pod" asp-action="GetNextPodcast" method="post">
-        <input type="hidden" name="query" value="@userQuery" />
-        <input type="hidden" name="offset" value="@convert" />
-        <input type="submit" value="Next" class="btn btn-outline-dark btn-group-lg float-lg-right" />
-    </form>
-}
-
-<br />
-<br />
-<br />
-<br />
+    }
+    @if (nextPage != null)
+    {
+        int convert = int.Parse(offset);
+        <form asp-controller="Pod" asp-action="GetNextPodcast" method="post">
+            <input type="hidden" name="query" value="@userQuery" />
+            <input type="hidden" name="offset" value="@convert" />
+            <input type="submit" value="Next" class="btn btn-outline-dark btn-group-lg float-lg-right" />
+        </form>
+    }
+</div>

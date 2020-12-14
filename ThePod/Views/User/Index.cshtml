@@ -1,16 +1,8 @@
 ﻿@model IEnumerable<SavedPodcast>
 
-
-
-<form asp-action="SortFavorites" method="get">
-    <div class="form-actions no-color">
-        <p>
-            Search Description: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
-            <input type="submit" value="Search" class="btn btn-default" /> | <a asp-action="SortFavorites"></a>
-        </p>
-    </div>
-</form>
-
+<div class="searchresults">
+    @*<h5 class="text-left text-capitalize" style="color: grey; letter-spacing: 2px">Search Results For "@userQuery"</h5>*@
+</div>
 
 <table class="table table-hover table-responsive">
     <thead class="thead-dark">
@@ -25,14 +17,17 @@
     {
         <tr>
             <td>
+                @{ 
+                    int minutes = (@s.Duration / 1000) / 60;
+                }
                 <figure class="figure">
                     <a href="@s.ImageUrl" alt="@s.PodcastName" target="_blank"><img src="@s.ImageUrl" style="height: 250px; width:250px;" class="figure-img" /></a>
                     <audio controls style="width: 100%; align-content: start">
                         <source src="@s.AudioPreviewUrl" type="audio/mpeg">
                     </audio>
-                    <figcaption class="figure-caption text-right">Released: no data available <br />Length: @s.Duration minutes</figcaption>
+                    <figcaption class="figure-caption text-right">Released: @s.ReleaseDate <br />Length: @minutes minutes</figcaption>
                 </figure>
-            <td style="padding: 2em 2em 2em 2em">
+<td style="padding: 2em 2em 2em 2em">
                 <p style="font-weight: bold; font-size: 1em;">@s.EpisodeName<p>
                     <hr />
                 <p>@s.Description</p>
@@ -44,52 +39,76 @@
                 </form>
             </td>
 
+        tr:first-child td:last-child {
+            border-top-right-radius: 4px;
+        }
+
+        tr:last-child td:first-child {
+            border-bottom-left-radius: 4px;
+        }
+
+        tr:last-child td:last-child {
+            border-bottom-right-radius: 4px;
+        }
+    </style>
+
+    <form asp-action="SortFavorites" method="get">
+        <div class="form-actions no-color">
+            <p>
+                Search Description: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+                <input type="submit" value="Search" class="btn btn-default" /> | <a asp-action="SortFavorites"></a>
+            </p>
+        </div>
+    </form>
+  
+
+<table class="table table-hover table-responsive">
+    <thead class="thead-dark">
+        <tr class="thead-dark">
+            <th>Podcast</th>
+            <th>Episode Description</th>
+            <th><p></p></th>
         </tr>
-    }
-</table>
+    </thead>
 
-
-
-
-<p>hi, you added a favorite</p>
-<table class="styled-table">
+    <p>hi, you added a favorite</p>
+    <table class="styled-table">
 
     @foreach (SavedPodcast s in Model)
     {
         <thead>
             <tr>
 
-                <th>UserName</th>
-                <th><strong><a asp-action="SortFavorites" asp-route-sortOrder="@ViewData["PodNameSortParm"]">Name</a></strong></th>
-                <th><strong><a asp-action="SortFavorites" asp-route-sortOrder="@ViewData["PublisherSortParm"]">Publisher</a></strong></th>
-                <th><strong><a asp-action="SortFavorites" asp-route-sortOrder="@ViewData["EpNameSortParm"]">Episode Name</a></strong></th>
-                <th>Description</th>
-                <th>Preview</th>
-                <th>Image</th>
-                <th>Duration</th>
-                <th>Id</th>
-                <th><strong><a asp-action="SortFavorites" asp-route-sortOrder="@ViewData["DateSortParm"]">Release Date</a></strong></th>
 
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-               
-                <td> @s.PodcastName  </td>
-                <td>@s.Publisher </td>
-                <td>@s.EpisodeName</td>
-                <td>@s.Description</td>
-                <td>@s.AudioPreviewUrl</td>
-                <td><img src="@s.ImageUrl" /></td>
-                <td>@s.Duration</td>
-                <td>@s.Id</td>
-                <td>@s.ReleaseDate</td>
-                <td> <a asp-action="Delete" asp-route-id="@s.Id">Delete</a></td>
-            </tr>
-        </tbody>
+                    <th><strong><a asp-action="SortFavorites" asp-route-sortOrder="@ViewData["PodNameSortParm"]">Name</a></strong></th>
+                    <th><strong><a asp-action="SortFavorites" asp-route-sortOrder="@ViewData["PublisherSortParm"]">Publisher</a></strong></th>
+                    <th><strong><a asp-action="SortFavorites" asp-route-sortOrder="@ViewData["EpNameSortParm"]">Episode Name</a></strong></th>
+                    <th>Description</th>
+                    <th>Preview</th>
+                    <th>Image</th>
+                    <th>Duration</th>
+                    <th>Id</th>
+                    <th><strong><a asp-action="SortFavorites" asp-route-sortOrder="@ViewData["DateSortParm"]">Release Date</a></strong></th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td> @s.PodcastName  </td>
+                    <td>@s.Publisher </td>
+                    <td>@s.EpisodeName</td>
+                    <td>@s.Description</td>
+                    <td>@s.AudioPreviewUrl</td>
+                    <td><img src="@s.ImageUrl" /></td>
+                    <td>@s.Duration</td>
+                    <td>@s.Id</td>
+                    <td>@s.ReleaseDate</td>
+                    <td> <a asp-action="Delete" asp-route-id="@s.Id">Delete</a></td>
+                </tr>
+            </tbody>
 
 
     }
 
-</table>
+    </table>
 

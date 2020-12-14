@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-
-#nullable disable
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ThePod.Models
 {
-    public partial class SavedPodcast
+    public class FavoriteViewModel
     {
-        public int Id { get; set; }
-        public string UserId { get; set; }
+        public int SavedPodcastId { get; set; }
         public string EpisodeId { get; set; }
         public string PodcastName { get; set; }
         public string EpisodeName { get; set; }
@@ -19,7 +18,10 @@ namespace ThePod.Models
         public string ImageUrl { get; set; }
         public int Duration { get; set; }
         public DateTime ReleaseDate { get; set; }
-
-        public virtual AspNetUser User { get; set; }
+        public int UserFeedbackId { get; set; }
+        public byte? Rating { get; set; }
+        public string Review { get; set; }
+        public string Tags { get; set; }
+        public DateTime DatePosted { get; set; }
     }
 }

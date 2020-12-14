@@ -1,5 +1,6 @@
 ﻿@model List<UserFeedback>
 
+
 <form asp-action="SortFeedback" method="get">
     <div class="form-actions no-color">
         <p> Find by tag: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]"/>
@@ -22,16 +23,17 @@
 
     @foreach (var u in Model)
     {
-<tr>
-    <td>@u.DatePosted</td>
-    <td>@u.EpisodeName</td>
-    <td>@u.PodcastName</td>
-    <td>@u.Rating/5</td>
-    <td>@u.Tags</td>
-    <td>@u.Review</td>
-    <td><a asp-controller="User" asp-action="EditReview" asp-route-Id="@u.Id">Edit Review</a></td>
-    <td><a asp-controller="User" asp-action="DeleteReview" asp-route-Id="@u.Id">Delete Review</a></td>
-</tr>
+        <tr>
+            <td>@u.DatePosted</td>
+            <td>@u.EpisodeName</td>
+            <td>@u.PodcastName</td>
+            <td>@u.Rating/5</td>
+            <td>@u.Tags</td>
+            <td>@u.Review</td>
+            <td><a asp-controller="User" asp-action="EditReview" asp-route-Id="@u.Id">Edit Review</a></td>
+            <td><a asp-controller="User" asp-action="DeleteReview" asp-route-fbId="@u.Id" asp-route-epId="@u.EpisodeId">Delete Review</a></td>
+
+        </tr>
     }
 
 </table>
