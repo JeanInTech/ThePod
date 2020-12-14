@@ -26,11 +26,40 @@ namespace ThePod.Controllers
         public IActionResult UserFavorites()
         {
             var user = FindUser();
-            var podcasts = from r in _context.SavedPodcasts
-                           where r.UserId.Equals(user)
-                           select r;
+            var spod = from all in _context.SavedPodcasts
+                       where all.UserId.Equals(user)
+                       select all;
+            List<SavedPodcast> podcasts = spod.ToList();
+            List<FavoriteViewModel> fvmList = new List<FavoriteViewModel>();
 
-            return View(podcasts.ToList());
+            foreach (var p in podcasts)
+            {
+                FavoriteViewModel fvm = new FavoriteViewModel();
+                fvm.SavedPodcastId = p.Id;
+                fvm.EpisodeId = p.EpisodeId;
+                fvm.PodcastName = p.PodcastName;
+                fvm.EpisodeName = p.EpisodeName;
+                fvm.Publisher = p.Publisher;
+                fvm.Description = p.Description;
+                fvm.AudioPreviewUrl = p.AudioPreviewUrl;
+                fvm.ExternalUrls = p.ExternalUrls;
+                fvm.ImageUrl = p.ImageUrl;
+                fvm.Duration = p.Duration;
+                fvm.ReleaseDate = p.ReleaseDate;
+
+                //user needs to rate otherwise this shows up as null
+                var f = _context.UserFeedbacks.Where(x => x.EpisodeId == p.EpisodeId & x.UserId == p.UserId).FirstOrDefault();
+                if (f != null)
+                {
+                    fvm.DatePosted = f.DatePosted;
+                    fvm.UserFeedbackId = f.Id;
+                    fvm.Rating = f.Rating;
+                    fvm.Review = f.Review;
+                    fvm.Tags = f.Tags;
+                }
+                fvmList.Add(fvm);
+            }
+            return View(fvmList);
         }
         public async Task<IActionResult> AddFavorite(string id)
         {
@@ -52,7 +81,6 @@ namespace ThePod.Controllers
             favorite.ImageUrl = firstPic.url;
             favorite.Duration = ep.duration_ms;
             favorite.ReleaseDate = DateTime.Parse(ep.release_date);
-
 
             if (ModelState.IsValid)
             {
@@ -126,23 +154,32 @@ namespace ThePod.Controllers
         [HttpGet]
         public async Task<IActionResult> ReviewEpisode(string id)
         {
-            var results = await _dal.SearchEpisodeIdAsync(id);
-            var ep = results.episodes.First();
-            return View(ep);
+            string user = FindUser();
+            List<UserFeedback> feedbackList = _context.UserFeedbacks.ToList();
+            List<UserFeedback> feedbackMatch = feedbackList.Where(x => x.UserId == user && x.EpisodeId == id).ToList();
+            if (feedbackMatch.Count > 0)
+            {
+                UserFeedback duplicateReview = feedbackMatch.First();
+                return View("DuplicateReview", duplicateReview);
+            }
+            else
+            {
+                var results = await _dal.SearchEpisodeIdAsync(id);
+                var ep = results.episodes.First();
+                return View(ep);
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> ReviewEpisode(string EpisodeId, byte Rating, string[] Tags, string Review, string EpisodeName, string PodcastName, string Description, string AudioPreviewURL, string ImageUrl, DateTime ReleaseDate, string ExternalURLS)
         {
-            string stringTags = String.Join(", ", Tags);
-
             string user = FindUser();
             UserFeedback feedback = new UserFeedback();
             feedback.UserId = user;
             feedback.EpisodeId = EpisodeId;
             feedback.Rating = (byte)Rating;
-            feedback.Tags = stringTags;
-
+            string tag = string.Join(", ", Tags);
+            feedback.Tags = tag;
             feedback.Review = Review;
             feedback.EpisodeName = EpisodeName;
             feedback.PodcastName = PodcastName;
@@ -169,14 +206,15 @@ namespace ThePod.Controllers
                 await _context.SaveChangesAsync(); //saving the entries to the UserProfile table
 
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("ViewFeedback", "User");
+
         }
        
         public IActionResult ViewFeedBack()
         {
             string user = FindUser();
-            List<UserFeedback> feedback = _context.UserFeedbacks.ToList();
-            List<UserFeedback> usersFeedback = feedback.Where(x => x.UserId == user).ToList(); //used LINQ to show only user's feedback
+            var feedback = _context.UserFeedbacks.Where(x => x.UserId == user);
+            List<UserFeedback> usersFeedback = feedback.ToList();
 
             return View(usersFeedback);
         }
@@ -220,20 +258,28 @@ namespace ThePod.Controllers
             return View("ViewFeedback", await feedback.Where(x => x.UserId == user).AsNoTracking().ToListAsync());
         }
 
-        public async Task<IActionResult> DeleteReview(int Id)
+        public async Task<IActionResult> DeleteReview(string epId, int fbId)
         {
-            var userReview = await _context.UserFeedbacks.FindAsync(Id);
+            var userProfile = _context.UserProfiles.Where(x => x.EpisodeId == epId).ToList();
+            foreach(var up in userProfile)
+            {
+                _context.UserProfiles.Remove(up);
+                await _context.SaveChangesAsync();
+            }
+
+            var userReview = await _context.UserFeedbacks.FindAsync(fbId);
             _context.UserFeedbacks.Remove(userReview);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("ViewFeedBack");
         }
 
+        [HttpGet]
         public async Task<IActionResult> EditReview(int Id)
         {
             var userReview = await _context.UserFeedbacks.FindAsync(Id);
-            return View(userReview);
 
+            return View("EditReview", userReview);
         }
 
         [HttpPost]
