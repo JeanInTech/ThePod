@@ -34,7 +34,7 @@ namespace ThePod.Models
         public string language { get; set; }
         public string[] languages { get; set; }
         public string name { get; set; }
-        public string release_date { get; set; }
+        public DateTime release_date { get; set; }
         public string release_date_precision { get; set; }
         public Resume_Point resume_point { get; set; }
         public string type { get; set; }

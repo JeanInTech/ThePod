@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -134,7 +135,7 @@ namespace ThePod.Controllers
             return View("Index", await podcast.Where(x => x.UserId == user).AsNoTracking().ToListAsync());
         }
 
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (id == null)
             {
@@ -170,7 +171,7 @@ namespace ThePod.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ReviewEpisode(string EpisodeId, int Rating, string[] Tags, string Review, string EpisodeName, string PodcastName, string Description, string AudioPreviewURL, string ImageUrl, DateTime ReleaseDate, string ExternalURLS)
+        public async Task<IActionResult> ReviewEpisode(string EpisodeId, byte Rating, string[] Tags, string Review, string EpisodeName, string PodcastName, string Description, string AudioPreviewURL, string ImageUrl, DateTime ReleaseDate, string ExternalURLS)
         {
             string user = FindUser();
             UserFeedback feedback = new UserFeedback();
@@ -190,22 +191,25 @@ namespace ThePod.Controllers
             feedback.DatePosted = DateTime.Now;
 
             await _context.UserFeedbacks.AddAsync(feedback);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(); //saving the review to the UserFeedback table
 
-            for (int i = 0; i < Tags.Length; i++)
+            for (int i = 0; i < Tags.Length; i++) //looping through each item in the Tags array so that we can add a new entry for each tag
             {
-                UserProfile userProfile = new UserProfile();
-                userProfile.EpisodeId = EpisodeId;
-                userProfile.Rating = (byte)Rating;
-                userProfile.UserId = user;
-                userProfile.UserFeedbackId = feedback.Id;
 
-                await _context.UserProfiles.AddAsync(userProfile);
-                await _context.SaveChangesAsync();
+                UserProfile profile = new UserProfile();
+                profile.UserFeedbackId = feedback.Id;
+                profile.UserId = user;
+                profile.EpisodeId = EpisodeId;
+                profile.Tag = Tags[i];
+                profile.Rating = Rating;
+                await _context.UserProfiles.AddAsync(profile);
+                await _context.SaveChangesAsync(); //saving the entries to the UserProfile table
+
             }
             return RedirectToAction("ViewFeedback", "User");
-        }
 
+        }
+       
         public IActionResult ViewFeedBack()
         {
             string user = FindUser();
@@ -274,6 +278,7 @@ namespace ThePod.Controllers
         public async Task<IActionResult> EditReview(int Id)
         {
             var userReview = await _context.UserFeedbacks.FindAsync(Id);
+
             return View("EditReview", userReview);
         }
 
@@ -298,5 +303,123 @@ namespace ThePod.Controllers
             var userId = claim.Value;
             return userId;
         }
+        public List<string> GetProfile()
+        {
+            var user = FindUser();
+            var userSpecific = from x in _context.UserProfiles
+                               where x.UserId.Equals(user)
+                               select x;
+            var qualifiedRatings = from y in userSpecific
+                                   where y.Rating >= 3
+                                   select y;
+            var countPerTag = from z in qualifiedRatings
+                              group z by z.Tag into taggedList
+                              select new
+                              {
+                                  TagGroup = taggedList.Key,
+                                  CountTag = taggedList.Count(),
+                              };
+
+            var topTags = countPerTag.OrderByDescending(countPerTag => countPerTag.CountTag).ToList();
+
+
+            List<string> usersTopTags = new List<string>();
+
+            foreach (var t in topTags)
+            {
+                usersTopTags.Add(t.TagGroup);
+
+            }
+
+            //var groupedRatings = qualifiedRatings.AsEnumerable().GroupBy(x => x.Tag).ToList();
+
+
+            return (usersTopTags);
+        }
+        public async Task<IActionResult> GetRecommendations()
+        {
+            List<string> usersTopTags = GetProfile(); //get a list of the users top tags (the tag they used most frequently on episodes rated 3+)
+            string firstPreferred = usersTopTags[0]; //1st place tag (this is just the single word(tag) so this can be used later in a viewbag
+            string secondPreferred = usersTopTags[1]; //2nd place tag
+            string thirdPreferred = usersTopTags[2]; //3rd place tag
+            ViewBag.FirstTag = firstPreferred;
+            ViewBag.SecondTag = " - "+secondPreferred;
+            ViewBag.ThirdTag = " - " +thirdPreferred;
+
+            List<UserProfile> bestProfiles = GetBestEpisodesRawData(); //list of every tag in UserProfile table with a rating of 3+, that the logged in user has not reviewed, organized by highest rated first
+
+            List<string> firstTagEpisodeRec = new List<string>();
+            List<string> secondTagEpisodeRec = new List<string>();
+            List<string> thirdTagEpisodeRec = new List<string>();
+
+            foreach (UserProfile u in bestProfiles)
+            {
+                if (firstPreferred == u.Tag)
+                {
+                    firstTagEpisodeRec.Add(u.EpisodeId);
+                }
+                if (secondPreferred == u.Tag)
+                {
+                    secondTagEpisodeRec.Add(u.EpisodeId);
+                }
+                if (thirdPreferred == u.Tag)
+                {
+                    thirdTagEpisodeRec.Add(u.EpisodeId);
+                }
+            }
+            List<List<string>> topThreeEpisdodeLists = new List<List<string>>(); //these are just lists of strings (episode Ids)
+            {
+                topThreeEpisdodeLists.Add(firstTagEpisodeRec);
+                topThreeEpisdodeLists.Add(secondTagEpisodeRec);
+                topThreeEpisdodeLists.Add(thirdTagEpisodeRec);
+            }
+            List<string> episodeIds = new List<string>();
+            foreach (var e in firstTagEpisodeRec)
+            {
+                if (e != null)
+                {
+                    episodeIds.Add(e);
+                }
+            }
+            foreach (var e in secondTagEpisodeRec)
+            {
+                if (e != null)
+                {
+                    episodeIds.Add(e);
+                }
+            }
+            foreach (var e in thirdTagEpisodeRec)
+            {
+                if (e != null)
+                {
+                    episodeIds.Add(e);
+                }
+            }
+            var epId = String.Join(",", episodeIds);
+
+             var recommendedEpisodes = await _dal.SearchEpisodeIdAsync(epId);
+
+            return View("userrecommendations", recommendedEpisodes);
+        }
+    public IActionResult GetGlobalBestOf()
+        {
+            List<UserProfile> bestOf = GetBestEpisodesRawData();
+
+            return View("topPicks", bestOf);
+        }
+        public List<UserProfile> GetBestEpisodesRawData()
+        {
+            string user = FindUser();
+            List<UserProfile> globalProfiles = _context.UserProfiles.ToList();
+            List<UserProfile> filteredProfiles = globalProfiles.Where(x => x.UserId != user).ToList(); //filtering out reviews that belong to the logged in user
+            List<UserProfile> qualifiedProfiles = filteredProfiles.Where(x => x.Rating >= 3).ToList(); //filtering out review that are less than rating of 3
+            List<UserProfile> descOrderedProfiles = qualifiedProfiles.OrderByDescending(x => x.Rating).ToList(); //orderes everything on the list based on highest-rated episdoes first
+
+            return descOrderedProfiles;
+            
+        }
     }
+
+
 }
+

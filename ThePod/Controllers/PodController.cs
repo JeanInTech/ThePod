@@ -22,7 +22,7 @@ namespace ThePod.Controllers
         // Search Results
         // ==============================================================
         public async Task<IActionResult> SearchResults(string query, string searchType) //this takes in a search term and gets the episode id to feed that into the "episode" endpoint
-        { 
+        {
             TempData["SearchType"] = searchType;
             if (searchType == "podcast")
             {
@@ -34,7 +34,7 @@ namespace ThePod.Controllers
                 TempData["NextPage"] = showResults.shows.next;
                 TempData["PreviousPage"] = showResults.shows.previous;
                 TempData["Offset"] = showResults.shows.offset;
-                
+
                 var showId = ConvertToIdString(i).ToString();
 
                 var eachShow = await _dal.SearchShowIdAsync(showId);
@@ -55,7 +55,7 @@ namespace ThePod.Controllers
                 var epId = ConvertToIdString(s).ToString();
                 var eachEpisode = await _dal.SearchEpisodeIdAsync(epId);
 
-                if(searchType == "episode")
+                if (searchType == "episode")
                 {
                     return View("EpisodeDetails", eachEpisode);
                 }
@@ -107,7 +107,7 @@ namespace ThePod.Controllers
             var epId = ConvertToIdString(s);
             var previousEpisodes = await _dal.SearchEpisodeIdAsync(epId);
 
-            if(type == "episode")
+            if (type == "episode")
             {
                 return View("EpisodeDetails", previousEpisodes);
             }
@@ -167,7 +167,7 @@ namespace ThePod.Controllers
                 }
             }
             var epId = String.Join(",", episodeIds);
-            
+
             return epId;
         }
         public static string ConvertToIdString(List<Item> i)
@@ -205,7 +205,7 @@ namespace ThePod.Controllers
                 if (x.name == query)
                 {
                     string shoId = x.id;
-                    
+
                     var episodesByPodcast = await _dal.SearchEpbyPodIdAsync(shoId);
                     return View("EpisodesByPodcast", episodesByPodcast);
                 }
@@ -241,5 +241,7 @@ namespace ThePod.Controllers
 
             return View("EpisodesByPodcast", showResults);
         }
+        
+
     }
 }

@@ -1,17 +1,17 @@
-﻿@model RootEpisodes
-@{
-    ViewData["EpisodeDetails"] = "Episode Details";
+﻿@{
     List<string> uniqueEpisodeIDs = new List<string>();
-    string userQuery = TempData.Peek("UserQuery").ToString();
-    string totalResults = TempData.Peek("TotalResults").ToString();
-    var nextPage = TempData.Peek("NextPage");
-    var previousPage = TempData.Peek("PreviousPage");
-    var offset = TempData["Offset"].ToString();
 }
 
+@{
+    string user = @User.Identity.Name;
+    int index = user.IndexOf("@");
+    if (index > 0)
+        user = user.Substring(0, index);
+}
 
 <div class="searchresults">
-    <h5 class="text-left text-capitalize" style="color: grey; letter-spacing: 2px">Search Results For "@userQuery"</h5>
+    <h5 class="text-left text-capitalize" style="color: grey; letter-spacing: 2px">Recommendations for @user</h5>
+    <h6 class="text-left text-capitalize" style="color: grey; letter-spacing: 2px">Because you give highest reviews to episodes with the tags: @ViewBag.FirstTag@ViewBag.SecondTag@ViewBag.ThirdTag</h6>
 </div>
 
 <table class="table table-hover table-responsive">
@@ -69,25 +69,3 @@
     }
 
 </table>
-
-<div class="pagebuttons">
-    @if (previousPage != null)
-    {
-        int convert = int.Parse(offset);
-        <form asp-controller="Pod" asp-action="GetPreviousPodcast" method="post">
-            <input type="hidden" name="query" value="@userQuery" />
-            <input type="hidden" name="offset" value="@convert" />
-            <input type="submit" value="Previous" class="btn btn-outline-dark btn-group-lg float-lg-left" />
-        </form>
-
-    }
-    @if (nextPage != null)
-    {
-        int convert = int.Parse(offset);
-        <form asp-controller="Pod" asp-action="GetNextPodcast" method="post">
-            <input type="hidden" name="query" value="@userQuery" />
-            <input type="hidden" name="offset" value="@convert" />
-            <input type="submit" value="Next" class="btn btn-outline-dark btn-group-lg float-lg-right" />
-        </form>
-    }
-</div>

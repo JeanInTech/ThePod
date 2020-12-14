@@ -32,7 +32,8 @@ namespace ThePod.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(Secret.ConnectionString);
+                optionsBuilder.UseSqlServer("ConnectionStrings");
+
             }
         }
 
