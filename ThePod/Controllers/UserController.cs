@@ -137,10 +137,6 @@ namespace ThePod.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
             var favorites = await _context.SavedPodcasts.FindAsync(id);
             _context.SavedPodcasts.Remove(favorites);
             await _context.SaveChangesAsync();
@@ -272,18 +268,39 @@ namespace ThePod.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> EditReview(int Id)
+        public async Task<IActionResult> EditReview(int fbId)
         {
-            var userReview = await _context.UserFeedbacks.FindAsync(Id);
+            var userReview = await _context.UserFeedbacks.FindAsync(fbId);
+
 
             return View("EditReview", userReview);
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditReview(int Id, int UserId, string EpisodeId, int Rating, string[] Tags, string Review, string EpisodeName, string PodcastName, string Description, string AudioPreviewURL, string ImageUrl, DateTime ReleaseDate, string ExternalURLS)
+        public async Task<IActionResult> EditReview(int Id, string EpisodeId, int Rating, string[] Tags, string Review)
         {
+            string user = FindUser();
             UserFeedback feedback1 = await _context.UserFeedbacks.FindAsync(Id);
             string tag = string.Join(", ", Tags);
+            List<UserProfile> up = _context.UserProfiles.Where(x => x.UserId == user && x.EpisodeId == EpisodeId).ToList();
+            foreach(UserProfile u in up)
+            {
+                _context.UserProfiles.Remove(u);
+                await _context.SaveChangesAsync();
+            }
+
+            for (int i = 0; i < Tags.Length; i++)
+            {
+                UserProfile profile = new UserProfile();
+                profile.UserFeedbackId = feedback1.Id;
+                profile.UserId = user;
+                profile.EpisodeId = EpisodeId;
+                profile.Tag = Tags[i];
+                profile.Rating = (byte)Rating;
+                await _context.UserProfiles.AddAsync(profile);
+                await _context.SaveChangesAsync();
+            }
+
             feedback1.Tags = tag;
             feedback1.Rating = (byte)Rating;
             feedback1.Review = Review;

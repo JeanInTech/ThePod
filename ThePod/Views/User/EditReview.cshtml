@@ -22,11 +22,13 @@
     </div>
 
     <p>Review: </p>
-    <div class="form-group form-text" style="width: 50%;">
+    <div class="form-group" style="width: 50%; height:200px;">
         <label asp-for="Review" class="control-label"></label>
         <input asp-for="Review" class="form-control" />
         <span asp-validation-for="Review" class="text-danger"></span>
     </div>
+    <input type="hidden" name="EpisodeId" value="@Model.EpisodeId" />
+
     <input type="hidden" name="Id" value="@Model.Id" />
     <input type="submit" value="Submit Revision" />
 </form>
