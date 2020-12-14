@@ -9,12 +9,11 @@
     var offset = TempData["Offset"].ToString();
 }
 
-
 <div class="searchresults">
     <h5 class="text-left text-capitalize" style="color: grey; letter-spacing: 2px">Search Results For "@userQuery"</h5>
 </div>
 
-<table class="table table-hover table-responsive">
+<table class="table table-hover table-responsive-lg">
     <thead class="thead-dark">
         <tr class="thead-dark">
             <th class="text-center">Podcast</th>
@@ -45,7 +44,7 @@
                         <figcaption class="figure-caption text-right">Released: @e.release_date <br />Length: @minutes minutes</figcaption>
                     </figure>
                 </td>
-                <td style="padding: 2em 2em 2em">
+                <td style="padding: 2em 2em 2em;">
                     <p style="font-weight: bold; font-size: 1em;">@e.name</p>
                     <hr />
                     <p>@e.description</p>
