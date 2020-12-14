@@ -1,4 +1,6 @@
-﻿@model RootEpisodes
+﻿
+
+@model RootEpisodes
 @{
     ViewData["EpisodeDetails"] = "Episode Details";
     List<string> uniqueEpisodeIDs = new List<string>();
@@ -14,7 +16,7 @@
     <h5 class="text-left text-capitalize" style="color: grey; letter-spacing: 2px">Search Results For "@userQuery"</h5>
 </div>
 
-<table class="table table-hover table-responsive">
+<table class="table table-hover table-responsive-lg">
     <thead class="thead-dark">
         <tr class="thead-dark">
             <th class="text-center">Podcast</th>
@@ -74,7 +76,7 @@
     @if (previousPage != null)
     {
         int convert = int.Parse(offset);
-        <form asp-controller="Pod" asp-action="GetPreviousPodcast" method="post">
+        <form asp-controller="Pod" asp-action="GetPreviousEpisode" method="post">
             <input type="hidden" name="query" value="@userQuery" />
             <input type="hidden" name="offset" value="@convert" />
             <input type="submit" value="Previous" class="btn btn-outline-dark btn-group-lg float-lg-left" />
@@ -84,7 +86,7 @@
     @if (nextPage != null)
     {
         int convert = int.Parse(offset);
-        <form asp-controller="Pod" asp-action="GetNextPodcast" method="post">
+        <form asp-controller="Pod" asp-action="GetNextEpisode" method="post">
             <input type="hidden" name="query" value="@userQuery" />
             <input type="hidden" name="offset" value="@convert" />
             <input type="submit" value="Next" class="btn btn-outline-dark btn-group-lg float-lg-right" />

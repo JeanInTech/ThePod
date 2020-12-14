@@ -4,7 +4,7 @@
     @*<h5 class="text-left text-capitalize" style="color: grey; letter-spacing: 2px">Search Results For "@userQuery"</h5>*@
 </div>
 
-<table class="table table-hover table-responsive">
+<table class="table table-hover table-responsive-lg">
     <thead class="thead-dark">
         <tr class="thead-dark">
             <th>Podcast</th>
@@ -27,7 +27,7 @@
             <audio controls style="width: 100%; align-content: start">
                 <source src="@fvm.AudioPreviewUrl" type="audio/mpeg">
             </audio>
-            <figcaption class="figure-caption text-right">Released: @fvm.ReleaseDate.ToShortDateString() <br />Length: @minutes minutes</figcaption>
+            <figcaption class="figure-caption text-right">Podcast: <a asp-controller="pod" asp-action="GetEpisodeByPodcast" asp-route-query="@fvm.PodcastName" asp-route-searchType="episodes">@fvm.PodcastName </a><br />Released: @fvm.ReleaseDate.ToShortDateString() <br />Length: @minutes minutes</figcaption>
         </figure>
     <td style="padding: 2em 2em 2em 2em">
         <p style="font-weight: bold; font-size: 1em;">@fvm.EpisodeName<p>
@@ -47,10 +47,11 @@
     <td>
         @if (fvm.Review == null)
         {
-            <p><i>This episode hasn't been reviewed.</i></p>
             <form asp-controller="User" asp-action="ReviewEpisode" method="get">
                 <input type="hidden" value="@fvm.EpisodeId" name="id" />
-                <input type="submit" value="Add Review" />
+                <input type="submit" value="Add Review" class="btn btn-outline-dark btn-group-lg float-lg-left"/>
+                <br>
+            <p><i>This episode hasn't been reviewed.</i></p>
             </form>
         }
         else
@@ -59,7 +60,7 @@
             <form asp-controller="User" asp-action="EditReview" method="post">
                 <input type="hidden" value="@fvm.UserFeedbackId" name="fbId" />
                 <input type="hidden" value="@fvm.EpisodeId" name="epId" />
-                <input type="submit" value="Edit Review" />
+                <input type="submit" value="Edit Review" class="btn btn-outline-dark btn-group-lg float-lg-left" />
             </form>
             <p><i>Last Updated: @fvm.DatePosted.ToShortDateString()</i></p>
         }
@@ -67,9 +68,10 @@
     <td>
         <form asp-controller="user" asp-action="Delete" method="post">
             <input type="number" value="@fvm.SavedPodcastId" name="id" hidden />
-            <input type="submit" value="Delete" />
+            <input type="submit" value="Delete" class="btn btn-outline-dark btn-group-lg float-lg-left"  />
         </form>
     </td>
+    
 </tr>
     }
 </table>
