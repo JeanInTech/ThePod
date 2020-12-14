@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using ThePod.DataAccess;
 using ThePod.Models;
@@ -22,7 +23,7 @@ namespace ThePod.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(GetTagCloud());
         }
         public IActionResult Recommendations()
         {
@@ -39,6 +40,16 @@ namespace ThePod.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        // ==============================================================
+        // Tag Cloud
+        // ==============================================================
+        public string GetTagCloud()
+        {
+            var allTags = _context.UserProfiles.ToList();
+            var tags = TagCloud.MakeTagCloud(allTags);
+
+            return tags;
         }
     }
 }

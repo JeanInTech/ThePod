@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using ThePod.DataAccess;
 using ThePod.Models;
@@ -13,10 +14,12 @@ namespace ThePod.Controllers
     {
         private readonly PodDAL _dal;
         private readonly IConfiguration _config;
-        public PodController(PodDAL dal, IConfiguration config)
+        private readonly thepodContext _context;
+        public PodController(PodDAL dal, IConfiguration config, thepodContext context)
         {
             _dal = dal;
             _config = config;
+            _context = context;
         }
         // ==============================================================
         // Search Results
@@ -241,7 +244,6 @@ namespace ThePod.Controllers
 
             return View("EpisodesByPodcast", showResults);
         }
-        
 
     }
 }
