@@ -32,7 +32,9 @@
     <td style="padding: 2em 2em 2em 2em">
         <p style="font-weight: bold; font-size: 1em;">@fvm.EpisodeName<p>
             <hr />
-        <p>@fvm.Description</p>
+        <p>
+        @Html.TextAreaFor(model => @fvm.Description, new { maxlength = "50" });
+        @fvm.Description</p>
     </td>
     <td>
         @if (fvm.Rating == null || fvm.Rating == 0)
