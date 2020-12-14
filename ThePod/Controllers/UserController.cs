@@ -355,7 +355,12 @@ namespace ThePod.Controllers
 
             return View("userrecommendations", recommendedEpisodes);
         }
-    
+    public IActionResult GetGlobalBestOf()
+        {
+            List<UserProfile> bestOf = GetBestEpisodesRawData();
+
+            return View("topPicks", bestOf);
+        }
         public List<UserProfile> GetBestEpisodesRawData()
         {
             string user = FindUser();
