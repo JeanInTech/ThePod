@@ -8,70 +8,65 @@
     <thead class="thead-dark">
         <tr class="thead-dark">
             <th>Podcast</th>
-            <th>Episode Description</th>
-            <th>Rating</th>
+            <th style="width: 200px">Episode Description</th>
             <th>Review</th>
-            <th>Delete</th>
+            <th>Remove</th>
         </tr>
     </thead>
 
     @foreach (FavoriteViewModel fvm in Model)
     {
-<tr>
-    <td>
-        @{
-            int minutes = (fvm.Duration / 1000) / 60;
-        }
-        <figure class="figure">
-            <a href="@fvm.ImageUrl" alt="@fvm.PodcastName" target="_blank"><img src="@fvm.ImageUrl" style="height: 250px; width:250px;" class="figure-img" /></a>
-            <audio controls style="width: 100%; align-content: start">
-                <source src="@fvm.AudioPreviewUrl" type="audio/mpeg">
-            </audio>
-            <figcaption class="figure-caption text-right">Released: @fvm.ReleaseDate.ToShortDateString() <br />Length: @minutes minutes</figcaption>
-        </figure>
-    <td style="padding: 2em 2em 2em 2em">
-        <p style="font-weight: bold; font-size: 1em;">@fvm.EpisodeName<p>
-            <hr />
-        <p>
-        @Html.TextAreaFor(model => @fvm.Description, new { maxlength = "50" });
-        @fvm.Description</p>
-    </td>
-    <td>
-        @if (fvm.Rating == null || fvm.Rating == 0)
-        {
-            <p>N/A</p>
-        }
-        else
-        {
-            <p>@fvm.Rating/5</p>
-        }
-    </td>
-    <td>
-        @if (fvm.Review == null)
-        {
-            <p><i>This episode hasn't been reviewed.</i></p>
-            <form asp-controller="User" asp-action="ReviewEpisode" method="get">
-                <input type="hidden" value="@fvm.EpisodeId" name="id" />
-                <input type="submit" value="Add Review" />
-            </form>
-        }
-        else
-        {
-            <p>@fvm.Review</p>
-            <form asp-controller="User" asp-action="EditReview" method="post">
-                <input type="hidden" value="@fvm.UserFeedbackId" name="fbId" />
-                <input type="hidden" value="@fvm.EpisodeId" name="epId" />
-                <input type="submit" value="Edit Review" />
-            </form>
-            <p><i>Last Updated: @fvm.DatePosted.ToShortDateString()</i></p>
-        }
-    </td>
-    <td>
-        <form asp-controller="user" asp-action="Delete" method="post">
-            <input type="number" value="@fvm.SavedPodcastId" name="id" hidden />
-            <input type="submit" value="Delete" />
-        </form>
-    </td>
-</tr>
+        <tr>
+            <td>
+                @{
+                    int minutes = (fvm.Duration / 1000) / 60;
+                }
+                <figure class="figure">
+                    <a href="@fvm.ImageUrl" alt="@fvm.PodcastName" target="_blank"><img src="@fvm.ImageUrl" style="height: 250px; width:250px;" class="figure-img" /></a>
+                    <audio controls style="width: 100%; align-content: start">
+                        <source src="@fvm.AudioPreviewUrl" type="audio/mpeg">
+                    </audio>
+                    <figcaption class="figure-caption text-right">Released: @fvm.ReleaseDate.ToShortDateString() <br />Length: @minutes minutes</figcaption>
+                </figure>
+            <td style="padding: 2em 2em 2em 2em">
+                <p style="font-weight: bold; font-size: 1em;">@fvm.EpisodeName<p>
+                    <hr />
+                <p>@fvm.Description</p>
+            </td>
+            <td style="padding: 2em 2em 2em 2em">
+
+                @if (fvm.Rating == null || fvm.Rating == 0)
+                {
+                    <strong>Rating: N/A</strong>
+                    <hr />
+                }
+                else
+                {
+                    <strong>Rating: @fvm.Rating/5</strong>
+                    <hr />
+                }
+                @if (fvm.Review == null)
+                {
+                    <p><i>This episode hasn't been reviewed.</i></p>
+                    <form asp-controller="User" asp-action="ReviewEpisode" method="get">
+                        <input type="hidden" value="@fvm.EpisodeId" name="id" />
+                        <input type="submit" value="Add Review" />
+                    </form>
+                }
+                else
+                {
+                    <p>@fvm.Review</p>
+                    <form asp-controller="User" asp-action="EditReview" method="post">
+                        <input type="hidden" value="@fvm.UserFeedbackId" name="fbId" />
+                        <input type="hidden" value="@fvm.EpisodeId" name="epId" />
+                        <input type="submit" value="Edit Review" />
+                    </form>
+                    <p><i>Last Updated: @fvm.DatePosted.ToShortDateString()</i></p>
+                }
+            </td>
+            <td class="text-sm-center">
+                <a asp-controller="User" asp-action="Delete" asp-route-id="@fvm.SavedPodcastId"><img src="~/img/close-window-icon-24 (1).png" /></a>
+            </td>
+        </tr>
     }
 </table>
