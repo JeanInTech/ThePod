@@ -1,7 +1,9 @@
 ﻿@model UserFeedback
 
 <h2>Edit Review</h2>
-<p>Edit your review on @Model.EpisodeName</p>
+<img src="@Model.ImageUrl" height="200" />
+<p><strong>Episode:</strong> @Model.EpisodeName</p>
+<p><strong>Podcast:</strong> @Model.PodcastName</p>
 <p>Originally posted on: @Model.DatePosted</p>
 <form asp-controller="User" asp-action="EditReview" method="post">
     <p>Rating: <input type="number" name="Rating" value="@Model.Rating" min="1" max="5" required /></p>
