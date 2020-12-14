@@ -2,7 +2,6 @@
 
 <h4 class="text-left text-capitalize" style="color: black; letter-spacing: 2px">Edit review for: @Model.EpisodeName</h4>
 <div style="color: grey">
-
     <p><strong>Name of Podcast: </strong>@Model.PodcastName</p>
     <p><strong>Episode description: </strong>@Model.Description</p>
     <p><strong>Release date: </strong>@Model.ReleaseDate</p>
@@ -45,6 +44,7 @@
             <input asp-for="Review" class="form-control" />
             <span asp-validation-for="Review" class="text-danger"></span>
         </div>
+        <input type="hidden" name="EpisodeId" value="@Model.EpisodeId" />
         <input type="hidden" name="Id" value="@Model.Id" />
         <input type="submit" value="Submit Revision" class="btn btn-outline-dark btn-group-lg float-lg-left" />
     </form>

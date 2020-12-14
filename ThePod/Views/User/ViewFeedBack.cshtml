@@ -1,24 +1,27 @@
 ﻿@model List<UserFeedback>
 
-
 <form asp-action="SortFeedback" method="get">
     <div class="form-actions no-color">
-        <p> Find by tag: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]"/>
-        <input type="submit" value="Search" class="btn btn-default"/> | <a asp-action="SortFeedback">Back to Feedback</a></p>
+        <p>
+            Find by tag: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-default" /> | <a asp-action="SortFeedback">Back to Feedback</a>
+        </p>
     </div>
 </form>
-<table class="table-striped, table-hover" border="1">
-    <tr>
-        <th><strong><a asp-action="SortFeedback" asp-route-sortOrder="@ViewData["DateSortParm"]">Date Posted</a></strong></th>
-        <th><strong><a asp-action="SortFeedback" asp-route-sortOrder="@ViewData["EpNameSortParm"]">Episode Name</a></strong></th>
-        <th><strong><a asp-action="SortFeedback" asp-route-sortOrder="@ViewData["PodNameSortParm"]">Podcast Name</a></strong></th>
-        <th><strong><a asp-action="SortFeedback" asp-route-sortOrder="@ViewData["RatingSortParm"]">Rating</a></strong></th>
-        <th><strong>Tags</strong></th>
-        <th><strong>Review</strong></th>
-        <th><strong>Edit Review</strong></th>
-        <th><strong>Delete Review</strong></th>
-    </tr>
 
+<table class="table table-hover table-responsive-lg">
+    <thead class="thead-dark">
+        <tr class="thead-dark">
+            <th><strong><a asp-action="SortFeedback" asp-route-sortOrder="@ViewData["DateSortParm"]">Date Posted</a></strong></th>
+            <th><strong><a asp-action="SortFeedback" asp-route-sortOrder="@ViewData["EpNameSortParm"]">Episode Name</a></strong></th>
+            <th><strong><a asp-action="SortFeedback" asp-route-sortOrder="@ViewData["PodNameSortParm"]">Podcast Name</a></strong></th>
+            <th><strong><a asp-action="SortFeedback" asp-route-sortOrder="@ViewData["RatingSortParm"]">Rating</a></strong></th>
+            <th><strong>Tags</strong></th>
+            <th><strong>Review</strong></th>
+            <th><strong>Edit</strong></th>
+            <th><strong>Delete</strong></th>
+        </tr>
+    </thead>
 
     @foreach (var u in Model)
     {
@@ -29,10 +32,12 @@
             <td>@u.Rating/5</td>
             <td>@u.Tags</td>
             <td>@u.Review</td>
-            <td><a asp-controller="User" asp-action="EditReview" asp-route-Id="@u.Id">Edit Review</a></td>
-            <td><a asp-controller="User" asp-action="DeleteReview" asp-route-fbId="@u.Id" asp-route-epId="@u.EpisodeId">Delete Review</a></td>
-
+            <td class="text-sm-center">
+                <a asp-controller="User" asp-action="EditReview" asp-route-fbId="@u.Id" method="get"><img src="~/img/pencil-icon-24.png" /></a>
+            </td>
+            <td class="text-sm-center">
+                <a asp-controller="User" asp-action="DeleteReview" asp-route-fbId="@u.Id" asp-route-epId="@u.EpisodeId"><img src="~/img/close-window-icon-24 (1).png" /></a>
+            </td>
         </tr>
     }
-
 </table>

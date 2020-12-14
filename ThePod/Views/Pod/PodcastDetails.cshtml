@@ -13,7 +13,7 @@
     <h5 class="text-left text-capitalize" style="color: grey; letter-spacing: 2px">Search Results For "@userQuery"</h5>
 </div>
 
-<table class="table table-hover table-responsive">
+<table class="table table-hover table-responsive-lg">
     <thead class="thead-dark">
         <tr class="thead-dark">
             <th class="text-center">Podcast</th>
@@ -43,7 +43,7 @@
                     </figure>
                 </td>
                 <td style="padding: 2em 2em 2em 2em">
-                    <p>Number of episodes: <a asp-controller="pod" asp-action="GetEpisodeByPodcast" asp-route-query="@e.name" asp-route-searchType="episodes">@e.total_episodes </a></p>
+                    <p><a asp-controller="pod" asp-action="GetEpisodeByPodcast" asp-route-query="@e.name" asp-route-searchType="episodes">@e.total_episodes </a></p>
                 </td>
                 <td style="padding: 2em 2em 2em 2em">@e.description</td>
             </tr>
