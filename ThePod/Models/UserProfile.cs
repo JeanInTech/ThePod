@@ -12,9 +12,12 @@ namespace ThePod.Models
         public string UserId { get; set; }
         public string EpisodeId { get; set; }
         public string Tag { get; set; }
-        public int Rating { get; set; }
+        public byte Rating { get; set; }
 
 
         public virtual UserFeedback UserFeedback { get; set; }
+  
     }
+
+
 }

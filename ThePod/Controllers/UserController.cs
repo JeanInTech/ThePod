@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -106,7 +107,7 @@ namespace ThePod.Controllers
             return View("Index", await podcast.Where(x => x.UserId == user).AsNoTracking().ToListAsync());
         }
 
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (id == null)
             {
@@ -131,7 +132,7 @@ namespace ThePod.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ReviewEpisode(string EpisodeId, int Rating, string[] Tags, string Review, string EpisodeName, string PodcastName, string Description, string AudioPreviewURL, string ImageUrl, DateTime ReleaseDate, string ExternalURLS)
+        public async Task<IActionResult> ReviewEpisode(string EpisodeId, byte Rating, string[] Tags, string Review, string EpisodeName, string PodcastName, string Description, string AudioPreviewURL, string ImageUrl, DateTime ReleaseDate, string ExternalURLS)
         {
             string stringTags = String.Join(", ", Tags);
 
@@ -157,7 +158,7 @@ namespace ThePod.Controllers
 
             for (int i = 0; i < Tags.Length; i++) //looping through each item in the Tags array so that we can add a new entry for each tag
             {
-                
+
                 UserProfile profile = new UserProfile();
                 profile.UserFeedbackId = feedback.Id;
                 profile.UserId = user;
@@ -170,7 +171,7 @@ namespace ThePod.Controllers
             }
             return RedirectToAction("Index", "Home");
         }
-
+       
         public IActionResult ViewFeedBack()
         {
             string user = FindUser();
@@ -256,5 +257,116 @@ namespace ThePod.Controllers
             var userId = claim.Value;
             return userId;
         }
+        //public async IActionResult GetUserRecommendations()
+        //{
+        //    //List<UserProfile> userProfiles = _context.UserProfiles.ToList();
+        //    //List<UserProfile> recommendations = userProfiles.Where()
+        //    //using (thepodContext dbContext = new thepodContext())
+        //    //{
+        //    //    IEnumerable<UserProfile> userProfiles = dbContext.ExecuteQuery<UserProfile>();
+
+        //    //}
+        //    //var compiledUserProfile = CompiledQuery.Compile(
+        //    //    thepodContext dbContext, string episodeId) =>
+        //    //    ()
+        //    //using (thepodContext dbContext = new thepodContext())
+        //    //{
+        //    //    UserProfile userProfile = (from )
+        //    //}
+
+
+        //        return View("recommendations");
+        //}
+        //public System.Collections.IEnumerable ExecuteQuery(Type elementType, string query, params object[] parameters);
+        //{
+
+        //return RedirectToAction();
+
+        public List<string> GetProfile()
+        {
+            var user = FindUser();
+            var userSpecific = from x in _context.UserProfiles
+                               where x.UserId.Equals(user)
+                               select x;
+            var qualifiedRatings = from y in userSpecific
+                                   where y.Rating >= 3
+                                   select y;
+            var countPerTag = from z in qualifiedRatings
+                              group z by z.Tag into taggedList
+                              select new
+                              {
+                                  TagGroup = taggedList.Key,
+                                  CountTag = taggedList.Count(),
+                              };
+
+            var topTags = countPerTag.OrderByDescending(countPerTag => countPerTag.CountTag).ToList();
+
+
+            List<string> usersTopTags = new List<string>();
+
+            foreach (var t in topTags)
+            {
+                usersTopTags.Add(t.TagGroup);
+
+            }
+
+            //var groupedRatings = qualifiedRatings.AsEnumerable().GroupBy(x => x.Tag).ToList();
+
+
+            return (usersTopTags);
+        }
+        public IActionResult GetRecommendations()
+        {
+            List<string> usersTopTags = GetProfile(); //get a list of the users top tags (the tag they used most frequently on episodes rated 3+)
+            string firstPreferred = usersTopTags[0]; //1st place tag 
+            string secondPreferred = usersTopTags[1]; //2nd place tag
+            string thirdPreferred = usersTopTags[2]; //3rd place tag
+
+            List<UserProfile> bestProfiles = GetBestEpisodesRawData(); //list of every tag in UserProfile table with a rating of 3+, that the logged in user has not reviewed, organized by highest rated first
+
+            List<string> firstTagEpisodeRec = new List<string>();
+            List<string> secondTagEpisodeRec = new List<string>();
+            List<string> thirdTagEpisodeRec = new List<string>();
+
+            foreach (UserProfile u in bestProfiles)
+            {
+                if (firstPreferred == u.Tag)
+                {
+                    firstTagEpisodeRec.Add(u.EpisodeId);
+                }
+                if (secondPreferred == u.Tag)
+                {
+                    secondTagEpisodeRec.Add(u.EpisodeId);
+                }
+                if (thirdPreferred == u.Tag)
+                {
+                    thirdTagEpisodeRec.Add(u.EpisodeId);
+                }
+            }
+            List<List<string>> topThreeEpisdodeLists = new List<List<string>>();
+            {
+                topThreeEpisdodeLists.Add(firstTagEpisodeRec);
+                topThreeEpisdodeLists.Add(secondTagEpisodeRec);
+                topThreeEpisdodeLists.Add(thirdTagEpisodeRec);
+            }
+
+
+            return View("userrecommendations", topThreeEpisdodeLists);
+        }
+    
+        public List<UserProfile> GetBestEpisodesRawData()
+        {
+            string user = FindUser();
+            List<UserProfile> globalProfiles = _context.UserProfiles.ToList();
+            List<UserProfile> filteredProfiles = globalProfiles.Where(x => x.UserId != user).ToList(); //filtering out reviews that belong to the logged in user
+            List<UserProfile> qualifiedProfiles = filteredProfiles.Where(x => x.Rating >= 3).ToList(); //filtering out review that are less than rating of 3
+            List<UserProfile> descOrderedProfiles = qualifiedProfiles.OrderByDescending(x => x.Rating).ToList(); //orderes everything on the list based on highest-rated episdoes first
+
+            return descOrderedProfiles;
+            
+        }
     }
+
+
 }
+
