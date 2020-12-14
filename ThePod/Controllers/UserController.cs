@@ -257,31 +257,6 @@ namespace ThePod.Controllers
             var userId = claim.Value;
             return userId;
         }
-        //public async IActionResult GetUserRecommendations()
-        //{
-        //    //List<UserProfile> userProfiles = _context.UserProfiles.ToList();
-        //    //List<UserProfile> recommendations = userProfiles.Where()
-        //    //using (thepodContext dbContext = new thepodContext())
-        //    //{
-        //    //    IEnumerable<UserProfile> userProfiles = dbContext.ExecuteQuery<UserProfile>();
-
-        //    //}
-        //    //var compiledUserProfile = CompiledQuery.Compile(
-        //    //    thepodContext dbContext, string episodeId) =>
-        //    //    ()
-        //    //using (thepodContext dbContext = new thepodContext())
-        //    //{
-        //    //    UserProfile userProfile = (from )
-        //    //}
-
-
-        //        return View("recommendations");
-        //}
-        //public System.Collections.IEnumerable ExecuteQuery(Type elementType, string query, params object[] parameters);
-        //{
-
-        //return RedirectToAction();
-
         public List<string> GetProfile()
         {
             var user = FindUser();
@@ -315,12 +290,15 @@ namespace ThePod.Controllers
 
             return (usersTopTags);
         }
-        public IActionResult GetRecommendations()
+        public async Task<IActionResult> GetRecommendations()
         {
             List<string> usersTopTags = GetProfile(); //get a list of the users top tags (the tag they used most frequently on episodes rated 3+)
-            string firstPreferred = usersTopTags[0]; //1st place tag 
+            string firstPreferred = usersTopTags[0]; //1st place tag (this is just the single word(tag) so this can be used later in a viewbag
             string secondPreferred = usersTopTags[1]; //2nd place tag
             string thirdPreferred = usersTopTags[2]; //3rd place tag
+            ViewBag.FirstTag = firstPreferred;
+            ViewBag.SecondTag = " - "+secondPreferred;
+            ViewBag.ThirdTag = " - " +thirdPreferred;
 
             List<UserProfile> bestProfiles = GetBestEpisodesRawData(); //list of every tag in UserProfile table with a rating of 3+, that the logged in user has not reviewed, organized by highest rated first
 
@@ -343,15 +321,39 @@ namespace ThePod.Controllers
                     thirdTagEpisodeRec.Add(u.EpisodeId);
                 }
             }
-            List<List<string>> topThreeEpisdodeLists = new List<List<string>>();
+            List<List<string>> topThreeEpisdodeLists = new List<List<string>>(); //these are just lists of strings (episode Ids)
             {
                 topThreeEpisdodeLists.Add(firstTagEpisodeRec);
                 topThreeEpisdodeLists.Add(secondTagEpisodeRec);
                 topThreeEpisdodeLists.Add(thirdTagEpisodeRec);
             }
+            List<string> episodeIds = new List<string>();
+            foreach (var e in firstTagEpisodeRec)
+            {
+                if (e != null)
+                {
+                    episodeIds.Add(e);
+                }
+            }
+            foreach (var e in secondTagEpisodeRec)
+            {
+                if (e != null)
+                {
+                    episodeIds.Add(e);
+                }
+            }
+            foreach (var e in thirdTagEpisodeRec)
+            {
+                if (e != null)
+                {
+                    episodeIds.Add(e);
+                }
+            }
+            var epId = String.Join(",", episodeIds);
 
+             var recommendedEpisodes = await _dal.SearchEpisodeIdAsync(epId);
 
-            return View("userrecommendations", topThreeEpisdodeLists);
+            return View("userrecommendations", recommendedEpisodes);
         }
     
         public List<UserProfile> GetBestEpisodesRawData()
