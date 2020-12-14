@@ -155,7 +155,6 @@ namespace ThePod.Controllers
         public async Task<IActionResult> ReviewEpisode(string id)
         {
             string user = FindUser();
-          
             List<UserFeedback> feedbackMatch = _context.UserFeedbacks.Where(x => x.UserId == user && x.EpisodeId == id).ToList();
             if (feedbackMatch.Count > 0)
             {
@@ -195,7 +194,6 @@ namespace ThePod.Controllers
 
             for (int i = 0; i < Tags.Length; i++) //looping through each item in the Tags array so that we can add a new entry for each tag
             {
-
                 UserProfile profile = new UserProfile();
                 profile.UserFeedbackId = feedback.Id;
                 profile.UserId = user;
@@ -204,7 +202,6 @@ namespace ThePod.Controllers
                 profile.Rating = Rating;
                 await _context.UserProfiles.AddAsync(profile);
                 await _context.SaveChangesAsync(); //saving the entries to the UserProfile table
-
             }
             return RedirectToAction("ViewFeedback", "User");
 
@@ -286,8 +283,6 @@ namespace ThePod.Controllers
         public async Task<IActionResult> EditReview(int Id, int UserId, string EpisodeId, int Rating, string[] Tags, string Review, string EpisodeName, string PodcastName, string Description, string AudioPreviewURL, string ImageUrl, DateTime ReleaseDate, string ExternalURLS)
         {
             UserFeedback feedback1 = await _context.UserFeedbacks.FindAsync(Id);
-            //feedback.Id = Id;
-            //feedback.UserId = 
             string tag = string.Join(", ", Tags);
             feedback1.Tags = tag;
             feedback1.Rating = (byte)Rating;
@@ -339,6 +334,10 @@ namespace ThePod.Controllers
         public async Task<IActionResult> GetRecommendations()
         {
             List<string> usersTopTags = GetProfile(); //get a list of the users top tags (the tag they used most frequently on episodes rated 3+)
+            if(usersTopTags.Count < 3)
+            {
+                return View("userrecommendations");
+            }
             string firstPreferred = usersTopTags[0]; //1st place tag (this is just the single word(tag) so this can be used later in a viewbag
             string secondPreferred = usersTopTags[1]; //2nd place tag
             string thirdPreferred = usersTopTags[2]; //3rd place tag
