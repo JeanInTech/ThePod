@@ -69,7 +69,7 @@
     @if (previousPage != null)
     {
         int convert = int.Parse(offset);
-        <form asp-controller="Pod" asp-action="GetPreviousPodcast" method="post">
+        <form asp-controller="Pod" asp-action="GetPreviousEpByPod" method="post">
             <input type="hidden" name="shoId" value="@shoId" />
             <input type="hidden" name="offset" value="@convert" />
             <input type="submit" value="Previous" class="btn btn-outline-dark btn-group-lg float-lg-left" />
@@ -79,7 +79,7 @@
     @if (nextPage != null)
     {
         int convert = int.Parse(offset);
-        <form asp-controller="Pod" asp-action="GetNextPodcast" method="post">
+        <form asp-controller="Pod" asp-action="GetNextEpByPod" method="post">
             <input type="hidden" name="shoId" value="@shoId" />
             <input type="hidden" name="offset" value="@convert" />
             <input type="submit" value="Next" class="btn btn-outline-dark btn-group-lg float-lg-right" />
