@@ -17,7 +17,7 @@
     {
         <tr>
             <td>
-                @{ 
+                @{
                     int minutes = (@s.Duration / 1000) / 60;
                 }
                 <figure class="figure">
@@ -27,7 +27,7 @@
                     </audio>
                     <figcaption class="figure-caption text-right">Released: @s.ReleaseDate <br />Length: @minutes minutes</figcaption>
                 </figure>
-<td style="padding: 2em 2em 2em 2em">
+            <td style="padding: 2em 2em 2em 2em">
                 <p style="font-weight: bold; font-size: 1em;">@s.EpisodeName<p>
                     <hr />
                 <p>@s.Description</p>
@@ -39,47 +39,22 @@
                 </form>
             </td>
 
-        tr:first-child td:last-child {
-            border-top-right-radius: 4px;
-        }
-
-        tr:last-child td:first-child {
-            border-bottom-left-radius: 4px;
-        }
-
-        tr:last-child td:last-child {
-            border-bottom-right-radius: 4px;
-        }
-    </style>
-
-    <form asp-action="SortFavorites" method="get">
-        <div class="form-actions no-color">
-            <p>
-                Search Description: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
-                <input type="submit" value="Search" class="btn btn-default" /> | <a asp-action="SortFavorites"></a>
-            </p>
-        </div>
-    </form>
-  
-
-<table class="table table-hover table-responsive">
-    <thead class="thead-dark">
-        <tr class="thead-dark">
-            <th>Podcast</th>
-            <th>Episode Description</th>
-            <th><p></p></th>
         </tr>
-    </thead>
+                    }
+</table>
+                    
 
-    <p>hi, you added a favorite</p>
+
+
+
+
+
+@*<p>hi, you added a favorite</p>
     <table class="styled-table">
-
-    @foreach (SavedPodcast s in Model)
-    {
-        <thead>
-            <tr>
-
-
+        @foreach (SavedPodcast s in Model)
+        {
+            <thead>
+                <tr>
                     <th><strong><a asp-action="SortFavorites" asp-route-sortOrder="@ViewData["PodNameSortParm"]">Name</a></strong></th>
                     <th><strong><a asp-action="SortFavorites" asp-route-sortOrder="@ViewData["PublisherSortParm"]">Publisher</a></strong></th>
                     <th><strong><a asp-action="SortFavorites" asp-route-sortOrder="@ViewData["EpNameSortParm"]">Episode Name</a></strong></th>
@@ -89,7 +64,6 @@
                     <th>Duration</th>
                     <th>Id</th>
                     <th><strong><a asp-action="SortFavorites" asp-route-sortOrder="@ViewData["DateSortParm"]">Release Date</a></strong></th>
-
                 </tr>
             </thead>
             <tbody>
@@ -106,9 +80,5 @@
                     <td> <a asp-action="Delete" asp-route-id="@s.Id">Delete</a></td>
                 </tr>
             </tbody>
-
-
-    }
-
-    </table>
-
+        }
+    </table>*@

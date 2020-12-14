@@ -155,8 +155,8 @@ namespace ThePod.Controllers
         public async Task<IActionResult> ReviewEpisode(string id)
         {
             string user = FindUser();
-            List<UserFeedback> feedbackList = _context.UserFeedbacks.ToList();
-            List<UserFeedback> feedbackMatch = feedbackList.Where(x => x.UserId == user && x.EpisodeId == id).ToList();
+          
+            List<UserFeedback> feedbackMatch = _context.UserFeedbacks.Where(x => x.UserId == user && x.EpisodeId == id).ToList();
             if (feedbackMatch.Count > 0)
             {
                 UserFeedback duplicateReview = feedbackMatch.First();
