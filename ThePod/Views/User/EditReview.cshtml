@@ -1,34 +1,51 @@
 ﻿@model UserFeedback
 
-<h2>Edit Review</h2>
-<img src="@Model.ImageUrl" height="200" />
-<p><strong>Episode:</strong> @Model.EpisodeName</p>
-<p><strong>Podcast:</strong> @Model.PodcastName</p>
-<p>Originally posted on: @Model.DatePosted</p>
-<form asp-controller="User" asp-action="EditReview" method="post">
-    <p>Rating: <input type="number" name="Rating" value="@Model.Rating" min="1" max="5" required /></p>
-    <div class="reviewtags">
-        <p><strong>Tags (Select up to 3):</strong></p>
-        <input class="single-checkbox" type="checkbox" name="Tags" value="Funny" checked="@Model.Tags.Contains("Funny")">Funny<br>
-        <input class="single-checkbox" type="checkbox" name="Tags" value="Sports" checked="@Model.Tags.Contains("Sports")">Sports<br>
-        <input class="single-checkbox" type="checkbox" name="Tags" value="Mindblown" checked="@Model.Tags.Contains("Mindblown")">Mindblown<br>
-        <input class="single-checkbox" type="checkbox" name="Tags" value="Spooky" checked="@Model.Tags.Contains("Spooky")">Spooky<br>
-        <input class="single-checkbox" type="checkbox" name="Tags" value="LGBT" checked="@Model.Tags.Contains("LGBT")">LGBT+<br>
-        <input class="single-checkbox" type="checkbox" name="Tags" value="Gaming" checked="@Model.Tags.Contains("Gaming")">Gaming<br>
-        <input class="single-checkbox" type="checkbox" name="Tags" value="Storytelling" checked="@Model.Tags.Contains("Storytelling")">Storytelling<br>
-        <input class="single-checkbox" type="checkbox" name="Tags" value="Aliens" checked="@Model.Tags.Contains("Aliens")">Aliens<br>
-        <input class="single-checkbox" type="checkbox" name="Tags" value="Crime" checked="@Model.Tags.Contains("Crime")">Crime<br>
-        <input class="single-checkbox" type="checkbox" name="Tags" value="Tech" checked="@Model.Tags.Contains("Tech")">Tech<br>
-    </div>
+<h4 class="text-left text-capitalize" style="color: black; letter-spacing: 2px">Edit review for: @Model.EpisodeName</h4>
+<div style="color: grey">
+    <p><strong>Name of Podcast: </strong>@Model.PodcastName</p>
+    <p><strong>Episode description: </strong>@Model.Description</p>
+    <p><strong>Release date: </strong>@Model.ReleaseDate</p>
+    <img src="@Model.ImageUrl" height="300" />
+    <p><strong>Originally posted on: </strong>@Model.DatePosted</p>
+    <form asp-controller="User" asp-action="EditReview" method="post">
+        <p>Rating: <input type="number" name="Rating" value="@Model.Rating" min="1" max="5" required /></p>
+        <div class="reviewtags">
+            <p><strong>Tags (Select up to 3):</strong></p>
+            <input type="checkbox" name="Tags" value="Aliens" checked="@Model.Tags.Contains("Aliens")"> Aliens<br>
+            <input type="checkbox" name="Tags" value="Crime" checked="@Model.Tags.Contains("Crime")"> Crime<br>
+            <input type="checkbox" name="Tags" value="Current Events" checked="@Model.Tags.Contains("Current Events")"> Current Events<br>
+            <input type="checkbox" name="Tags" value="Educational" checked="@Model.Tags.Contains("Educational")"> Educational<br>
+            <input type="checkbox" name="Tags" value="Famous People" checked="@Model.Tags.Contains("Famous People")"> Famous People<br>
+            <input type="checkbox" name="Tags" value="Funny" checked="@Model.Tags.Contains("Funny")"> Funny <br>
+            <input type="checkbox" name="Tags" value="Game-changing" checked="@Model.Tags.Contains("Game-changing")"> Game-changing<br>
+            <input type="checkbox" name="Tags" value="Gaming" checked="@Model.Tags.Contains("Gaming")"> Gaming<br>
+            <input type="checkbox" name="Tags" value="Health" checked="@Model.Tags.Contains("Health")"> Health<br>
+            <input type="checkbox" name="Tags" value="Inspirational" checked="@Model.Tags.Contains("Inspirational")"> Inspirational<br>
+            <input type="checkbox" name="Tags" value="Kid-Friendly" checked="@Model.Tags.Contains("Kid-Friendly")"> Kid-Friendly<br>
+            <input type="checkbox" name="Tags" value="LGBT" checked="@Model.Tags.Contains("LGBT")"> LGBT+<br>
+            <input type="checkbox" name="Tags" value="Mindblown" checked="@Model.Tags.Contains("Mindblown")"> Mindblown<br>
+            <input type="checkbox" name="Tags" value="Money" checked="@Model.Tags.Contains("Money")"> Money<br>
+            <input type="checkbox" name="Tags" value="Multicultural" checked="@Model.Tags.Contains("Multicultural")"> Multicultural<br>
+            <input type="checkbox" name="Tags" value="NSFW" checked="@Model.Tags.Contains("NSFW")"> NSFW<br>
+            <input type="checkbox" name="Tags" value="Politics" checked="@Model.Tags.Contains("Politics")"> Politics<br>
+            <input type="checkbox" name="Tags" value="Relaxing" checked="@Model.Tags.Contains("Relaxing")"> Relaxing<br>
+            <input type="checkbox" name="Tags" value="Real Life" checked="@Model.Tags.Contains("Real Life")"> Real Life<br>
+            <input type="checkbox" name="Tags" value="Rocky Moments" checked="@Model.Tags.Contains("Rocky Moments")"> Rocky Moments<br>
+            <input type="checkbox" name="Tags" value="Storytelling" checked="@Model.Tags.Contains("Storytelling")"> Storytelling<br>
+            <input type="checkbox" name="Tags" value="Spooky" checked="@Model.Tags.Contains("Spooky")"> Spooky<br>
+            <input type="checkbox" name="Tags" value="Sports" checked="@Model.Tags.Contains("Sports")"> Sports<br>
+            <input type="checkbox" name="Tags" value="Tech" checked="@Model.Tags.Contains("Tech")"> Tech<br>
+            <input type="checkbox" name="Tags" value="Trash-talk" checked="@Model.Tags.Contains("Trash-Talk")"> Trash-talk<br>
+            <input type="checkbox" name="Tags" value="WTF" checked="@Model.Tags.Contains("WTF")"> WTF<br>
+        </div>
 
-    <p>Review: </p>
-    <div class="form-group" style="width: 50%; height:200px;">
-        <label asp-for="Review" class="control-label"></label>
-        <input asp-for="Review" class="form-control" />
-        <span asp-validation-for="Review" class="text-danger"></span>
-    </div>
-    <input type="hidden" name="EpisodeId" value="@Model.EpisodeId" />
-
-    <input type="hidden" name="Id" value="@Model.Id" />
-    <input type="submit" value="Submit Revision" />
-</form>
+        <div class="form-group form-text" rows="5" cols="70" style="width: 50%;">
+            <label asp-for="Review" class="control-label"></label>
+            <input asp-for="Review" class="form-control" />
+            <span asp-validation-for="Review" class="text-danger"></span>
+        </div>
+        <input type="hidden" name="EpisodeId" value="@Model.EpisodeId" />
+        <input type="hidden" name="Id" value="@Model.Id" />
+        <input type="submit" value="Submit Revision" class="btn btn-outline-dark btn-group-lg float-lg-left" />
+    </form>
+</div>
