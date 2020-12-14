@@ -135,7 +135,7 @@ namespace ThePod.Controllers
             return View("Index", await podcast.Where(x => x.UserId == user).AsNoTracking().ToListAsync());
         }
 
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
