@@ -44,7 +44,7 @@ namespace ThePod.DataAccess
                 return JsonSerializer.Deserialize<AccessToken>(response);
             }
         }
-        public async Task<RootobjectEpisodes> SearchEpisodeNameAsync(string query) // returns object that is model type: "Episdodes"
+        public async Task<RootobjectEpisodes> SearchEpisodeNameAsync(string query) // returns object that is model type: "Episodes"
         {
             var token = await GetToken();
             HttpClient client = new HttpClient();
