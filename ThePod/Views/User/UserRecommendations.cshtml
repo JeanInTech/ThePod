@@ -9,63 +9,71 @@
         user = user.Substring(0, index);
 }
 
-<div class="searchresults">
-    <h5 class="text-left text-capitalize" style="color: grey; letter-spacing: 2px">Recommendations for @user</h5>
-    <h6 class="text-left text-capitalize" style="color: grey; letter-spacing: 2px">Because you give highest reviews to episodes with the tags: @ViewBag.FirstTag@ViewBag.SecondTag@ViewBag.ThirdTag</h6>
-</div>
+@if (Model == null)
+{
+    <p>Please review more podcasts for personalized recommendations. Not sure where to start? <a asp-controller="Home" asp-action="Index">Start here.</a></p>
+}
+else
+{
+    <div class="searchresults">
+        <h5 class="text-left text-capitalize" style="color: grey; letter-spacing: 2px">Recommendations for @user</h5>
+        <h6 class="text-left text-capitalize" style="color: grey; letter-spacing: 2px">Because you give highest reviews to episodes with the tags: @ViewBag.FirstTag@ViewBag.SecondTag@ViewBag.ThirdTag</h6>
+    </div>
 
-<table class="table table-hover table-responsive">
-    <thead class="thead-dark">
-        <tr class="thead-dark">
-            <th class="text-center">Podcast</th>
-            <th class="text-center">Episode Description</th>
-            <th class="text-center">Favorite</th>
-            <th class="text-center">Review</th>
-        </tr>
-    </thead>
-
-    @foreach (Episode e in Model.episodes)
-    {
-        @if (!uniqueEpisodeIDs.Contains(e.name))
-        {
-            <tr>
-                <td>
-                    @{
-                        List<Image1> img = new List<Image1>(e.images.ToList());
-                        var firstPic = img.First();
-                        uniqueEpisodeIDs.Add(e.name);
-                        int minutes = (e.duration_ms / 1000) / 60;
-
-                    }
-                    <figure class="figure">
-                        <a href="@e.external_urls.spotify" alt="@e.show.name" target="_blank"><img src="@firstPic.url" style="height: 250px; width:250px;" class="figure-img" /></a>
-                        <audio controls style="width: 100%; align-content: start">
-                            <source src="@e.audio_preview_url" type="audio/mpeg">
-                        </audio>
-                        <figcaption class="figure-caption text-right">Released: @e.release_date <br />Length: @minutes minutes</figcaption>
-                    </figure>
-                </td>
-                <td style="padding: 2em 2em 2em 2em">
-                    <p style="font-weight: bold; font-size: 1em;">@e.name</p>
-                    <hr />
-                    <p>@e.description</p>
-                </td>
-                <td>
-                    <form asp-controller="User" asp-action="AddFavorite" method="post">
-                        <input type="hidden" name="id" value="@e.id" />
-                        <input type="submit" name="data" value="Add to Favorites" class="btn btn-outline-dark btn-group-lg float-lg-left" />
-                        <a asp-action="Index"></a>
-                    </form>
-                </td>
-                <td>
-                    <form asp-controller="User" asp-action="ReviewEpisode" method="get">
-                        <input type="hidden" name="id" value="@e.id" />
-                        <input type="submit" name="data" value="Review Episode" class="btn btn-outline-dark btn-group-lg float-lg-left" />
-                    </form>
-                </td>
+    <table class="table table-hover table-responsive">
+        <thead class="thead-dark">
+            <tr class="thead-dark">
+                <th class="text-center">Podcast</th>
+                <th class="text-center">Episode Description</th>
+                <th class="text-center">Favorite</th>
+                <th class="text-center">Review</th>
             </tr>
-            uniqueEpisodeIDs.Add(e.name);
-        }
-    }
+        </thead>
 
-</table>
+        @foreach (Episode e in Model.episodes)
+        {
+            @if (!uniqueEpisodeIDs.Contains(e.name))
+            {
+                <tr>
+                    <td>
+                        @{
+                            List<Image1> img = new List<Image1>(e.images.ToList());
+                            var firstPic = img.First();
+                            uniqueEpisodeIDs.Add(e.name);
+                            int minutes = (e.duration_ms / 1000) / 60;
+
+                        }
+                        <figure class="figure">
+                            <a href="@e.external_urls.spotify" alt="@e.show.name" target="_blank"><img src="@firstPic.url" style="height: 250px; width:250px;" class="figure-img" /></a>
+                            <audio controls style="width: 100%; align-content: start">
+                                <source src="@e.audio_preview_url" type="audio/mpeg">
+                            </audio>
+                            <figcaption class="figure-caption text-right">Released: @e.release_date <br />Length: @minutes minutes</figcaption>
+                        </figure>
+                    </td>
+                    <td style="padding: 2em 2em 2em 2em">
+                        <p style="font-weight: bold; font-size: 1em;">@e.name</p>
+                        <hr />
+                        <p>@e.description</p>
+                    </td>
+                    <td>
+                        <form asp-controller="User" asp-action="AddFavorite" method="post">
+                            <input type="hidden" name="id" value="@e.id" />
+                            <input type="submit" name="data" value="Add to Favorites" class="btn btn-outline-dark btn-group-lg float-lg-left" />
+                            <a asp-action="Index"></a>
+                        </form>
+                    </td>
+                    <td>
+                        <form asp-controller="User" asp-action="ReviewEpisode" method="get">
+                            <input type="hidden" name="id" value="@e.id" />
+                            <input type="submit" name="data" value="Review Episode" class="btn btn-outline-dark btn-group-lg float-lg-left" />
+                        </form>
+                    </td>
+                </tr>
+                uniqueEpisodeIDs.Add(e.name);
+            }
+        }
+
+    </table>
+
+}
