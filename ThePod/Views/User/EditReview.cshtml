@@ -21,10 +21,9 @@
         <input class="single-checkbox" type="checkbox" name="Tags" value="Tech" checked="@Model.Tags.Contains("Tech")">Tech<br>
     </div>
 
-    <p>Review: </p>
-    <div class="form-group" style="width: 50%; height:200px;">
-        <label asp-for="Review" class="control-label"></label>
-        <input asp-for="Review" class="form-control" />
+    <div class="form-group" style="width: 50%;">
+        <label asp-for="Review" class="control-label">Review</label>
+        <textarea asp-for="Review" class="form-control" rows="5" />@Model.Review</textarea>
         <span asp-validation-for="Review" class="text-danger"></span>
     </div>
     <input type="hidden" name="EpisodeId" value="@Model.EpisodeId" />
