@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-#nullable disable
-
 namespace ThePod.Models
 {
     public partial class SavedPodcast
@@ -17,9 +15,9 @@ namespace ThePod.Models
         public string AudioPreviewUrl { get; set; }
         public string ExternalUrls { get; set; }
         public string ImageUrl { get; set; }
-        public int Duration { get; set; }
-        public DateTime ReleaseDate { get; set; }
+        public int? Duration { get; set; }
+        public DateTime? ReleaseDate { get; set; }
 
-        public virtual AspNetUser User { get; set; }
+        public virtual AspNetUsers User { get; set; }
     }
 }

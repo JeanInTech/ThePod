@@ -26,9 +26,13 @@ namespace ThePod.Controllers
         }
         public IActionResult Recommendations()
         {
-            return View(_context.UserFeedbacks.ToList());
+            return View(_context.UserFeedback.ToList());
         }
 
+        public IActionResult AboutUs()
+        {
+            return View();
+        }
 
         public IActionResult Privacy()
         {
