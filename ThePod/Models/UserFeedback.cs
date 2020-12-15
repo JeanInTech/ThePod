@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-#nullable disable
-
 namespace ThePod.Models
 {
     public partial class UserFeedback
     {
         public UserFeedback()
         {
-            UserProfiles = new HashSet<UserProfile>();
+            UserProfile = new HashSet<UserProfile>();
         }
 
         public int Id { get; set; }
@@ -23,11 +21,11 @@ namespace ThePod.Models
         public string Description { get; set; }
         public string AudioPreviewUrl { get; set; }
         public string ImageUrl { get; set; }
-        public DateTime ReleaseDate { get; set; }
+        public DateTime? ReleaseDate { get; set; }
         public string ExternalUrls { get; set; }
-        public DateTime DatePosted { get; set; }
+        public DateTime? DatePosted { get; set; }
 
-        public virtual AspNetUser User { get; set; }
-        public virtual ICollection<UserProfile> UserProfiles { get; set; }
+        public virtual AspNetUsers User { get; set; }
+        public virtual ICollection<UserProfile> UserProfile { get; set; }
     }
 }

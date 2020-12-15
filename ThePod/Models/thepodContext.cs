@@ -2,8 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-#nullable disable
-
 namespace ThePod.Models
 {
     public partial class thepodContext : DbContext
@@ -17,42 +15,30 @@ namespace ThePod.Models
         {
         }
 
-        public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
-        public virtual DbSet<AspNetRoleClaim> AspNetRoleClaims { get; set; }
-        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
-        public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
-        public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
-        public virtual DbSet<AspNetUserRole> AspNetUserRoles { get; set; }
-        public virtual DbSet<AspNetUserToken> AspNetUserTokens { get; set; }
-        public virtual DbSet<SavedPodcast> SavedPodcasts { get; set; }
-        public virtual DbSet<UserFeedback> UserFeedbacks { get; set; }
-        public virtual DbSet<UserProfile> UserProfiles { get; set; }
+        public virtual DbSet<AspNetRoleClaims> AspNetRoleClaims { get; set; }
+        public virtual DbSet<AspNetRoles> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserClaims> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogins> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUserRoles> AspNetUserRoles { get; set; }
+        public virtual DbSet<AspNetUserTokens> AspNetUserTokens { get; set; }
+        public virtual DbSet<AspNetUsers> AspNetUsers { get; set; }
+        public virtual DbSet<SavedPodcast> SavedPodcast { get; set; }
+        public virtual DbSet<UserFeedback> UserFeedback { get; set; }
+        public virtual DbSet<UserProfile> UserProfile { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("ConnectionStrings");
-
+                optionsBuilder.UseSqlServer(Secret.ConnectionString);
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AspNetRole>(entity =>
+            modelBuilder.Entity<AspNetRoleClaims>(entity =>
             {
-                entity.HasIndex(e => e.NormalizedName, "RoleNameIndex")
-                    .IsUnique()
-                    .HasFilter("([NormalizedName] IS NOT NULL)");
-
-                entity.Property(e => e.Name).HasMaxLength(256);
-
-                entity.Property(e => e.NormalizedName).HasMaxLength(256);
-            });
-
-            modelBuilder.Entity<AspNetRoleClaim>(entity =>
-            {
-                entity.HasIndex(e => e.RoleId, "IX_AspNetRoleClaims_RoleId");
+                entity.HasIndex(e => e.RoleId);
 
                 entity.Property(e => e.RoleId).IsRequired();
 
@@ -61,26 +47,21 @@ namespace ThePod.Models
                     .HasForeignKey(d => d.RoleId);
             });
 
-            modelBuilder.Entity<AspNetUser>(entity =>
+            modelBuilder.Entity<AspNetRoles>(entity =>
             {
-                entity.HasIndex(e => e.NormalizedEmail, "EmailIndex");
-
-                entity.HasIndex(e => e.NormalizedUserName, "UserNameIndex")
+                entity.HasIndex(e => e.NormalizedName)
+                    .HasName("RoleNameIndex")
                     .IsUnique()
-                    .HasFilter("([NormalizedUserName] IS NOT NULL)");
+                    .HasFilter("([NormalizedName] IS NOT NULL)");
 
-                entity.Property(e => e.Email).HasMaxLength(256);
+                entity.Property(e => e.Name).HasMaxLength(256);
 
-                entity.Property(e => e.NormalizedEmail).HasMaxLength(256);
-
-                entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
-
-                entity.Property(e => e.UserName).HasMaxLength(256);
+                entity.Property(e => e.NormalizedName).HasMaxLength(256);
             });
 
-            modelBuilder.Entity<AspNetUserClaim>(entity =>
+            modelBuilder.Entity<AspNetUserClaims>(entity =>
             {
-                entity.HasIndex(e => e.UserId, "IX_AspNetUserClaims_UserId");
+                entity.HasIndex(e => e.UserId);
 
                 entity.Property(e => e.UserId).IsRequired();
 
@@ -89,11 +70,11 @@ namespace ThePod.Models
                     .HasForeignKey(d => d.UserId);
             });
 
-            modelBuilder.Entity<AspNetUserLogin>(entity =>
+            modelBuilder.Entity<AspNetUserLogins>(entity =>
             {
                 entity.HasKey(e => new { e.LoginProvider, e.ProviderKey });
 
-                entity.HasIndex(e => e.UserId, "IX_AspNetUserLogins_UserId");
+                entity.HasIndex(e => e.UserId);
 
                 entity.Property(e => e.LoginProvider).HasMaxLength(128);
 
@@ -106,11 +87,11 @@ namespace ThePod.Models
                     .HasForeignKey(d => d.UserId);
             });
 
-            modelBuilder.Entity<AspNetUserRole>(entity =>
+            modelBuilder.Entity<AspNetUserRoles>(entity =>
             {
                 entity.HasKey(e => new { e.UserId, e.RoleId });
 
-                entity.HasIndex(e => e.RoleId, "IX_AspNetUserRoles_RoleId");
+                entity.HasIndex(e => e.RoleId);
 
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.AspNetUserRoles)
@@ -121,7 +102,7 @@ namespace ThePod.Models
                     .HasForeignKey(d => d.UserId);
             });
 
-            modelBuilder.Entity<AspNetUserToken>(entity =>
+            modelBuilder.Entity<AspNetUserTokens>(entity =>
             {
                 entity.HasKey(e => new { e.UserId, e.LoginProvider, e.Name });
 
@@ -134,10 +115,27 @@ namespace ThePod.Models
                     .HasForeignKey(d => d.UserId);
             });
 
+            modelBuilder.Entity<AspNetUsers>(entity =>
+            {
+                entity.HasIndex(e => e.NormalizedEmail)
+                    .HasName("EmailIndex");
+
+                entity.HasIndex(e => e.NormalizedUserName)
+                    .HasName("UserNameIndex")
+                    .IsUnique()
+                    .HasFilter("([NormalizedUserName] IS NOT NULL)");
+
+                entity.Property(e => e.Email).HasMaxLength(256);
+
+                entity.Property(e => e.NormalizedEmail).HasMaxLength(256);
+
+                entity.Property(e => e.NormalizedUserName).HasMaxLength(256);
+
+                entity.Property(e => e.UserName).HasMaxLength(256);
+            });
+
             modelBuilder.Entity<SavedPodcast>(entity =>
             {
-                entity.ToTable("SavedPodcast");
-
                 entity.Property(e => e.AudioPreviewUrl).HasColumnName("AudioPreviewURL");
 
                 entity.Property(e => e.EpisodeId)
@@ -146,7 +144,7 @@ namespace ThePod.Models
 
                 entity.Property(e => e.ExternalUrls).HasColumnName("ExternalURLs");
 
-                entity.Property(e => e.Publisher).HasMaxLength(50);
+                entity.Property(e => e.Publisher).HasMaxLength(500);
 
                 entity.Property(e => e.ReleaseDate).HasColumnType("date");
 
@@ -155,7 +153,7 @@ namespace ThePod.Models
                     .HasMaxLength(450);
 
                 entity.HasOne(d => d.User)
-                    .WithMany(p => p.SavedPodcasts)
+                    .WithMany(p => p.SavedPodcast)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__SavedPodc__UserI__74AE54BC");
@@ -163,8 +161,6 @@ namespace ThePod.Models
 
             modelBuilder.Entity<UserFeedback>(entity =>
             {
-                entity.ToTable("UserFeedback");
-
                 entity.Property(e => e.AudioPreviewUrl).HasColumnName("AudioPreviewURL");
 
                 entity.Property(e => e.DatePosted).HasColumnType("datetime");
@@ -186,7 +182,7 @@ namespace ThePod.Models
                     .HasMaxLength(450);
 
                 entity.HasOne(d => d.User)
-                    .WithMany(p => p.UserFeedbacks)
+                    .WithMany(p => p.UserFeedback)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__UserFeedb__UserI__71D1E811");
@@ -194,8 +190,6 @@ namespace ThePod.Models
 
             modelBuilder.Entity<UserProfile>(entity =>
             {
-                entity.ToTable("UserProfile");
-
                 entity.Property(e => e.EpisodeId)
                     .IsRequired()
                     .HasMaxLength(50);
@@ -207,7 +201,7 @@ namespace ThePod.Models
                     .HasMaxLength(450);
 
                 entity.HasOne(d => d.UserFeedback)
-                    .WithMany(p => p.UserProfiles)
+                    .WithMany(p => p.UserProfile)
                     .HasForeignKey(d => d.UserFeedbackId)
                     .HasConstraintName("FK__UserProfi__UserF__01142BA1");
             });
