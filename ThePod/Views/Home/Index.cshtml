@@ -25,7 +25,7 @@
 }
 
    
-<div id="carouselExampleControls" class="carousel slide carousel-fade" data-ride="carousel">
+<div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="max-width: 300px; margin: 0 auto" >
     <!--Indicators-->
     <ol class="carousel-indicators">
         <li data-target="#carouselExampleControls" data-slide-to="0" class="active"></li>
@@ -48,7 +48,7 @@
 
 
             <div class="carousel-item @(first?Html.Raw("active"):Html.Raw(""))">
-                <a href="@e.external_urls.spotify" alt="@e.show.name">   <img class="d-block w-25" src="@firstPic.url" /></a>
+                <a href="@e.external_urls.spotify" alt="@e.show.name">   <img class="d-block w-75 mx-auto" src="@firstPic.url"/></a>
             </div>
             first = false;
         }
