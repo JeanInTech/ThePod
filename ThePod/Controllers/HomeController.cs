@@ -30,6 +30,10 @@ namespace ThePod.Controllers
             return View(_context.UserFeedbacks.ToList());
         }
 
+        public IActionResult AboutUs()
+        {
+            return View();
+        }
 
         public IActionResult Privacy()
         {

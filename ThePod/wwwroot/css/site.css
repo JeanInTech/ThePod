@@ -81,16 +81,20 @@ html {
 }
 
 .pagebuttons {
-    display:inline-block;
+    display: inline-block;
     width: 100%;
     padding: 0 0 50px 0;
 }
 
+.searchresults {
+    width: 100%;
+}
 /******** Tag Cloud ********/
 
 .tagcloud {
     text-align: left;
 }
+
 
     .tagcloud a {
         padding: 0px 10px 0px 0px;

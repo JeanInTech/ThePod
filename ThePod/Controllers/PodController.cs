@@ -92,7 +92,7 @@ namespace ThePod.Controllers
             }
             else
             {
-                return View("AllContent", nextEpisodes);
+                return View("EpisodeDetails", nextEpisodes);
             }
         }
         [HttpPost]
@@ -116,7 +116,7 @@ namespace ThePod.Controllers
             }
             else
             {
-                return View("AllContent", previousEpisodes);
+                return View("EpisodeDetails", previousEpisodes);
             }
         }
         // ==============================================================
