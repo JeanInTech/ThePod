@@ -11,6 +11,7 @@ namespace ThePod.Models
     public class RootEpisodes
     {
         public Episode[] episodes { get; set; }
+     
     }
 
     public class Episode

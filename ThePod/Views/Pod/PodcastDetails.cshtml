@@ -45,7 +45,11 @@
                 <td style="padding: 2em 2em 2em 2em">
                     <p><a asp-controller="pod" asp-action="GetEpisodeByPodcast" asp-route-query="@e.name" asp-route-searchType="episodes">@e.total_episodes </a></p>
                 </td>
-                <td style="padding: 2em 2em 2em 2em">@e.description</td>
+                <td style="padding: 2em 2em 2em 2em">
+                    <p style="font-weight: bold; font-size: 1em;">@e.name</p>
+                    <hr />
+                    @e.description
+                </td>
             </tr>
         }
     }

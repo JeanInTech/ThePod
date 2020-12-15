@@ -12,5 +12,10 @@ namespace ThePod.Models
         public List<SavedPodcast> SavedPodcast { get; set; }
         public List<UserFeedback> UserFeedback { get; set; }
         public List<EpByPodItem> EpisodesByPodIds { get; set; }
+
+    
+
+
+
     }
 }

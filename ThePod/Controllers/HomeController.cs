@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ThePod.DataAccess;
 using ThePod.Models;
@@ -20,42 +21,41 @@ namespace ThePod.Controllers
             _dal = dal;
             _context = context;
         }
-
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
-        }
+            List<UserProfile> bestProfiles = GetBestEpisodesRawData();
 
-        public IActionResult Recommendations()
-        {
-            return View(_context.UserFeedback.ToList());
-        }
+            List<string> episodeIds = new List<string>();
+           
+            foreach (UserProfile e in bestProfiles)
+            {
+                if (e != null && !episodeIds.Contains(e.EpisodeId))
+                {
+                    episodeIds.Add(e.EpisodeId);
+                }
+              
+            }
+          
+            var epId = String.Join(",", episodeIds);
 
-        public IActionResult AboutUs()
-        {
-            return View();
-        }
+            var recommendedEpisodes = await _dal.SearchEpisodeIdAsync(epId);
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View("Index", recommendedEpisodes);
         }
 
         // ==============================================================
-        // Tag Cloud
+        // Methods
         // ==============================================================
+      
+        public List<UserProfile> GetBestEpisodesRawData()
+        {
+           
+            List<UserProfile> globalProfiles = _context.UserProfile.ToList();
+           // List<UserProfile> filteredProfiles = globalProfiles.Where(x => x.UserId != user).ToList(); //filtering out reviews that belong to the logged in user
+            List<UserProfile> qualifiedProfiles = globalProfiles.Where(x => x.Rating >= 3).ToList(); //filtering out review that are less than rating of 3
+            List<UserProfile> descOrderedProfiles = qualifiedProfiles.OrderByDescending(x => x.Rating).ToList(); //orders everything on the list based on highest-rated episdoes first
 
-        //public string GetTagCloud()
-        //{
-        //    var allTags = _context.UserProfiles.ToList();
-
-        //    return tagCloud;
-        //}
+            return descOrderedProfiles;
+        }
     }
 }

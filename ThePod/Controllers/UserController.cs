@@ -85,11 +85,13 @@ namespace ThePod.Controllers
             favorite.Duration = ep.duration_ms;
             favorite.ReleaseDate = DateTime.Parse(ep.release_date);
 
+            ViewBag.EpName = ep.name;
+
             if (ModelState.IsValid)
             {
                 if (_context.SavedPodcast.Any(id => id.EpisodeId.Equals(ep.id) & id.UserId.Equals(user)))
                 {
-                    return View("Error");
+                    return View("DuplicateFavorite");
                 }
                 else
                 {
@@ -138,7 +140,7 @@ namespace ThePod.Controllers
             return View("Index", await podcast.Where(x => x.UserId == user).AsNoTracking().ToListAsync());
         }
 
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int? id)
         {
             var favorites = await _context.SavedPodcast.FindAsync(id);
             _context.SavedPodcast.Remove(favorites);
