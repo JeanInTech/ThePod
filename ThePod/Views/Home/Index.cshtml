@@ -49,7 +49,9 @@
 
                 
                 <div class="carousel-item @(first?Html.Raw("active"):Html.Raw(""))">
-                    <a asp-controller="home" asp-action="getpopularresults" asp-route-id="@e.id">   <img class="d-block w-75 mx-auto" src="@firstPic.url" alt="@e.show.name"/></a>
+                    <a asp-controller="Pod" asp-action="SearchResults" asp-route-query="@e.show.name">
+                        <img class="d-block w-75 mx-auto" src="@firstPic.url" alt="@e.show.name" />
+                    </a>
                     <p>@e.show.name</p>
                 </div>
                 first = false;
