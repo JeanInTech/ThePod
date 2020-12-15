@@ -23,6 +23,9 @@ namespace ThePod.Controllers
             _dal = dal;
             _context = context;
         }
+        // ==============================================================
+        // Favorites table 
+        // ==============================================================
         public IActionResult UserFavorites()
         {
             var user = FindUser();
@@ -137,10 +140,6 @@ namespace ThePod.Controllers
 
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
             var favorites = await _context.SavedPodcasts.FindAsync(id);
             _context.SavedPodcasts.Remove(favorites);
             await _context.SaveChangesAsync();
@@ -150,7 +149,9 @@ namespace ThePod.Controllers
             }
             return RedirectToAction("UserFavorites");
         }
-
+        // ==============================================================
+        // Reviews/UserFeedback
+        // ==============================================================
         [HttpGet]
         public async Task<IActionResult> ReviewEpisode(string id)
         {
@@ -168,7 +169,6 @@ namespace ThePod.Controllers
                 return View(ep);
             }
         }
-
         [HttpPost]
         public async Task<IActionResult> ReviewEpisode(string EpisodeId, byte Rating, string[] Tags, string Review, string EpisodeName, string PodcastName, string Description, string AudioPreviewURL, string ImageUrl, DateTime ReleaseDate, string ExternalURLS)
         {
@@ -204,9 +204,7 @@ namespace ThePod.Controllers
                 await _context.SaveChangesAsync(); //saving the entries to the UserProfile table
             }
             return RedirectToAction("ViewFeedback", "User");
-
         }
-       
         public IActionResult ViewFeedBack()
         {
             string user = FindUser();
@@ -215,7 +213,6 @@ namespace ThePod.Controllers
 
             return View(usersFeedback);
         }
-
         public async Task<IActionResult> SortFeedback(string sortOrder, string searchString)
         {
             string user = FindUser();
@@ -254,11 +251,52 @@ namespace ThePod.Controllers
             }
             return View("ViewFeedback", await feedback.Where(x => x.UserId == user).AsNoTracking().ToListAsync());
         }
+        [HttpGet]
+        public async Task<IActionResult> EditReview(int fbId)
+        {
+            var userReview = await _context.UserFeedbacks.FindAsync(fbId);
 
+
+            return View("EditReview", userReview);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditReview(int Id, string EpisodeId, int Rating, string[] Tags, string Review)
+        {
+            string user = FindUser();
+            UserFeedback feedback1 = await _context.UserFeedbacks.FindAsync(Id);
+            string tag = string.Join(", ", Tags);
+            
+            List<UserProfile> up = _context.UserProfiles.Where(x => x.UserId == user && x.EpisodeId == EpisodeId).ToList();
+            foreach (UserProfile u in up)
+            {
+                _context.UserProfiles.Remove(u);
+                await _context.SaveChangesAsync();
+            }
+
+            for (int i = 0; i < Tags.Length; i++)
+            {
+                UserProfile profile = new UserProfile();
+                profile.UserFeedbackId = feedback1.Id;
+                profile.UserId = user;
+                profile.EpisodeId = EpisodeId;
+                profile.Tag = Tags[i];
+                profile.Rating = (byte)Rating;
+                await _context.UserProfiles.AddAsync(profile);
+                await _context.SaveChangesAsync();
+            }
+
+            feedback1.Tags = tag;
+            feedback1.Rating = (byte)Rating;
+            feedback1.Review = Review;
+            feedback1.DatePosted = DateTime.Now;
+            await _context.SaveChangesAsync();
+            return RedirectToAction("ViewFeedBack");
+        }
         public async Task<IActionResult> DeleteReview(string epId, int fbId)
         {
             var userProfile = _context.UserProfiles.Where(x => x.EpisodeId == epId).ToList();
-            foreach(var up in userProfile)
+            foreach (var up in userProfile)
             {
                 _context.UserProfiles.Remove(up);
                 await _context.SaveChangesAsync();
@@ -271,70 +309,19 @@ namespace ThePod.Controllers
             return RedirectToAction("ViewFeedBack");
         }
 
-        [HttpGet]
-        public async Task<IActionResult> EditReview(int Id)
+        // ==============================================================
+        // Recommendations
+        // ==============================================================
+        public IActionResult GetGlobalBestOf()
         {
-            var userReview = await _context.UserFeedbacks.FindAsync(Id);
+            List<UserProfile> bestOf = GetBestEpisodesRawData();
 
-            return View("EditReview", userReview);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> EditReview(int Id, int UserId, string EpisodeId, int Rating, string[] Tags, string Review, string EpisodeName, string PodcastName, string Description, string AudioPreviewURL, string ImageUrl, DateTime ReleaseDate, string ExternalURLS)
-        {
-            UserFeedback feedback1 = await _context.UserFeedbacks.FindAsync(Id);
-            string tag = string.Join(", ", Tags);
-            feedback1.Tags = tag;
-            feedback1.Rating = (byte)Rating;
-            feedback1.Review = Review;
-            feedback1.DatePosted = DateTime.Now;
-            await _context.SaveChangesAsync();
-            return RedirectToAction("ViewFeedBack");
-        }
-        public string FindUser()
-        {
-            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
-            var claim = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
-            var userId = claim.Value;
-            return userId;
-        }
-        public List<string> GetProfile()
-        {
-            var user = FindUser();
-            var userSpecific = from x in _context.UserProfiles
-                               where x.UserId.Equals(user)
-                               select x;
-            var qualifiedRatings = from y in userSpecific
-                                   where y.Rating >= 3
-                                   select y;
-            var countPerTag = from z in qualifiedRatings
-                              group z by z.Tag into taggedList
-                              select new
-                              {
-                                  TagGroup = taggedList.Key,
-                                  CountTag = taggedList.Count(),
-                              };
-
-            var topTags = countPerTag.OrderByDescending(countPerTag => countPerTag.CountTag).ToList();
-
-
-            List<string> usersTopTags = new List<string>();
-
-            foreach (var t in topTags)
-            {
-                usersTopTags.Add(t.TagGroup);
-
-            }
-
-            //var groupedRatings = qualifiedRatings.AsEnumerable().GroupBy(x => x.Tag).ToList();
-
-
-            return (usersTopTags);
+            return View("topPicks", bestOf);
         }
         public async Task<IActionResult> GetRecommendations()
         {
             List<string> usersTopTags = GetProfile(); //get a list of the users top tags (the tag they used most frequently on episodes rated 3+)
-            if(usersTopTags.Count < 3)
+            if (usersTopTags.Count < 3)
             {
                 return View("userrecommendations");
             }
@@ -342,8 +329,8 @@ namespace ThePod.Controllers
             string secondPreferred = usersTopTags[1]; //2nd place tag
             string thirdPreferred = usersTopTags[2]; //3rd place tag
             ViewBag.FirstTag = firstPreferred;
-            ViewBag.SecondTag = " - "+secondPreferred;
-            ViewBag.ThirdTag = " - " +thirdPreferred;
+            ViewBag.SecondTag = " - " + secondPreferred;
+            ViewBag.ThirdTag = " - " + thirdPreferred;
 
             List<UserProfile> bestProfiles = GetBestEpisodesRawData(); //list of every tag in UserProfile table with a rating of 3+, that the logged in user has not reviewed, organized by highest rated first
 
@@ -396,15 +383,42 @@ namespace ThePod.Controllers
             }
             var epId = String.Join(",", episodeIds);
 
-             var recommendedEpisodes = await _dal.SearchEpisodeIdAsync(epId);
+            var recommendedEpisodes = await _dal.SearchEpisodeIdAsync(epId);
 
-            return View("userrecommendations", recommendedEpisodes);
+            return View("UserRecommendations", recommendedEpisodes);
         }
-    public IActionResult GetGlobalBestOf()
-        {
-            List<UserProfile> bestOf = GetBestEpisodesRawData();
 
-            return View("topPicks", bestOf);
+        // ==============================================================
+        // Methods
+        // ==============================================================
+        public string FindUser()
+        {
+            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
+            var claim = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+            var userId = claim.Value;
+            return userId;
+        }
+        public List<string> GetProfile()
+        {
+            var user = FindUser();
+            var userSpecific = _context.UserProfiles.Where(x => x.UserId == user);
+            var qualifiedRatings = userSpecific.Where(x => x.Rating >= 3);
+            var countPerTag = from z in qualifiedRatings
+                              group z by z.Tag into taggedList
+                              select new
+                              {
+                                  TagGroup = taggedList.Key,
+                                  CountTag = taggedList.Count(),
+                              };
+            var topTags = countPerTag.OrderByDescending(countPerTag => countPerTag.CountTag).ToList();
+
+            List<string> usersTopTags = new List<string>();
+            foreach (var t in topTags)
+            {
+                usersTopTags.Add(t.TagGroup);
+            }
+
+            return (usersTopTags);
         }
         public List<UserProfile> GetBestEpisodesRawData()
         {
@@ -412,13 +426,10 @@ namespace ThePod.Controllers
             List<UserProfile> globalProfiles = _context.UserProfiles.ToList();
             List<UserProfile> filteredProfiles = globalProfiles.Where(x => x.UserId != user).ToList(); //filtering out reviews that belong to the logged in user
             List<UserProfile> qualifiedProfiles = filteredProfiles.Where(x => x.Rating >= 3).ToList(); //filtering out review that are less than rating of 3
-            List<UserProfile> descOrderedProfiles = qualifiedProfiles.OrderByDescending(x => x.Rating).ToList(); //orderes everything on the list based on highest-rated episdoes first
+            List<UserProfile> descOrderedProfiles = qualifiedProfiles.OrderByDescending(x => x.Rating).ToList(); //orders everything on the list based on highest-rated episdoes first
 
             return descOrderedProfiles;
-            
         }
     }
-
-
 }
 
