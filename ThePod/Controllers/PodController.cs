@@ -59,11 +59,6 @@ namespace ThePod.Controllers
                 var eachEpisode = await _dal.SearchEpisodeIdAsync(epId);
 
                 return View("EpisodeDetails", eachEpisode);
-                
-                //else
-                //{
-                //    return View("AllContent", eachEpisode);
-                //}
             }
         }
         // ==============================================================

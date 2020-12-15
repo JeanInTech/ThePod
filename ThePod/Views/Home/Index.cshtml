@@ -1,4 +1,3 @@
-
 <div id="indexPicContainer" class="d-flex justify-content-center align-items-center">
     <img src="~/img/thepod.png" style="max-height: 30%; max-width: 30%;" />
 </div>
@@ -7,35 +6,27 @@
     <form asp-controller="Pod" asp-action="SearchResults" method="post" id="searchIndex">
         <h3>Find your next podcast</h3><br />
         <div class="text-md-center">
-            <input type="text" name="query" placeholder="Whatever sounds good" class="form-control-lg btn-block" style="text-align: center" required /><br />
+            <input type="text" name="query" class="form-control-lg btn-block" style="text-align: center" required /><br />
             <select name="searchType" id="searchType" class="btn btn-success dropdown-toggle btn-lg btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <option class="dropdown-item-text" value="podcast" style="color: white;">Podcasts</option>
                 <option class="dropdown-item-text" value="episode" style="color: white">Episodes</option>
-<<<<<<< HEAD
-=======
-                <option class="dropdown-item-text" value="content" style="color: white">All Content</option>
-                <option value="tags">Tags</option> keywords and stuff
->>>>>>> 4ae116efba67d9ac40927f3461472918e4b341b3
             </select><br />
-
             <input type="submit" class="btn btn-lg btn-dark" id="indexbtn" value="Submit" />
-
     </form>
-
+    <hr />
 
     @{
         List<string> uniqueEpisodeIDs = new List<string>();
     }
 
-    <h4></h4>
     <h5>Popular Podcasts</h5>
     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="max-width: 300px; margin: 0 auto">
         <!--Indicators-->
         @*<ol class="carousel-indicators">
-            <li data-target="#carouselExampleControls" data-slide-to="0" class="active"></li>
-            <li data-target="#carouselExampleControls" data-slide-to="1"></li>
-            <li data-target="#carouselExampleControls" data-slide-to="2"></li>
-        </ol>*@
+                <li data-target="#carouselExampleControls" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselExampleControls" data-slide-to="1"></li>
+                <li data-target="#carouselExampleControls" data-slide-to="2"></li>
+            </ol>*@
         <!--/.Indicators-->
         <div class="carousel-inner" role="listbox">
             @{
@@ -44,20 +35,18 @@
 
             @foreach (Episode e in Model.episodes)
             {
-
                 List<Image1> img = new List<Image1>(e.images.ToList());
                 var firstPic = img.First();
                 uniqueEpisodeIDs.Add(e.name);
                 int minutes = (e.duration_ms / 1000) / 60;
 
-                
+
                 <div class="carousel-item @(first?Html.Raw("active"):Html.Raw(""))">
                     <a href="@e.external_urls.spotify" alt="@e.show.name">   <img class="d-block w-75 mx-auto" src="@firstPic.url" /></a>
                     <p>@e.show.name</p>
                 </div>
                 first = false;
             }
-
         </div>
         <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
            data-slide="prev">
@@ -72,4 +61,3 @@
     </div>
 </div>
 </div>
-
