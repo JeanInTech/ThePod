@@ -16,54 +16,57 @@
             </select><br />
 
             <input type="submit" class="btn btn-lg btn-dark" id="indexbtn" value="Submit" />
-        </div>
+
     </form>
-</div>
-
-@{
-    List<string> uniqueEpisodeIDs = new List<string>();
-}
-
-   
-<div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="max-width: 300px; margin: 0 auto" >
-    <!--Indicators-->
-    <ol class="carousel-indicators">
-        <li data-target="#carouselExampleControls" data-slide-to="0" class="active"></li>
-        <li data-target="#carouselExampleControls" data-slide-to="1"></li>
-        <li data-target="#carouselExampleControls" data-slide-to="2"></li>
-    </ol>
-    <!--/.Indicators-->
-    <div class="carousel-inner" role="listbox">
-        @{
-            var first = true;
-        }
-
-        @foreach (Episode e in Model.episodes)
-        {
-
-            List<Image1> img = new List<Image1>(e.images.ToList());
-            var firstPic = img.First();
-            uniqueEpisodeIDs.Add(e.name);
-            int minutes = (e.duration_ms / 1000) / 60;
 
 
-            <div class="carousel-item @(first?Html.Raw("active"):Html.Raw(""))">
-                <a href="@e.external_urls.spotify" alt="@e.show.name">   <img class="d-block w-75 mx-auto" src="@firstPic.url"/></a>
-            </div>
-            first = false;
-        }
+    @{
+        List<string> uniqueEpisodeIDs = new List<string>();
+    }
 
+    <h4></h4>
+    <h5>Popular Podcasts</h5>
+    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="max-width: 300px; margin: 0 auto">
+        <!--Indicators-->
+        @*<ol class="carousel-indicators">
+            <li data-target="#carouselExampleControls" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleControls" data-slide-to="1"></li>
+            <li data-target="#carouselExampleControls" data-slide-to="2"></li>
+        </ol>*@
+        <!--/.Indicators-->
+        <div class="carousel-inner" role="listbox">
+            @{
+                var first = true;
+            }
+
+            @foreach (Episode e in Model.episodes)
+            {
+
+                List<Image1> img = new List<Image1>(e.images.ToList());
+                var firstPic = img.First();
+                uniqueEpisodeIDs.Add(e.name);
+                int minutes = (e.duration_ms / 1000) / 60;
+
+
+                <div class="carousel-item @(first?Html.Raw("active"):Html.Raw(""))">
+                    <a href="@e.external_urls.spotify" alt="@e.show.name">   <img class="d-block w-75 mx-auto" src="@firstPic.url" /></a>
+                    <p>@e.show.name</p>
+                </div>
+                first = false;
+            }
+
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
+           data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleControls" role="button"
+           data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
     </div>
-    <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
-       data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#carouselExampleControls" role="button"
-       data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
 </div>
-       
+</div>
 
