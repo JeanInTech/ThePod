@@ -85,11 +85,13 @@ namespace ThePod.Controllers
             favorite.Duration = ep.duration_ms;
             favorite.ReleaseDate = DateTime.Parse(ep.release_date);
 
+            ViewBag.EpName = ep.name;
+
             if (ModelState.IsValid)
             {
-                if (_context.SavedPodcasts.Any(id => id.EpisodeId.Equals(ep.id)))
+                if (_context.SavedPodcasts.Any(id => id.EpisodeId.Equals(ep.id) & id.UserId.Equals(user))) // this needs to also check to see if this episode has been favorited by the logged in user
                 {
-                    return View("Error");
+                    return View("DuplicateFavorite"); //this needs the view to say exactly what the probelem is, (episode is already on the favorites list_))
                 }
                 else
                 {

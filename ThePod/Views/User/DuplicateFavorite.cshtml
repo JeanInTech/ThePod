@@ -1,0 +1,11 @@
+﻿@model List<FavoriteViewModel>
+
+<h4 class="text-left text-capitalize" style="color: black; letter-spacing: 2px">Oops!</h4>
+<div style="color: grey">
+    <p>It looks like "@ViewBag.EpName" is already on your favorites.</p>
+   
+    <form asp-controller="Home" asp-action="index" >
+        <input type="submit" value="Return to Search" class="btn btn-outline-dark btn-group-lg float-lg-left" />
+    </form>
+ 
+</div>

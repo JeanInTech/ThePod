@@ -43,7 +43,7 @@
                         <audio controls style="width: 100%; align-content: start">
                             <source src="@e.audio_preview_url" type="audio/mpeg">
                         </audio>
-                        <figcaption class="figure-caption text-right">Released: @e.release_date <br />Length: @minutes minutes</figcaption>
+                        <figcaption class="figure-caption text-right"> Podcast: <a asp-controller="pod" asp-action="GetEpisodeByPodcast" asp-route-query="@e.show.name" asp-route-searchType="episodes">@e.show.name</a><br>Released: @e.release_date <br />Length: @minutes minutes</figcaption>
                     </figure>
                 </td>
                 <td style="padding: 2em 2em 2em;">
