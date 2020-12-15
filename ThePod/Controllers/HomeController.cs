@@ -83,6 +83,12 @@ namespace ThePod.Controllers
             return descOrderedProfiles;
         }
 
+        public async Task<IActionResult> GetPopularResults(string id)
+        {
+             TempData["UserQuery"]=id;
+            var getPopular = await _dal.SearchEpisodeIdAsync(id);
+            return View("../Pod/EpisodeDetails", getPopular);
+        }
 
     }
 }
