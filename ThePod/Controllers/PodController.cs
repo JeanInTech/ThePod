@@ -58,14 +58,12 @@ namespace ThePod.Controllers
                 var epId = ConvertToIdString(s).ToString();
                 var eachEpisode = await _dal.SearchEpisodeIdAsync(epId);
 
-                if (searchType == "episode")
-                {
-                    return View("EpisodeDetails", eachEpisode);
-                }
-                else
-                {
-                    return View("AllContent", eachEpisode);
-                }
+                return View("EpisodeDetails", eachEpisode);
+                
+                //else
+                //{
+                //    return View("AllContent", eachEpisode);
+                //}
             }
         }
         // ==============================================================

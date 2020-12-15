@@ -23,8 +23,9 @@ namespace ThePod.Controllers
 
         public IActionResult Index()
         {
-            return View("Index", GetTagCloud());
+            return View();
         }
+
         public IActionResult Recommendations()
         {
             return View(_context.UserFeedbacks.ToList());
@@ -45,14 +46,16 @@ namespace ThePod.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
         // ==============================================================
         // Tag Cloud
         // ==============================================================
-        public string GetTagCloud()
-        {
-            var allTags = _context.UserProfiles.ToList();
 
-            return TagCloud.MakeTagCloud(allTags);
-        }
+        //public string GetTagCloud()
+        //{
+        //    var allTags = _context.UserProfiles.ToList();
+
+        //    return tagCloud;
+        //}
     }
 }

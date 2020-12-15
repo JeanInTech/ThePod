@@ -92,42 +92,41 @@ html {
 /******** Tag Cloud ********/
 
 .tagcloud {
-    text-align: left;
+    text-align: center;
 }
 
+.tagcloud a {
+    padding: 0px 10px 0px 0px;
+    text-decoration: none;
+    padding: 3px 4px;
+    white-space: nowrap
+}
 
-    .tagcloud a {
-        padding: 0px 10px 0px 0px;
-        text-decoration: none;
-        padding: 3px 4px;
-        white-space: nowrap
-    }
+.tagcloud a:hover {
+    background-color: #fff;
+    color: #012840;
+}
 
-        .tagcloud a:hover {
-            background-color: #fff;
-            color: #012840;
-        }
+.tagcloud .tag1 {
+    font-size: 2em;
+}
 
-    .tagcloud .tag1 {
-        font-size: 2em;
-    }
+.tagcloud .tag2 {
+    font-size: 1.7em;
+}
 
-    .tagcloud .tag2 {
-        font-size: 1.7em;
-    }
+.tagcloud .tag3 {
+    font-size: 1.5em;
+}
 
-    .tagcloud .tag3 {
-        font-size: 1.5em;
-    }
+.tagcloud .tag4 {
+    font-size: 1.2em;
+}
 
-    .tagcloud .tag4 {
-        font-size: 1.2em;
-    }
+.tagcloud .tag5 {
+    font-size: 1em;
+}
 
-    .tagcloud .tag5 {
-        font-size: 1em;
-    }
-
-    .tagcloud .tag0 {
-        font-size: .8em;
-    }
+.tagcloud .tag0 {
+    font-size: .8em;
+}

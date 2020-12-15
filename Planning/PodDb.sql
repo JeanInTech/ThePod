@@ -25,11 +25,14 @@
 --	ReleaseDate DATE --need to convert from string
 --);
 
-CREATE TABLE UserProfile(
-	Id INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
-	UserFeedbackId INT FOREIGN KEY REFERENCES UserFeedback(Id),
-	UserId NVARCHAR(450) NOT NULL, 
-	EpisodeId NVARCHAR(50) NOT NULL,
-	Tag NVARCHAR(50),
-	Rating TINYINT
-);
+--CREATE TABLE UserProfile(
+--	Id INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
+--	UserFeedbackId INT FOREIGN KEY REFERENCES UserFeedback(Id),
+--	UserId NVARCHAR(450) NOT NULL, 
+--	EpisodeId NVARCHAR(50) NOT NULL,
+--	Tag NVARCHAR(50),
+--	Rating TINYINT
+--);
+
+--ALTER TABLE SavedPodcast
+--ALTER COLUMN Publisher NVARCHAR(500);
