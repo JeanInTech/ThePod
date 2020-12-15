@@ -18,7 +18,7 @@
         <tr>
             <td>
                 @{ 
-                    int minutes = (@s.Duration / 1000) / 60;
+                    int? minutes = (@s.Duration / 1000) / 60;
                 }
                 <figure class="figure">
                     <a href="@s.ImageUrl" alt="@s.PodcastName" target="_blank"><img src="@s.ImageUrl" style="height: 250px; width:250px;" class="figure-img" /></a>
