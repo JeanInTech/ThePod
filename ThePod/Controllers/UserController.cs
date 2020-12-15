@@ -87,7 +87,7 @@ namespace ThePod.Controllers
 
             if (ModelState.IsValid)
             {
-                if (_context.SavedPodcasts.Any(id => id.EpisodeId.Equals(ep.id)))
+                if (_context.SavedPodcasts.Any(id => id.EpisodeId.Equals(ep.id) & id.UserId.Equals(user)))
                 {
                     return View("Error");
                 }
