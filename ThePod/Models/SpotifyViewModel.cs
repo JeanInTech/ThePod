@@ -13,7 +13,7 @@ namespace ThePod.Models
         public List<UserFeedback> UserFeedback { get; set; }
         public List<EpByPodItem> EpisodesByPodIds { get; set; }
 
-        public List<AspNetUser> AspNetUsers { get; set; }
+    
 
 
 

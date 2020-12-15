@@ -11,7 +11,7 @@ namespace ThePod.Models
     public class RootEpisodes
     {
         public Episode[] episodes { get; set; }
-        public AspNetUser AspNetUser { get; set; }
+     
     }
 
     public class Episode
