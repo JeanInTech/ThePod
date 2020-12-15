@@ -71,41 +71,13 @@ namespace ThePod.Controllers
         // ==============================================================
         // Methods
         // ==============================================================
-        public string FindUser()
-        {
-            var claimsIdentity = (ClaimsIdentity)this.User.Identity;
-            var claim = claimsIdentity.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
-            var userId = claim.Value;
-            return userId;
-        }
-        public List<string> GetProfile()
-        {
-            var user = FindUser();
-            var userSpecific = _context.UserProfiles.Where(x => x.UserId == user);
-            var qualifiedRatings = userSpecific.Where(x => x.Rating >= 3);
-            var countPerTag = from z in qualifiedRatings
-                              group z by z.Tag into taggedList
-                              select new
-                              {
-                                  TagGroup = taggedList.Key,
-                                  CountTag = taggedList.Count(),
-                              };
-            var topTags = countPerTag.OrderByDescending(countPerTag => countPerTag.CountTag).ToList();
-
-            List<string> usersTopTags = new List<string>();
-            foreach (var t in topTags)
-            {
-                usersTopTags.Add(t.TagGroup);
-            }
-
-            return (usersTopTags);
-        }
+      
         public List<UserProfile> GetBestEpisodesRawData()
         {
-            string user = FindUser();
+           
             List<UserProfile> globalProfiles = _context.UserProfiles.ToList();
-            List<UserProfile> filteredProfiles = globalProfiles.Where(x => x.UserId != user).ToList(); //filtering out reviews that belong to the logged in user
-            List<UserProfile> qualifiedProfiles = filteredProfiles.Where(x => x.Rating >= 3).ToList(); //filtering out review that are less than rating of 3
+           // List<UserProfile> filteredProfiles = globalProfiles.Where(x => x.UserId != user).ToList(); //filtering out reviews that belong to the logged in user
+            List<UserProfile> qualifiedProfiles = globalProfiles.Where(x => x.Rating >= 3).ToList(); //filtering out review that are less than rating of 3
             List<UserProfile> descOrderedProfiles = qualifiedProfiles.OrderByDescending(x => x.Rating).ToList(); //orders everything on the list based on highest-rated episdoes first
 
             return descOrderedProfiles;
