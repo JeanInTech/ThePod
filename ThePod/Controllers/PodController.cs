@@ -242,6 +242,10 @@ namespace ThePod.Controllers
             return View("EpisodesByPodcast", showResults);
         }
         
+        public async Task<IActionResult> Popular()
+        {
+            return View();
+        }
 
     }
 }
