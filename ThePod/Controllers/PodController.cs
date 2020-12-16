@@ -42,6 +42,21 @@ namespace ThePod.Controllers
 
                 var eachShow = await _dal.SearchShowIdAsync(showId);
 
+                if(eachShow.shows == null)
+                {
+                    var episodeResults = await _dal.SearchEpisodeNameAsync(query);
+                    List<EpisodeItem> s = episodeResults.episodes.items.ToList();
+
+                    TempData["TotalResults"] = episodeResults.episodes.total;
+                    TempData["NextPage"] = episodeResults.episodes.next;
+                    TempData["PreviousPage"] = episodeResults.episodes.previous;
+                    TempData["Offset"] = episodeResults.episodes.offset;
+
+                    var epId = ConvertToIdString(s).ToString();
+                    var eachEpisode = await _dal.SearchEpisodeIdAsync(epId);
+
+                    return View("EpisodeDetails", eachEpisode);
+                }
                 return View("PodcastDetails", eachShow);
             }
             else
