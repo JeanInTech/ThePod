@@ -90,5 +90,24 @@ namespace ThePod.Controllers
             return View("../Pod/EpisodeDetails", getPopular);
         }
 
+        public async Task<IActionResult> Popular()
+        {
+            List<UserProfile> mostPopular = GetBestEpisodesRawData();
+            List<string> episodeIds = new List<string>();
+
+            foreach (UserProfile e in mostPopular)
+            {
+                if (e != null && !episodeIds.Contains(e.EpisodeId))
+                {
+                    episodeIds.Add(e.EpisodeId);
+                }
+
+            }
+
+            var epId = String.Join(",", episodeIds);
+            var recommendedEpisodes = await _dal.SearchEpisodeIdAsync(epId);
+            return View("Popular", recommendedEpisodes);
+        }
+
     }
 }
