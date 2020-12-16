@@ -40,6 +40,33 @@ namespace ThePod.Controllers
 
             return View("Index", recommendedEpisodes);
         }
+        public async Task<IActionResult> Popular()
+        {
+            List<UserProfile> mostPopular = GetBestEpisodesRawData();
+            List<string> episodeIds = new List<string>();
+            int epIdCount = 0;
+
+            foreach (UserProfile e in mostPopular)
+            {
+                if (e != null && !episodeIds.Contains(e.EpisodeId) && epIdCount < 21)
+                {
+                    episodeIds.Add(e.EpisodeId);
+                    epIdCount++;
+                }
+
+            }
+            var epId = String.Join(",", episodeIds);
+            var recommendedEpisodes = await _dal.SearchEpisodeIdAsync(epId);
+
+            return View("Popular", recommendedEpisodes);
+        }
+        public async Task<IActionResult> GetPopularResults(string id)
+        {
+            TempData["UserQuery"] = id;
+            var getPopular = await _dal.SearchEpisodeIdAsync(id);
+            return View("../Pod/EpisodeDetails", getPopular);
+        }
+
         public IActionResult Recommendations()
         {
             return View(_context.UserFeedback.ToList());
@@ -60,39 +87,7 @@ namespace ThePod.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-<<<<<<< HEAD
-       
-=======
 
-        public async Task<IActionResult> Index()
-        {
-
-
-            List<UserProfile> bestProfiles = GetBestEpisodesRawData(); //list of every tag in UserProfile table with a rating of 3+, that the logged in user has not reviewed, organized by highest rated first
-
-
-
-            List<string> episodeIds = new List<string>();
-            int epIdCount = 0;
-           
-            foreach (UserProfile e in bestProfiles)
-            {
-                if (e != null && !episodeIds.Contains(e.EpisodeId) && epIdCount < 21)
-                {
-                    episodeIds.Add(e.EpisodeId);
-                    epIdCount++;
-                }
-              
-            }
-          
-            var epId = String.Join(",", episodeIds);
-
-            var recommendedEpisodes = await _dal.SearchEpisodeIdAsync(epId);
-
-            return View("Index", recommendedEpisodes);
-        }
-
->>>>>>> cf7b50579b5ae82f5626cb6023e5cf23446185fe
         // ==============================================================
         // Methods
         // ==============================================================
@@ -100,43 +95,10 @@ namespace ThePod.Controllers
         public List<UserProfile> GetBestEpisodesRawData()
         {
             List<UserProfile> globalProfiles = _context.UserProfile.ToList();
-            // List<UserProfile> filteredProfiles = globalProfiles.Where(x => x.UserId != user).ToList(); //filtering out reviews that belong to the logged in user
             List<UserProfile> qualifiedProfiles = globalProfiles.Where(x => x.Rating >= 3).ToList(); //filtering out review that are less than rating of 3
             List<UserProfile> descOrderedProfiles = qualifiedProfiles.OrderByDescending(x => x.Rating).ToList(); //orders everything on the list based on highest-rated episdoes first
 
             return descOrderedProfiles;
         }
-<<<<<<< HEAD
-=======
-
-        public async Task<IActionResult> GetPopularResults(string id)
-        {
-             TempData["UserQuery"]=id;
-            var getPopular = await _dal.SearchEpisodeIdAsync(id);
-            return View("../Pod/EpisodeDetails", getPopular);
-        }
-
-        public async Task<IActionResult> Popular()
-        {
-            List<UserProfile> mostPopular = GetBestEpisodesRawData();
-            List<string> episodeIds = new List<string>();
-            int epIdCount = 0;
-
-            foreach (UserProfile e in mostPopular)
-            {
-                if (e != null && !episodeIds.Contains(e.EpisodeId) && epIdCount < 21)
-                {
-                    episodeIds.Add(e.EpisodeId);
-                    epIdCount++;
-                }
-
-            }
-
-            var epId = String.Join(",", episodeIds);
-            var recommendedEpisodes = await _dal.SearchEpisodeIdAsync(epId);
-            return View("Popular", recommendedEpisodes);
-        }
-
->>>>>>> cf7b50579b5ae82f5626cb6023e5cf23446185fe
     }
 }
