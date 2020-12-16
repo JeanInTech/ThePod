@@ -48,7 +48,6 @@
     }
     else
     {
-<<<<<<< HEAD
         <div class="searchresults">
             <h5 class="text-left text-capitalize" style="letter-spacing: 2px">My Reviews</h5>
         </div>
@@ -64,29 +63,6 @@
                     <th class="text-center">Review</th>
                     <th class="text-center">Edit</th>
                     <th class="text-center" style="border-top-right-radius: 25px;">Delete</th>
-=======
-
-        <form asp-action="SortFeedback" method="get">
-            <div class="form-actions no-color">
-                <p>
-                    Find by tag: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
-                    <input type="submit" value="Search" class="btn btn-default" /> | <a asp-action="SortFeedback" style="text-decoration: none; color: black">Back to Feedback</a>
-                </p>
-            </div>
-        </form>
-        <p style="font-size: 8px; color: dimgray">(Click headers to sort by date posted, episode, podcast, rating)</p>
-        <table class="table table-hover table-responsive-lg">
-            <thead class="thead-dark">
-                <tr class="thead-dark">
-                    <th><strong><a asp-action="SortFeedback" asp-route-sortOrder="@ViewData["DateSortParm"]" style="text-decoration: none; color: white">Date Posted</a></strong></th>
-                    <th><strong><a asp-action="SortFeedback" asp-route-sortOrder="@ViewData["EpNameSortParm"]" style="text-decoration: none; color: white">Episode Name</a></strong></th>
-                    <th><strong><a asp-action="SortFeedback" asp-route-sortOrder="@ViewData["PodNameSortParm"]" style="text-decoration: none; color: white">Podcast Name</a></strong></th>
-                    <th><strong><a asp-action="SortFeedback" asp-route-sortOrder="@ViewData["RatingSortParm"]" style="text-decoration: none; color:white">Rating</a></strong></th>
-                    <th><strong>Tags</strong></th>
-                    <th><strong>Review</strong></th>
-                    <th><strong>Edit</strong></th>
-                    <th><strong>Delete</strong></th>
->>>>>>> d9f89bc6160c305ca1f6198ce4c8715070cf1960
                 </tr>
             </thead>
 

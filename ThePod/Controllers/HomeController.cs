@@ -25,13 +25,14 @@ namespace ThePod.Controllers
             List<UserProfile> bestProfiles = GetBestEpisodesRawData();
             List<string> episodeIds = new List<string>();
 
+            int epIdCount = 0;
             foreach (UserProfile e in bestProfiles)
             {
-                if (e != null && !episodeIds.Contains(e.EpisodeId))
+                if (e != null && !episodeIds.Contains(e.EpisodeId) && epIdCount < 21)
                 {
                     episodeIds.Add(e.EpisodeId);
+                    epIdCount++;
                 }
-
             }
             var epId = String.Join(",", episodeIds);
 

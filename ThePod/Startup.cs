@@ -85,7 +85,7 @@ namespace ThePod
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=User}/{action=GetRecommendations}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }
