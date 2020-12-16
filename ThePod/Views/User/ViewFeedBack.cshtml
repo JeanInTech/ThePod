@@ -19,7 +19,7 @@
             <div class="form-actions no-color">
                 <p>
                     Find by tag: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
-                    <input type="submit" value="Search" class="btn btn-default" /> | <a asp-action="SortFeedback">Back to Feedback</a>
+                    <input type="submit" value="Search" class="btn btn-default" /> | <a asp-action="SortFeedback" style="text-decoration: none; color: black">Back to Feedback</a>
                 </p>
             </div>
         </form>
@@ -27,10 +27,10 @@
         <table class="table table-hover table-responsive-lg">
             <thead class="thead-dark">
                 <tr class="thead-dark">
-                    <th><strong><a asp-action="SortFeedback" asp-route-sortOrder="@ViewData["DateSortParm"]">Date Posted</a></strong></th>
-                    <th><strong><a asp-action="SortFeedback" asp-route-sortOrder="@ViewData["EpNameSortParm"]">Episode Name</a></strong></th>
-                    <th><strong><a asp-action="SortFeedback" asp-route-sortOrder="@ViewData["PodNameSortParm"]">Podcast Name</a></strong></th>
-                    <th><strong><a asp-action="SortFeedback" asp-route-sortOrder="@ViewData["RatingSortParm"]">Rating</a></strong></th>
+                    <th><strong><a asp-action="SortFeedback" asp-route-sortOrder="@ViewData["DateSortParm"]" style="text-decoration: none; color: white">Date Posted</a></strong></th>
+                    <th><strong><a asp-action="SortFeedback" asp-route-sortOrder="@ViewData["EpNameSortParm"]" style="text-decoration: none; color: white">Episode Name</a></strong></th>
+                    <th><strong><a asp-action="SortFeedback" asp-route-sortOrder="@ViewData["PodNameSortParm"]" style="text-decoration: none; color: white">Podcast Name</a></strong></th>
+                    <th><strong><a asp-action="SortFeedback" asp-route-sortOrder="@ViewData["RatingSortParm"]" style="text-decoration: none; color:white">Rating</a></strong></th>
                     <th><strong>Tags</strong></th>
                     <th><strong>Review</strong></th>
                     <th><strong>Edit</strong></th>
@@ -48,7 +48,7 @@
                     <td>@u.Tags</td>
                     <td>@u.Review</td>
                     <td class="text-sm-center">
-                        <a asp-controller="User" asp-action="Edit'''Review" asp-route-fbId="@u.Id" method="get"><img src="~/img/pencil-icon-24.png" /></a>
+                        <a asp-controller="User" asp-action="EditReview" asp-route-fbId="@u.Id" method="get"><img src="~/img/pencil-icon-24.png" /></a>
                     </td>
                     <td class="text-sm-center">
                         <a asp-controller="User" asp-action="DeleteReview" asp-route-fbId="@u.Id" asp-route-epId="@u.EpisodeId"><img src="~/img/close-window-icon-24 (1).png" /></a>
