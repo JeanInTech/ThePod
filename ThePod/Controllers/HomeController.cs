@@ -51,12 +51,14 @@ namespace ThePod.Controllers
 
 
             List<string> episodeIds = new List<string>();
+            int epIdCount = 0;
            
             foreach (UserProfile e in bestProfiles)
             {
-                if (e != null && !episodeIds.Contains(e.EpisodeId))
+                if (e != null && !episodeIds.Contains(e.EpisodeId) && epIdCount < 21)
                 {
                     episodeIds.Add(e.EpisodeId);
+                    epIdCount++;
                 }
               
             }
@@ -94,12 +96,14 @@ namespace ThePod.Controllers
         {
             List<UserProfile> mostPopular = GetBestEpisodesRawData();
             List<string> episodeIds = new List<string>();
+            int epIdCount = 0;
 
             foreach (UserProfile e in mostPopular)
             {
-                if (e != null && !episodeIds.Contains(e.EpisodeId))
+                if (e != null && !episodeIds.Contains(e.EpisodeId) && epIdCount < 21)
                 {
                     episodeIds.Add(e.EpisodeId);
+                    epIdCount++;
                 }
 
             }
