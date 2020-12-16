@@ -1,5 +1,14 @@
-﻿
+﻿@font-face {
+    font-family: 'Montserrat';
+    src: url(../font/Montserrat-Regular.ttf);
+    font-weight: normal;
+}
 
+@font-face {
+    font-family: 'MontserratBold';
+    src: url(../font/Montserrat-Bold.ttf);
+    font-weight: bold;
+}
 a.navbar-brand {
     white-space: normal;
     text-align: center;
@@ -69,66 +78,19 @@ html {
 
 
 /******** Custom Stylings ********/
+@font-face {
+    font-family: 'Montserrat';
+    src: url(../font/Montserrat-Regular.ttf);
+}
 
 #indexContainer {
     color: white;
-}
-
-#searchIndex {
-    border-radius: 25px;
-    background-color: rgba(12, 12, 12, 0.7);
-    padding: 50px;
 }
 
 .pagebuttons {
     display: inline-block;
     width: 100%;
     padding: 0 0 50px 0;
-}
-
-.searchresults {
-    width: 100%;
-}
-/******** Tag Cloud ********/
-
-.tagcloud {
-    text-align: center;
-}
-
-.tagcloud a {
-    padding: 0px 10px 0px 0px;
-    text-decoration: none;
-    padding: 3px 4px;
-    white-space: nowrap
-}
-
-.tagcloud a:hover {
-    background-color: #fff;
-    color: #012840;
-}
-
-.tagcloud .tag1 {
-    font-size: 2em;
-}
-
-.tagcloud .tag2 {
-    font-size: 1.7em;
-}
-
-.tagcloud .tag3 {
-    font-size: 1.5em;
-}
-
-.tagcloud .tag4 {
-    font-size: 1.2em;
-}
-
-.tagcloud .tag5 {
-    font-size: 1em;
-}
-
-.tagcloud .tag0 {
-    font-size: .8em;
 }
 
 .carousel-inner > .carousel-item > img {
@@ -145,3 +107,19 @@ html {
     border: 1px solid black;
     background-image: none;
 }
+
+body {
+    background-image: url(../img/artur-luczka-loAfOVk1eNc-unsplash.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.searchresults {
+    background-color: rgba(12, 12, 12, 0.5);
+    padding: 5px;
+    color: white;
+    width: 100%;
+    font-family: 'Montserrat';
+}
+

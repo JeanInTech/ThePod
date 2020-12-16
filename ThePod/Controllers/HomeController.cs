@@ -20,6 +20,25 @@ namespace ThePod.Controllers
             _dal = dal;
             _context = context;
         }
+        public async Task<IActionResult> Index()
+        {
+            List<UserProfile> bestProfiles = GetBestEpisodesRawData();
+            List<string> episodeIds = new List<string>();
+
+            foreach (UserProfile e in bestProfiles)
+            {
+                if (e != null && !episodeIds.Contains(e.EpisodeId))
+                {
+                    episodeIds.Add(e.EpisodeId);
+                }
+
+            }
+            var epId = String.Join(",", episodeIds);
+
+            var recommendedEpisodes = await _dal.SearchEpisodeIdAsync(epId);
+
+            return View(recommendedEpisodes);
+        }
         public IActionResult Recommendations()
         {
             return View(_context.UserFeedback.ToList());
@@ -41,33 +60,12 @@ namespace ThePod.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public async Task<IActionResult> Index()
-        {
-            List<UserProfile> bestProfiles = GetBestEpisodesRawData();
-            List<string> episodeIds = new List<string>();
-
-            foreach (UserProfile e in bestProfiles)
-            {
-                if (e != null && !episodeIds.Contains(e.EpisodeId))
-                {
-                    episodeIds.Add(e.EpisodeId);
-                }
-
-            }
-            var epId = String.Join(",", episodeIds);
-
-            var recommendedEpisodes = await _dal.SearchEpisodeIdAsync(epId);
-
-            return View("Index", recommendedEpisodes);
-        }
-
         // ==============================================================
         // Methods
         // ==============================================================
 
         public List<UserProfile> GetBestEpisodesRawData()
         {
-
             List<UserProfile> globalProfiles = _context.UserProfile.ToList();
             // List<UserProfile> filteredProfiles = globalProfiles.Where(x => x.UserId != user).ToList(); //filtering out reviews that belong to the logged in user
             List<UserProfile> qualifiedProfiles = globalProfiles.Where(x => x.Rating >= 3).ToList(); //filtering out review that are less than rating of 3

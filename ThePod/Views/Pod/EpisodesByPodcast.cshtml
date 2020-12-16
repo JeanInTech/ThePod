@@ -8,18 +8,44 @@
     var nextPage = TempData.Peek("NextPage");
     var previousPage = TempData.Peek("PreviousPage");
     var offset = TempData["Offset"].ToString();
+    var userQuery = ViewBag.userQuery;
 }
+
+<style type="text/css">
+    @@font-face {
+        font-family: 'Montserrat';
+        src: url(../font/Montserrat-Regular.ttf);
+        font-weight: normal;
+    }
+
+    @@font-face {
+        font-family: 'MontserratBold';
+        src: url(../font/Montserrat-Bold.ttf);
+        font-weight: bold;
+    }
+
+    table {
+        background-color: rgba(255, 255, 255, .8);
+        border-radius: 25px;
+        border-top: none;
+    }
+
+    tr {
+        border-radius: 25px;
+    }
+</style>
+
 <div class="searchresults">
-    <h5 class="text-left text-capitalize" style="color: grey; letter-spacing: 2px">All Episodes from "@ViewBag.userQuery"</h5>
+    <h5 class="text-left text-capitalize" style="letter-spacing: 2px">All Episodes from "@ViewBag.userQuery"</h5>
 </div>
 
 <table class="table table-hover table-responsive-lg">
     <thead class="thead-dark">
         <tr class="thead-dark">
-            <th class="text-center">Podcast</th>
+            <th class="text-center" style="border-top-left-radius: 25px;">Podcast</th>
             <th class="text-center">Episode Description</th>
             <th class="text-center">Favorite</th>
-            <th class="text-center">Review</th>
+            <th class="text-center" style="border-top-right-radius: 25px;">Review</th>
         </tr>
     </thead>
 
@@ -38,14 +64,14 @@
                         <audio controls style="width: 100%; align-content: start">
                             <source src="@e.audio_preview_url" type="audio/mpeg">
                         </audio>
-                        @{ 
+                        @{
                             DateTime date = e.release_date;
                             string formattedDate = date.ToShortDateString();
                         }
                         <figcaption class="figure-caption text-right">Released: @formattedDate <br />Length: @minutes minutes</figcaption>
                     </figure>
                 </td>
-                <td style="padding: 2em 2em 2em 2em">
+                <td style="padding: 2em 2em 2em 2em; max-width: 500px; word-wrap: break-word">
                     <p style="font-weight: bold; font-size: 1em;">@e.name</p>
                     <hr />
                     <p>@e.description</p>
@@ -53,14 +79,14 @@
                 <td>
                     <form asp-controller="User" asp-action="AddFavorite" method="post">
                         <input type="hidden" name="id" value="@e.id" />
-                        <input type="submit" name="data" value="Add to Favorites" class="btn btn-outline-dark btn-group-lg" />
+                        <input type="submit" name="data" value="Add to Favorites" class="btn btn-dark btn-group-lg" />
                         <a asp-action="Index"></a>
                     </form>
                 </td>
                 <td>
                     <form asp-controller="User" asp-action="ReviewEpisode" method="get">
                         <input type="hidden" name="id" value="@e.id" />
-                        <input type="submit" name="data" value="Review Episode" class="btn btn-outline-dark btn-group-lg" />
+                        <input type="submit" name="data" value="Review Episode" class="btn btn-dark btn-group-lg" />
                     </form>
                 </td>
             </tr>
@@ -73,20 +99,20 @@
     @if (previousPage != null)
     {
         int convert = int.Parse(offset);
-        <form asp-controller="Pod" asp-action="GetPreviousEpByPod" method="post">
-            <input type="hidden" name="shoId" value="@shoId" />
+        <form asp-controller="Pod" asp-action="GetPreviousEpisode" method="post">
+            <input type="hidden" name="query" value="@userQuery" />
             <input type="hidden" name="offset" value="@convert" />
-            <input type="submit" value="Previous" class="btn btn-outline-dark btn-group-lg float-lg-left" />
+            <input type="submit" value="Previous" class="btn btn-dark btn-group-lg float-lg-left" />
         </form>
 
     }
     @if (nextPage != null)
     {
         int convert = int.Parse(offset);
-        <form asp-controller="Pod" asp-action="GetNextEpByPod" method="post">
-            <input type="hidden" name="shoId" value="@shoId" />
+        <form asp-controller="Pod" asp-action="GetNextEpisode" method="post">
+            <input type="hidden" name="query" value="@userQuery" />
             <input type="hidden" name="offset" value="@convert" />
-            <input type="submit" value="Next" class="btn btn-outline-dark btn-group-lg float-lg-right" />
+            <input type="submit" value="Next" class="btn btn-dark btn-group-lg float-lg-right" />
         </form>
     }
 </div>
