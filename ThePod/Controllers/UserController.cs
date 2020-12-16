@@ -90,7 +90,6 @@ namespace ThePod.Controllers
             if (ModelState.IsValid)
             {
                 if (_context.SavedPodcast.Any(id => id.EpisodeId.Equals(ep.id) & id.UserId.Equals(user)))
-
                 {
                     return View("DuplicateFavorite");
                 }

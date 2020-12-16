@@ -44,8 +44,6 @@ namespace ThePod
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-          //  services.AddDbContext<thepodContext>(options => options.UseSqlServer(Secret.ConnectionString));
-
             services.AddAuthentication()
                 .AddSpotify(options =>
                 {
@@ -54,8 +52,10 @@ namespace ThePod
                     options.CallbackPath = "/Home/Index";
                     options.Events.OnRemoteFailure = (context) =>
                     {
-                        //Handle fail login attempts here
-                        return Task.CompletedTask;
+                        context.Response.Redirect("/Identity/Account/Login");
+                        context.HandleResponse();
+
+                        return Task.FromResult(0);
                     };
                 }
                 );

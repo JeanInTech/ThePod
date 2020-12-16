@@ -1,16 +1,28 @@
 ﻿@model List<FavoriteViewModel>
 
+<style type="text/css">
+    table {
+        background-color: rgba(255, 255, 255, .8);
+        border-radius: 25px;
+        border-top: none;
+    }
+
+    tr {
+        border-radius: 25px;
+    }
+</style>
+
 <div class="searchresults">
-    @*<h5 class="text-left text-capitalize" style="color: grey; letter-spacing: 2px">Search Results For "@userQuery"</h5>*@
+    <h5 class="text-left text-capitalize" style="letter-spacing: 2px">My Favorites</h5>
 </div>
 
 @{ if (@Model.Count() == 0)
     {
-            <h4 class="text-left text-capitalize" style="color: black; letter-spacing: 2px">Oops!</h4>
-            <div style="color: grey">
+        <h4 class="text-left text-capitalize" style="color: black; letter-spacing: 2px">Oops!</h4>
+        <div style="color: grey">
 
-        You do not have any favorites saved yet!  Return to <a asp-controller="home" asp-action="index">Search</a> to find an episode to add
-            </div>
+            You do not have any favorites saved yet!  Return to <a asp-controller="home" asp-action="index">Search</a> to find an episode to add
+        </div>
     }
     else
     {
@@ -18,10 +30,10 @@
 
             <thead class="thead-dark">
                 <tr class="thead-dark">
-                    <th>Podcast</th>
+                    <th style="border-top-left-radius: 25px;">Podcast</th>
                     <th style="width: 200px">Episode Description</th>
                     <th>Review</th>
-                    <th>Remove</th>
+                    <th style="border-top-right-radius: 25px;">Remove</th>
                 </tr>
             </thead>
 
@@ -63,7 +75,7 @@
                             <p><i>This episode hasn't been reviewed.</i></p>
                             <form asp-controller="User" asp-action="ReviewEpisode" method="get">
                                 <input type="hidden" value="@fvm.EpisodeId" name="id" />
-                                <input type="submit" value="Add Review" />
+                                <input type="submit" class="btn btn-dark" value="Add Review" />
                             </form>
                         }
                         else
@@ -71,7 +83,7 @@
                             <p>@fvm.Review</p>
                             <form asp-controller="User" asp-action="EditReview" method="get">
                                 <input type="hidden" value="@fvm.UserFeedbackId" name="fbId" />
-                                <input type="submit" value="Edit Review" />
+                                <input type="submit" class="btn btn-dark" value="Edit Review" />
                             </form>
                             <p><i>Last Updated: @fvm.DatePosted.ToShortDateString()</i></p>
                         }
@@ -80,8 +92,6 @@
                         <a asp-controller="User" asp-action="Delete" asp-route-id="@fvm.SavedPodcastId"><img src="~/img/close-window-icon-24 (1).png" /></a>
                     </td>
                 </tr>
-
-            
             }
         </table>
     }
