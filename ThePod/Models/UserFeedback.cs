@@ -28,4 +28,7 @@ namespace ThePod.Models
         public virtual AspNetUsers User { get; set; }
         public virtual ICollection<UserProfile> UserProfile { get; set; }
     }
+
+
+
 }

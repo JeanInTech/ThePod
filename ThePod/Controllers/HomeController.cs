@@ -31,11 +31,6 @@ namespace ThePod.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
@@ -44,19 +39,18 @@ namespace ThePod.Controllers
 
         public async Task<IActionResult> Index()
         {
-
-
             List<UserProfile> bestProfiles = GetBestEpisodesRawData(); //list of every tag in UserProfile table with a rating of 3+, that the logged in user has not reviewed, organized by highest rated first
-
-
-
-            List<string> episodeIds = new List<string>();
            
+            List<string> episodeIds = new List<string>();
+
+            int epIdCount = 0;
+
             foreach (UserProfile e in bestProfiles)
             {
-                if (e != null && !episodeIds.Contains(e.EpisodeId))
+                if (e != null && !episodeIds.Contains(e.EpisodeId) && epIdCount < 21)
                 {
                     episodeIds.Add(e.EpisodeId);
+                    epIdCount++;
                 }
               
             }
@@ -74,7 +68,7 @@ namespace ThePod.Controllers
       
         public List<UserProfile> GetBestEpisodesRawData()
         {
-           
+
             List<UserProfile> globalProfiles = _context.UserProfile.ToList();
            // List<UserProfile> filteredProfiles = globalProfiles.Where(x => x.UserId != user).ToList(); //filtering out reviews that belong to the logged in user
             List<UserProfile> qualifiedProfiles = globalProfiles.Where(x => x.Rating >= 3).ToList(); //filtering out review that are less than rating of 3
@@ -82,7 +76,14 @@ namespace ThePod.Controllers
 
             return descOrderedProfiles;
         }
-
+        public List<UserFeedback> GetPopularEpisodesRawData()
+        {
+            List<UserFeedback> globalProfiles = _context.UserFeedback.ToList();
+            List<UserFeedback> qualifiedProfiles = globalProfiles.Where(x => x.Rating >= 3).ToList(); //filtering out review that are less than rating of 3
+            List<UserFeedback> descOrderedProfiles = qualifiedProfiles.OrderByDescending(x => x.Rating).ToList(); //orders everything on the list based on highest-rated episdoes first
+                                                                                                                 //SELECT * FROM UserProfile JOIN UserFeedback ON UserProfile.UserFeedbackId=UserFeedback.Id
+            return descOrderedProfiles;
+        }
         public async Task<IActionResult> GetPopularResults(string id)
         {
              TempData["UserQuery"]=id;
@@ -92,21 +93,8 @@ namespace ThePod.Controllers
 
         public async Task<IActionResult> Popular()
         {
-            List<UserProfile> mostPopular = GetBestEpisodesRawData();
-            List<string> episodeIds = new List<string>();
-
-            foreach (UserProfile e in mostPopular)
-            {
-                if (e != null && !episodeIds.Contains(e.EpisodeId))
-                {
-                    episodeIds.Add(e.EpisodeId);
-                }
-
-            }
-
-            var epId = String.Join(",", episodeIds);
-            var recommendedEpisodes = await _dal.SearchEpisodeIdAsync(epId);
-            return View("Popular", recommendedEpisodes);
+            List<UserFeedback> bestProfiles = GetPopularEpisodesRawData(); //list of every tag in UserProfile table with a rating of 3+, that the logged in user has not reviewed, organized by highest rated first
+            return View("test", bestProfiles);
         }
 
     }

@@ -1,0 +1,16 @@
+﻿@model List<UserFeedback>
+
+@{ foreach (UserFeedback f in Model)
+    {
+        <p>Ep name: @f.EpisodeName</p>
+        <p>Pod Name: @f.PodcastName</p>
+        <p>Description: @f.Description</p>
+        <p>Rating: @f.Rating</p>
+        <p>Review: @f.Review</p>
+        <p>Tags: @f.Tags</p>
+        <hr />
+    }
+
+}
+
+}
