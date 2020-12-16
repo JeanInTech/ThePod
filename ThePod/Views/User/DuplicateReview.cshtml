@@ -6,12 +6,9 @@
     <p><strong>Podcast: </strong>@Model.PodcastName</p>
     <p><strong>Episode Name: </strong>@Model.EpisodeName</p>
     <img src="@Model.ImageUrl" height="200" />
-    <p>Would you like to edit this review?</p>
-    <form asp-controller="User" asp-action="EditReview" method="get">
-        <input type="hidden" name="Id" value="@Model.Id" />
-        <input type="submit" value="Yes" class="btn btn-outline-dark btn-group-lg float-lg-left" />
-    </form><h2>  </h2>
-    <form asp-controller="User" asp-action="ViewFeedBack" method="get">
-        <input type="submit" value="No" class="btn btn-outline-dark btn-group-lg float-lg-left" />
-    </form>
-    </div>
+    <p>You can <a asp-controller="User" asp-action="EditReview" asp-route-id="@Model.Id" >edit</a> this review, or</p>
+    
+  
+           <p>Or go <a href='javascript:history.go(-1)'>back</a> to the previous page</p>
+
+</div>

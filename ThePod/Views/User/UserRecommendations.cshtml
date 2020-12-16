@@ -12,6 +12,8 @@
 @if (Model == null)
 {
     <p>Please review more podcasts for personalized recommendations. Not sure where to start? <a asp-controller="Home" asp-action="Index">Start here.</a></p>
+    <p>Or go <a href='javascript:history.go(-1)'>back</a> to the previous page</p>
+
 }
 else
 {
