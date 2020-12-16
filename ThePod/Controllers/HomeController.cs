@@ -48,15 +48,16 @@ namespace ThePod.Controllers
 
             List<UserProfile> bestProfiles = GetBestEpisodesRawData(); //list of every tag in UserProfile table with a rating of 3+, that the logged in user has not reviewed, organized by highest rated first
 
-
+            int epIdCount = 0;
 
             List<string> episodeIds = new List<string>();
            
             foreach (UserProfile e in bestProfiles)
             {
-                if (e != null && !episodeIds.Contains(e.EpisodeId))
+                if (e != null && !episodeIds.Contains(e.EpisodeId) && epIdCount < 21)
                 {
-                    episodeIds.Add(e.EpisodeId);
+                        episodeIds.Add(e.EpisodeId);
+                        epIdCount++;
                 }
               
             }
