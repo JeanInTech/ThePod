@@ -40,11 +40,12 @@
 </style>
 @{ if (@Model.Count() == 0)
     {
-        <h4 class="text-left text-capitalize" style="color: black; letter-spacing: 2px">Oops!</h4>
-        <div style="color: grey">
+        <div class="searchresults">
+            <h4 class="text-left text-capitalize" style="letter-spacing: 2px">Oops!</h4>
 
-            You have not reviewed any episodes yet!  Why not check your <a asp-controller="user" asp-action="UserFavorites">Favorites</a> to find an episode to review
+            <p>You have not reviewed any episodes yet!  Why not check your <a asp-controller="user" asp-action="UserFavorites" style="color:forestgreen;">Favorites</a> to find an episode to review</p>
         </div>
+
     }
     else
     {
@@ -75,7 +76,8 @@
                     <td>@u.Rating/5</td>
                     <td>@u.Tags</td>
                     <td>
-                    @u.Review</td>
+                        @u.Review
+                    </td>
                     <td class="text-sm-center">
                         <a asp-controller="User" asp-action="EditReview" asp-route-fbId="@u.Id" method="get"><img src="~/img/pencil-icon-24.png" /></a>
                     </td>

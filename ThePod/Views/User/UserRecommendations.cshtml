@@ -36,7 +36,9 @@
 @if (Model == null)
 {
     <div class="searchresults">
-        <h5 class="text-left text-capitalize">Please review more podcasts for personalized recommendations. Not sure where to start? <a asp-controller="Home" asp-action="Index">Start here.</a></h5>
+        <h4 class="text-left text-capitalize" style="letter-spacing: 2px">Oops!</h4>
+
+        <p>You do not have any favorites saved yet!  Return to <a asp-controller="home" asp-action="index" style="color:forestgreen;">Search</a> to find an episode to add</p>
     </div>
 }
 else

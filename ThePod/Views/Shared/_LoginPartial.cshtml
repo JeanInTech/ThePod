@@ -29,6 +29,14 @@
     }
     else
     {
+        <form class="form-inline mr-auto" asp-controller="Pod" asp-action="SearchResults" method="post">
+            <input class="form-control-sm mr-sm-1" type="text" name="query" placeholder="Search" aria-label="Search">
+            <select name="searchType" id="searchType" class="btn btn-sm btn-success dropdown-toggle mr-sm-1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <option class="dropdown-item-text" value="podcast" style="color: white;">Podcasts</option>
+                <option class="dropdown-item-text" value="episode" style="color: white">Episodes</option>
+            </select>
+            <button class="btn btn-outline-light btn-sm my-2 my-sm-0" type="submit">Search</button>
+        </form>
         <li class="nav-item">
             <a class="nav-link text-light" asp-area="Identity" asp-page="/Account/Register">Register</a>
         </li>
