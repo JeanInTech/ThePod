@@ -252,6 +252,5 @@ namespace ThePod.Controllers
 
             return View("EpisodesByPodcast", showResults);
         }
-
     }
 }

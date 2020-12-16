@@ -1,27 +1,15 @@
-﻿@model RootEpisodes
+﻿@{
+    List<string> uniqueEpisodeIDs = new List<string>();
+}
 
 @{
-    ViewData["EpisodeDetails"] = "Episode Details";
-    List<string> uniqueEpisodeIDs = new List<string>();
-    string userQuery = TempData.Peek("UserQuery").ToString();
-    string totalResults = TempData.Peek("TotalResults").ToString();
-    var nextPage = TempData.Peek("NextPage");
-    var previousPage = TempData.Peek("PreviousPage");
-    var offset = TempData["Offset"].ToString();
+    string user = @User.Identity.Name;
+    int index = user.IndexOf("@");
+    if (index > 0)
+        user = user.Substring(0, index);
 }
+
 <style type="text/css">
-    @@font-face {
-        font-family: 'Montserrat';
-        src: url(../font/Montserrat-Regular.ttf);
-        font-weight: normal;
-    }
-
-    @@font-face {
-        font-family: 'MontserratBold';
-        src: url(../font/Montserrat-Bold.ttf);
-        font-weight: bold;
-    }
-
     table {
         background-color: rgba(255, 255, 255, .8);
         border-radius: 25px;
@@ -33,18 +21,17 @@
     }
 </style>
 
-
-@if (Model.episodes == null)
+@if (Model == null)
 {
     <div class="searchresults">
-        <h5 class="text-left text-capitalize" style="letter-spacing: 2px">No Search Results For "@userQuery"<br />Maybe a little too specific or weird.</h5>
-        <a class="btn btn-light" href='javascript:history.go(-1)'>Try Again</a>
+        <p>Please review more podcasts for personalized recommendations. Not sure where to start? <a asp-controller="Home" asp-action="Index">Start here.</a></p>
     </div>
+
 }
 else
 {
     <div class="searchresults">
-        <h5 class="text-left text-capitalize" style="letter-spacing: 2px">Search Results For "@userQuery"</h5>
+        <h5 class="text-left text-capitalize" style="letter-spacing: 2px">Popular Podcast Episodes</h5>
     </div>
 
     <table class="table table-hover table-responsive-lg">
@@ -54,6 +41,7 @@ else
                 <th class="text-center">Episode Description</th>
                 <th class="text-center">Favorite</th>
                 <th class="text-center" style="border-top-right-radius: 25px;">Review</th>
+
             </tr>
         </thead>
 
@@ -68,7 +56,6 @@ else
                             var firstPic = img.First();
                             uniqueEpisodeIDs.Add(e.name);
                             int minutes = (e.duration_ms / 1000) / 60;
-
                         }
                         <figure class="figure">
                             <a href="@e.external_urls.spotify" alt="@e.show.name" target="_blank"><img src="@firstPic.url" style="height: 250px; width:250px;" class="figure-img" /></a>
@@ -86,41 +73,18 @@ else
                     <td>
                         <form asp-controller="User" asp-action="AddFavorite" method="post">
                             <input type="hidden" name="id" value="@e.id" />
-                            <input type="submit" name="data" value="Add to Favorites" class="btn btn-dark btn-group-lg float-lg-left" />
+                            <input type="submit" name="data" value="Add to Favorites" class="btn btn-dark btn-group-lg" />
                             <a asp-action="Index"></a>
                         </form>
                     </td>
                     <td>
                         <form asp-controller="User" asp-action="ReviewEpisode" method="get">
                             <input type="hidden" name="id" value="@e.id" />
-                            <input type="submit" name="data" value="Review Episode" class="btn btn-dark btn-group-lg float-lg-left" />
+                            <input type="submit" name="data" value="Review Episode" class="btn btn-dark btn-group-lg" />
                         </form>
                     </td>
                 </tr>
-                uniqueEpisodeIDs.Add(e.name);
             }
         }
     </table>
-
-    <div class="pagebuttons">
-        @if (previousPage != null)
-        {
-            int convert = int.Parse(offset);
-            <form asp-controller="Pod" asp-action="GetPreviousEpisode" method="post">
-                <input type="hidden" name="query" value="@userQuery" />
-                <input type="hidden" name="offset" value="@convert" />
-                <input type="submit" value="Previous" class="btn btn-dark btn-group-lg float-lg-left" />
-            </form>
-
-        }
-        @if (nextPage != null)
-        {
-            int convert = int.Parse(offset);
-            <form asp-controller="Pod" asp-action="GetNextEpisode" method="post">
-                <input type="hidden" name="query" value="@userQuery" />
-                <input type="hidden" name="offset" value="@convert" />
-                <input type="submit" value="Next" class="btn btn-dark btn-group-lg float-lg-right" />
-            </form>
-        }
-    </div>
 }
