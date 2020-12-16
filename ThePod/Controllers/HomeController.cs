@@ -60,7 +60,32 @@ namespace ThePod.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        public async Task<IActionResult> Index()
+        {
 
+
+            List<UserProfile> bestProfiles = GetBestEpisodesRawData(); //list of every tag in UserProfile table with a rating of 3+, that the logged in user has not reviewed, organized by highest rated first
+
+            int epIdCount = 0;
+
+            List<string> episodeIds = new List<string>();
+           
+            foreach (UserProfile e in bestProfiles)
+            {
+                if (e != null && !episodeIds.Contains(e.EpisodeId) && epIdCount < 21)
+                {
+                        episodeIds.Add(e.EpisodeId);
+                        epIdCount++;
+                }
+              
+            }
+          
+            var epId = String.Join(",", episodeIds);
+
+            var recommendedEpisodes = await _dal.SearchEpisodeIdAsync(epId);
+
+            return View("Index", recommendedEpisodes);
+        }
         // ==============================================================
         // Methods
         // ==============================================================
