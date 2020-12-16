@@ -25,26 +25,6 @@
     }
 </style>
 
-<div id="indexPicContainer" class="d-flex justify-content-center align-items-center">
-    <img src="~/img/thepod.png" style="max-height: 30%; max-width: 30%;" />
-</div>
-
-﻿<div id="indexContainer" class="d-flex justify-content-center align-items-center">
-    <form asp-controller="Pod" asp-action="SearchResults" method="post" id="searchIndex">
-        <h3>Find your next podcast</h3><br />
-        <div class="text-md-center">
-            <input type="text" name="query" placeholder="Whatever sounds good" class="form-control-lg btn-block" style="text-align: center" required /><br />
-            <select name="searchType" id="searchType" class="btn btn-success dropdown-toggle btn-lg btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <option class="dropdown-item-text" value="podcast" style="color: white;">Podcasts</option>
-                <option class="dropdown-item-text" value="episode" style="color: white">Episodes</option>
-                <option class="dropdown-item-text" value="content" style="color: white">All Content</option>
-                <option value="tags">Tags</option> keywords and stuff
-            </select><br />
-
-            <input type="submit" class="btn btn-lg btn-dark" id="indexbtn" value="Submit" />
-        
-    </form>
-
 <div class="indexDetails text-md-center" id="searchIndex">
     <h1 style="font-family:Montserrat; font-weight:bold; letter-spacing: .2em;">The Pod</h1>
     <div id="indexPicContainer" class="d-flex justify-content-center align-items-center">
