@@ -51,10 +51,10 @@ else
     <table class="table table-hover table-responsive">
         <thead class="thead-dark">
             <tr class="thead-dark">
-                <th class="text-center" style="border-top-left-radius: 25px;">Podcast</th>
+                <th class="text-center">Podcast</th>
                 <th class="text-center">Episode Description</th>
                 <th class="text-center">Favorite</th>
-                <th class="text-center" style="border-top-right-radius: 25px;">Review</th>
+                <th class="text-center">Review</th>
             </tr>
         </thead>
 
@@ -77,7 +77,7 @@ else
                                 <source src="@e.audio_preview_url" type="audio/mpeg">
                             </audio>
                             <figcaption class="figure-caption text-right">
-                                Podcast: <a asp-controller="Pod" asp-action="SearchResults" asp-route-searchType="podcast" asp-route-query="@e.show.name">@e.show.name</a><br />
+                                Podcast: <a asp-controller="Pod" asp-action="GetEpisodeByPodcast" asp-route-query="@e.show.name">@e.show.name</a><br />
                                 Released: @e.release_date <br />
                                 Length: @minutes minutes
                             </figcaption>
