@@ -1,11 +1,4 @@
-
-﻿@{
-    List<string> uniqueEpisodeIDs = new List<string>();
-}
-
-@{
-    string user = @User.Identity.Name;
-}
+@model List<UserProfile>
 
 <style type="text/css">
     table {
@@ -19,71 +12,94 @@
     }
 </style>
 
-@if (Model == null)
+@if (@Model.Count() == 0)
 {
     <div class="searchresults">
-        <p>Please review more podcasts for personalized recommendations. Not sure where to start? <a asp-controller="Home" asp-action="Index">Start here.</a></p>
-    </div>
+        <h4 class="text-left text-capitalize" style="letter-spacing: 2px">Oops!</h4>
 
+        <p>You do not have any favorites saved yet!  Return to <a asp-controller="home" asp-action="index" style="color:forestgreen;">Search</a> to find an episode to add</p>
+    </div>
 }
 else
 {
     <div class="searchresults">
-        <h5 class="text-left text-capitalize" style="letter-spacing: 2px">Popular Podcast Episodes</h5>
+        <h5 class="text-left text-capitalize" style="letter-spacing: 2px">Popular</h5>
     </div>
+    <table class="table table-hover table-responsive-lg" style="width: 100%">
 
-    <table class="table table-hover table-responsive-lg">
         <thead class="thead-dark">
             <tr class="thead-dark">
-                <th class="text-center" style="border-top-left-radius: 25px;">Podcast</th>
-                <th class="text-center">Episode Description</th>
-                <th class="text-center">Favorite</th>
-                <th class="text-center" style="border-top-right-radius: 25px;">Review</th>
-
+                <th style="border-top-left-radius: 25px;">Podcast</th>
+                <th style="width: 200px">Episode Description</th>
+                <th>Review</th>
+                <th style="border-top-right-radius: 25px;">Tags</th>
             </tr>
         </thead>
 
-        @foreach (Episode e in Model.episodes)
+        @{List<string> uniqueEpisodeIDs = new List<string>();
+        }
+
+        @foreach (UserProfile u in Model)
         {
-            @if (!uniqueEpisodeIDs.Contains(e.name))
+            if (!uniqueEpisodeIDs.Contains(u.UserFeedback.EpisodeName))
             {
+                uniqueEpisodeIDs.Add(u.UserFeedback.EpisodeName);
+                string user = u.UserFeedback.User.UserName;
+                int index = user.IndexOf("@");
+                if (index > 0)
+                    user = user.Substring(0, index);
                 <tr>
                     <td>
-                        @{
-                            List<Image1> img = new List<Image1>(e.images.ToList());
-                            var firstPic = img.First();
-                            uniqueEpisodeIDs.Add(e.name);
-                            int minutes = (e.duration_ms / 1000) / 60;
-                        }
+
                         <figure class="figure">
-                            <a href="@e.external_urls.spotify" alt="@e.show.name" target="_blank"><img src="@firstPic.url" style="height: 250px; width:250px;" class="figure-img" /></a>
+                            <a href="@u.UserFeedback.ImageUrl" alt="@u.UserFeedback.PodcastName" target="_blank"><img src="@u.UserFeedback.ImageUrl" style="height: 250px; width:250px;" class="figure-img" /></a>
                             <audio controls style="width: 100%; align-content: start">
-                                <source src="@e.audio_preview_url" type="audio/mpeg">
+                                <source src="@u.UserFeedback.AudioPreviewUrl" type="audio/mpeg">
                             </audio>
-                            <figcaption class="figure-caption text-right"> Podcast: <a asp-controller="pod" asp-action="GetEpisodeByPodcast" asp-route-query="@e.show.name" asp-route-searchType="Podcast">@e.show.name</a><br>Released: @e.release_date <br />Length: @minutes minutes</figcaption>
+                            <figcaption class="figure-caption text-right">Podcast: <a asp-controller="pod" asp-action="GetEpisodeByPodcast" asp-route-query="@u.UserFeedback.PodcastName" asp-route-searchType="episodes">@u.UserFeedback.PodcastName</a><br>Released: @u.UserFeedback.ReleaseDate.ToShortDateString() </figcaption>
                         </figure>
+                    <td style="padding: 2em 2em 2em 2em">
+                        <p style="font-weight: bold; font-size: 1em;">@u.UserFeedback.EpisodeName<p>
+                            <hr />
+                        <p>@u.UserFeedback.Description</p>
                     </td>
-                    <td style="padding: 2em 2em 2em; max-width: 500px;">
-                        <p style="font-weight: bold; font-size: 1em;">@e.name</p>
-                        <hr />
-                        <p>@e.description</p>
+                    <td style="padding: 2em 2em 2em 2em">
+
+                        @if (u.UserFeedback.Rating == null || u.UserFeedback.Rating == 0)
+                        {
+                            <strong>Rating: N/A</strong>
+                            <hr />
+                        }
+                        else
+                        {
+                            <strong>Rating: @u.UserFeedback.Rating/5</strong>
+                            <hr />
+                        }
+                        @if (u.UserFeedback.Review == null)
+                        {
+                            <p><i>This episode hasn't been reviewed.</i></p>
+                            <form asp-controller="User" asp-action="ReviewEpisode" method="get">
+                                <input type="hidden" value="@u.EpisodeId" name="id" />
+                                <input type="submit" class="btn btn-dark" value="Add Review" />
+                            </form>
+                        }
+                        else
+                        {
+                            <p><i>Reviewed by: @user</i></p>
+                            <p><i>"@u.UserFeedback.Review"</i></p>
+                            <form asp-controller="User" asp-action="EditReview" method="get">
+                                <input type="hidden" value="@u.UserFeedbackId" name="fbId" />
+                                <input type="submit" class="btn btn-dark" value="Edit Review" />
+                            </form>
+                            <p><i>Last Updated: @u.UserFeedback.DatePosted</i></p>
+                        }
                     </td>
-                    <td>
-                        <form asp-controller="User" asp-action="AddFavorite" method="post">
-                            <input type="hidden" name="id" value="@e.id" />
-                            <input type="submit" name="data" value="Add to Favorites" class="btn btn-dark btn-group-lg" />
-                            <a asp-action="Index"></a>
-                        </form>
-                    </td>
-                    <td>
-                        <form asp-controller="User" asp-action="ReviewEpisode" method="get">
-                            <input type="hidden" name="id" value="@e.id" />
-                            <input type="submit" name="data" value="Review Episode" class="btn btn-dark btn-group-lg" />
-                        </form>
+                    <td class="text-sm-center">
+                        <p style="font-weight: bold; font-size: 1em;">@u.UserFeedback.Tags<p>
                     </td>
                 </tr>
+
             }
         }
     </table>
 }
->>>>>>> 1166d9fb714e33f7bc1cc59c682e721e2a4c1073

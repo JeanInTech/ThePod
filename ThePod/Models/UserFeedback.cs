@@ -21,7 +21,7 @@ namespace ThePod.Models
         public string Description { get; set; }
         public string AudioPreviewUrl { get; set; }
         public string ImageUrl { get; set; }
-        public DateTime? ReleaseDate { get; set; }
+        public DateTime ReleaseDate { get; set; }
         public string ExternalUrls { get; set; }
         public DateTime DatePosted { get; set; }
 

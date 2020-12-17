@@ -425,7 +425,7 @@ namespace ThePod.Controllers
         public List<UserProfile> GetBestEpisodesRawData()
         {
             string user = FindUser();
-            List<UserProfile> globalProfiles = _context.UserProfile.ToList();
+            List<UserProfile> globalProfiles = _context.UserProfile.Include(m => m.UserFeedback.User).ToList();
             List<UserProfile> filteredProfiles = globalProfiles.Where(x => x.UserId != user).ToList(); //filtering out reviews that belong to the logged in user
             List<UserProfile> qualifiedProfiles = filteredProfiles.Where(x => x.Rating >= 3).ToList(); //filtering out review that are less than rating of 3
             List<UserProfile> descOrderedProfiles = qualifiedProfiles.OrderByDescending(x => x.Rating).ToList(); //orders everything on the list based on highest-rated episdoes first
@@ -434,4 +434,3 @@ namespace ThePod.Controllers
         }
     }
 }
-
