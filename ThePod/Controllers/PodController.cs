@@ -45,7 +45,7 @@ namespace ThePod.Controllers
 
                 var eachShow = await _dal.SearchShowIdAsync(showId);
 
-                if(eachShow.shows == null)
+                if (eachShow.shows == null)
                 {
                     var episodeResults = await _dal.SearchEpisodeNameAsync(query);
                     List<EpisodeItem> s = episodeResults.episodes.items.ToList();
@@ -204,10 +204,10 @@ namespace ThePod.Controllers
         // ==============================================================
         public async Task<IActionResult> GetEpisodeByPodcast(string query)
         {
-            ViewBag.userQuery = query;
             var showResults = await _dal.SearchShowNameAsync(query);
             List<Item> i = showResults.shows.items.ToList();
 
+            TempData["showName"] = query;
             TempData["ShowId"] = i.First().id;
             TempData["TotalResults"] = showResults.shows.total;
             TempData["NextPage"] = showResults.shows.next;
@@ -221,11 +221,30 @@ namespace ThePod.Controllers
                     string shoId = x.id;
 
                     var episodesByPodcast = await _dal.SearchEpbyPodIdAsync(shoId);
+                    TempData["shoId"] = shoId;
                     return View("EpisodesByPodcast", episodesByPodcast);
                 }
             }
 
             return View(); // I need to put something else here- if I do not meet the conditions above, I will end up here, and this view does not exist
+        }
+        public async Task<IActionResult> GetPodcastFromCarosel(string id, string query)
+        {
+            var showResults = await _dal.SearchShowNameAsync(query);
+            List<Item> i = showResults.shows.items.ToList();
+
+            var episodesByPodcast = await _dal.SearchEpbyPodIdAsync(id);
+            TempData["showName"] = query;
+            TempData["ShowId"] = i.First().id; ;
+            TempData["TotalResults"] = episodesByPodcast.total;
+            TempData["NextPage"] = episodesByPodcast.next;
+            TempData["PreviousPage"] = episodesByPodcast.previous;
+            TempData["Offset"] = episodesByPodcast.offset;
+            TempData["shoId"] = id;
+
+            //var showResults = await _dal.SearchShowNameAsync(query);
+
+            return View("EpisodesByPodcast", episodesByPodcast);
         }
         [HttpPost]
         public async Task<IActionResult> GetNextEpByPod(string shoId, int offset)

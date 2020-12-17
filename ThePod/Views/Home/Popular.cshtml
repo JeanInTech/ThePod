@@ -30,9 +30,9 @@ else
         <thead class="thead-dark">
             <tr class="thead-dark">
                 <th style="border-top-left-radius: 25px;">Podcast</th>
-                <th style="width: 200px">Episode Description</th>
+                <th>Episode Description</th>
                 <th>Review</th>
-                <th style="border-top-right-radius: 25px;">Tags</th>
+                <th style="border-top-right-radius: 25px;"></th>
             </tr>
         </thead>
 
@@ -52,18 +52,21 @@ else
                     <td>
 
                         <figure class="figure">
-                            <a href="@u.UserFeedback.ImageUrl" alt="@u.UserFeedback.PodcastName" target="_blank"><img src="@u.UserFeedback.ImageUrl" style="height: 250px; width:250px;" class="figure-img" /></a>
+                            <a href="@u.UserFeedback.ExternalUrls" alt="@u.UserFeedback.PodcastName" target="_blank"><img src="@u.UserFeedback.ImageUrl" style="height: 250px; width:250px;" class="figure-img" /></a>
                             <audio controls style="width: 100%; align-content: start">
                                 <source src="@u.UserFeedback.AudioPreviewUrl" type="audio/mpeg">
                             </audio>
                             <figcaption class="figure-caption text-right">Podcast: <a asp-controller="pod" asp-action="GetEpisodeByPodcast" asp-route-query="@u.UserFeedback.PodcastName" asp-route-searchType="episodes">@u.UserFeedback.PodcastName</a><br>Released: @u.UserFeedback.ReleaseDate.ToShortDateString() </figcaption>
                         </figure>
-                    <td style="padding: 2em 2em 2em 2em">
+                    <td style="padding: 2em 2em 2em; max-width: 500px; word-wrap: break-word;">
                         <p style="font-weight: bold; font-size: 1em;">@u.UserFeedback.EpisodeName<p>
                             <hr />
                         <p>@u.UserFeedback.Description</p>
+                        <br>
+                        <hr>
+                        <p style="font-size: 1em;"><b>Tags:</b> @u.UserFeedback.Tags<p>
                     </td>
-                    <td style="padding: 2em 2em 2em 2em">
+                    <td style="padding: 2em 2em 2em">
 
                         @if (u.UserFeedback.Rating == null || u.UserFeedback.Rating == 0)
                         {
@@ -82,23 +85,24 @@ else
                                 <input type="hidden" value="@u.EpisodeId" name="id" />
                                 <input type="submit" class="btn btn-dark" value="Add Review" />
                             </form>
+                            <br>
+                            <form asp-controller="User" asp-action="addfavorite" method="get">
+                                <input type="hidden" value="@u.UserFeedback.EpisodeId" name="id" />
+                                <input type="submit" class="btn btn-dark" value="Add Favorite" />
+                            </form>
                         }
                         else
                         {
-                            <p><i>Reviewed by: @user</i></p>
+                            <p><i>Reviewed by: <b>@user</b> on @u.UserFeedback.DatePosted.ToShortDateString()</i></p>
                             <p><i>"@u.UserFeedback.Review"</i></p>
-                            <form asp-controller="User" asp-action="EditReview" method="get">
-                                <input type="hidden" value="@u.UserFeedbackId" name="fbId" />
-                                <input type="submit" class="btn btn-dark" value="Edit Review" />
+                            <form asp-controller="User" asp-action="addfavorite" method="get">
+                                <input type="hidden" value="@u.UserFeedback.EpisodeId" name="id" />
+                                <input type="submit" class="btn btn-dark" value="Add Favorite" />
                             </form>
-                            <p><i>Last Updated: @u.UserFeedback.DatePosted</i></p>
                         }
                     </td>
-                    <td class="text-sm-center">
-                        <p style="font-weight: bold; font-size: 1em;">@u.UserFeedback.Tags<p>
-                    </td>
+                    
                 </tr>
-
             }
         }
     </table>
