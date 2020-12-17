@@ -58,7 +58,7 @@ else
                             </audio>
                             <figcaption class="figure-caption text-right">Podcast: <a asp-controller="pod" asp-action="GetEpisodeByPodcast" asp-route-query="@u.UserFeedback.PodcastName" asp-route-searchType="episodes">@u.UserFeedback.PodcastName</a><br>Released: @u.UserFeedback.ReleaseDate.ToShortDateString() </figcaption>
                         </figure>
-                    <td style="padding: 2em 2em 2em; max-width: 500px;">
+                    <td style="padding: 2em 2em 2em; max-width: 500px; word-wrap: break-word;">
                         <p style="font-weight: bold; font-size: 1em;">@u.UserFeedback.EpisodeName<p>
                             <hr />
                         <p>@u.UserFeedback.Description</p>
