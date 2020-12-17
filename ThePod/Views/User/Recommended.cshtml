@@ -28,6 +28,7 @@ else
     if (index > 0)
         user = user.Substring(0, index);
 
+
     <div class="searchresults">
         <h5 class="text-left text-capitalize" style="letter-spacing: 2px">Recommendations for @user</h5>
         <h6 class="text-left text-capitalize" style="letter-spacing: 2px">Because you give highest reviews to episodes with the tags: @ViewBag.FirstTag@ViewBag.SecondTag@ViewBag.ThirdTag</h6>
@@ -61,7 +62,7 @@ else
                     <td>
 
                         <figure class="figure">
-                            <a href="@u.UserFeedback.ImageUrl" alt="@u.UserFeedback.PodcastName" target="_blank"><img src="@u.UserFeedback.ImageUrl" style="height: 250px; width:250px;" class="figure-img" /></a>
+                            <a href="@u.UserFeedback.ExternalUrls" alt="@u.UserFeedback.PodcastName" target="_blank"><img src="@u.UserFeedback.ImageUrl" style="height: 250px; width:250px;" class="figure-img" /></a>
                             <audio controls style="width: 100%; align-content: start">
                                 <source src="@u.UserFeedback.AudioPreviewUrl" type="audio/mpeg">
                             </audio>
