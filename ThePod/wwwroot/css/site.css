@@ -14,7 +14,9 @@ a.navbar-brand {
     text-align: center;
     word-break: break-all;
 }
-
+a, .link, .link:hover {
+    color: forestgreen;
+}
 Provide sufficient contrast against white background
 a {
     color: #0366d6;
@@ -121,8 +123,4 @@ body {
     color: white;
     width: 100%;
     font-family: 'Montserrat';
-}
-
-a, .link, .link:hover {
-    color: forestgreen;
 }
