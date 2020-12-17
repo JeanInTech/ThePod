@@ -44,10 +44,10 @@
 <table class="table table-hover table-responsive-lg">
     <thead class="thead-dark">
         <tr class="thead-dark">
-            <th class="text-center" style="border-top-left-radius: 25px;">Podcast</th>
+            <th class="text-center">Podcast</th>
             <th class="text-center">Episode Description</th>
             <th class="text-center">Favorite</th>
-            <th class="text-center" style="border-top-right-radius: 25px;">Review</th>
+            <th class="text-center">Review</th>
         </tr>
     </thead>
 
@@ -94,15 +94,14 @@
             </tr>
         }
     }
-
 </table>
 
 <div class="pagebuttons">
     @if (previousPage != null)
     {
         int convert = int.Parse(offset);
-        <form asp-controller="Pod" asp-action="GetPreviousEpisode" method="post">
-            <input type="hidden" name="query" value="@userQuery" />
+        <form asp-controller="Pod" asp-action="GetPreviousEpByPod" method="post">
+            <input type="hidden" name="shoId" value="@shoId" />
             <input type="hidden" name="offset" value="@convert" />
             <input type="submit" value="Previous" class="btn btn-dark btn-group-lg float-lg-left" />
         </form>
