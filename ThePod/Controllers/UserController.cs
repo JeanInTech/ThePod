@@ -334,7 +334,7 @@ namespace ThePod.Controllers
             List<string> usersTopTags = GetProfile(); //get a list of the users top tags (the tag they used most frequently on episodes rated 3+)
             if (usersTopTags.Count < 3)
             {
-                return View("userrecommendations");
+                return View("recommended");
             }
             string firstPreferred = usersTopTags[0]; //1st place tag (this is just the single word(tag) so this can be used later in a viewbag
             string secondPreferred = usersTopTags[1]; //2nd place tag
