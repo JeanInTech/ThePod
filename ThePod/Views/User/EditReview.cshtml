@@ -19,9 +19,10 @@
         padding: 50px;
         color: white;
     }
+
     .podcastimg {
         float: left;
-        margin: 0 10px 0 0; 
+        margin: 0 10px 0 0;
     }
     .podcastinfo {
         min-height: 325px;
@@ -50,36 +51,37 @@
             <h5 style="padding-top: 20px">Tags (Select up to 3):</h5>
             <div class="tags">
                 <div style="float: left; width: 33%;">
-                    <input type="checkbox" name="Tags" value="Aliens" checked="@Model.Tags.Contains("Aliens")"> Aliens<br>
-                    <input type="checkbox" name="Tags" value="Crime" checked="@Model.Tags.Contains("Crime")"> Crime<br>
-                    <input type="checkbox" name="Tags" value="Current Events" checked="@Model.Tags.Contains("Current Events")"> Current Events<br>
-                    <input type="checkbox" name="Tags" value="Educational" checked="@Model.Tags.Contains("Educational")"> Educational<br>
-                    <input type="checkbox" name="Tags" value="Famous People" checked="@Model.Tags.Contains("Famous People")"> Famous People<br>
-                    <input type="checkbox" name="Tags" value="Funny" checked="@Model.Tags.Contains("Funny")"> Funny <br>
-                    <input type="checkbox" name="Tags" value="Game-changing" checked="@Model.Tags.Contains("Game-changing")"> Game-changing<br>
-                    <input type="checkbox" name="Tags" value="Gaming" checked="@Model.Tags.Contains("Gaming")"> Gaming<br>
-                    <input type="checkbox" name="Tags" value="Health" checked="@Model.Tags.Contains("Health")"> Health<br>
-                </div>
-                <div style="float: left; width: 33%;">
-                    <input type="checkbox" name="Tags" value="Inspirational" checked="@Model.Tags.Contains("Inspirational")"> Inspirational<br>
-                    <input type="checkbox" name="Tags" value="Kid-Friendly" checked="@Model.Tags.Contains("Kid-Friendly")"> Kid-Friendly<br>
-                    <input type="checkbox" name="Tags" value="LGBT" checked="@Model.Tags.Contains("LGBT")"> LGBT+<br>
-                    <input type="checkbox" name="Tags" value="Mindblown" checked="@Model.Tags.Contains("Mindblown")"> Mindblown<br>
-                    <input type="checkbox" name="Tags" value="Money" checked="@Model.Tags.Contains("Money")"> Money<br>
-                    <input type="checkbox" name="Tags" value="Multicultural" checked="@Model.Tags.Contains("Multicultural")"> Multicultural<br>
-                    <input type="checkbox" name="Tags" value="NSFW" checked="@Model.Tags.Contains("NSFW")"> NSFW<br>
-                    <input type="checkbox" name="Tags" value="Politics" checked="@Model.Tags.Contains("Politics")"> Politics<br>
-                    <input type="checkbox" name="Tags" value="Relaxing" checked="@Model.Tags.Contains("Relaxing")"> Relaxing<br>
-                </div>
-                <div style="float: left; width: 33%;">
-                    <input type="checkbox" name="Tags" value="Real Life" checked="@Model.Tags.Contains("Real Life")"> Real Life<br>
-                    <input type="checkbox" name="Tags" value="Rocky Moments" checked="@Model.Tags.Contains("Rocky Moments")"> Rocky Moments<br>
-                    <input type="checkbox" name="Tags" value="Storytelling" checked="@Model.Tags.Contains("Storytelling")"> Storytelling<br>
-                    <input type="checkbox" name="Tags" value="Spooky" checked="@Model.Tags.Contains("Spooky")"> Spooky<br>
-                    <input type="checkbox" name="Tags" value="Sports" checked="@Model.Tags.Contains("Sports")"> Sports<br>
-                    <input type="checkbox" name="Tags" value="Tech" checked="@Model.Tags.Contains("Tech")"> Tech<br>
-                    <input type="checkbox" name="Tags" value="Trash-talk" checked="@Model.Tags.Contains("Trash-Talk")"> Trash-talk<br>
-                    <input type="checkbox" name="Tags" value="WTF" checked="@Model.Tags.Contains("WTF")"> WTF<br>
+                     <p><strong>Tags (Select up to 3):</strong></p>
+                <input class="single-checkbox" type="checkbox" name="Tags" value="Aliens" checked="@Model.Tags.Contains("Aliens")"> Aliens<br>
+                <input class="single-checkbox" type="checkbox" name="Tags" value="Crime" checked="@Model.Tags.Contains("Crime")"> Crime<br>
+                <input class="single-checkbox" type="checkbox" name="Tags" value="Current Events" checked="@Model.Tags.Contains("Current Events")"> Current Events<br>
+                <input class="single-checkbox" type="checkbox" name="Tags" value="Educational" checked="@Model.Tags.Contains("Educational")"> Educational<br>
+                <input class="single-checkbox" type="checkbox" name="Tags" value="Famous People" checked="@Model.Tags.Contains("Famous People")"> Famous People<br>
+                <input class="single-checkbox" type="checkbox" name="Tags" value="Funny" checked="@Model.Tags.Contains("Funny")"> Funny <br>
+                <input class="single-checkbox" type="checkbox" name="Tags" value="Game-changing" checked="@Model.Tags.Contains("Game-changing")"> Game-changing<br>
+            </div>
+            <div style="float: left; width: 33%;">
+                <input class="single-checkbox" type="checkbox" name="Tags" value="Gaming" checked="@Model.Tags.Contains("Gaming")"> Gaming<br>
+                <input class="single-checkbox" type="checkbox" name="Tags" value="Health" checked="@Model.Tags.Contains("Health")"> Health<br>
+                <input class="single-checkbox" type="checkbox" name="Tags" value="Inspirational" checked="@Model.Tags.Contains("Inspirational")"> Inspirational<br>
+                <input class="single-checkbox" type="checkbox" name="Tags" value="Kid-Friendly" checked="@Model.Tags.Contains("Kid-Friendly")"> Kid-Friendly<br>
+                <input class="single-checkbox" type="checkbox" name="Tags" value="LGBT" checked="@Model.Tags.Contains("LGBT")"> LGBT+<br>
+                <input class="single-checkbox" type="checkbox" name="Tags" value="Mindblown" checked="@Model.Tags.Contains("Mindblown")"> Mindblown<br>
+                <input class="single-checkbox" type="checkbox" name="Tags" value="Money" checked="@Model.Tags.Contains("Money")"> Money<br>
+                <input class="single-checkbox" type="checkbox" name="Tags" value="Multicultural" checked="@Model.Tags.Contains("Multicultural")"> Multicultural<br>
+                <input class="single-checkbox" type="checkbox" name="Tags" value="NSFW" checked="@Model.Tags.Contains("NSFW")"> NSFW<br>
+                <input class="single-checkbox" type="checkbox" name="Tags" value="Politics" checked="@Model.Tags.Contains("Politics")"> Politics<br>
+            </div>
+            <div style="float: left; width: 33%;">
+                <input class="single-checkbox" type="checkbox" name="Tags" value="Relaxing" checked="@Model.Tags.Contains("Relaxing")"> Relaxing<br>
+                <input class="single-checkbox" type="checkbox" name="Tags" value="Real Life" checked="@Model.Tags.Contains("Real Life")"> Real Life<br>
+                <input class="single-checkbox" type="checkbox" name="Tags" value="Rocky Moments" checked="@Model.Tags.Contains("Rocky Moments")"> Rocky Moments<br>
+                <input class="single-checkbox" type="checkbox" name="Tags" value="Storytelling" checked="@Model.Tags.Contains("Storytelling")"> Storytelling<br>
+                <input class="single-checkbox" type="checkbox" name="Tags" value="Spooky" checked="@Model.Tags.Contains("Spooky")"> Spooky<br>
+                <input class="single-checkbox" type="checkbox" name="Tags" value="Sports" checked="@Model.Tags.Contains("Sports")"> Sports<br>
+                <input class="single-checkbox" type="checkbox" name="Tags" value="Tech" checked="@Model.Tags.Contains("Tech")"> Tech<br>
+                <input class="single-checkbox" type="checkbox" name="Tags" value="Trash-talk" checked="@Model.Tags.Contains("Trash-Talk")"> Trash-talk<br>
+                <input class="single-checkbox" type="checkbox" name="Tags" value="WTF" checked="@Model.Tags.Contains("WTF")"> WTF<br>
                 </div>
             </div>
             <br />

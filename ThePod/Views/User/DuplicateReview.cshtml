@@ -20,6 +20,20 @@
             <input type="submit" value="Yes" class="btn btn-light btn-group-lg float-lg-left" />
         </form>
 
+//<<<<<<< HEAD
+<h4 class="text-left text-capitalize" style="color: black; letter-spacing: 2px">Oops!</h4>
+<div style="color: grey">
+    <p>It looks like you've already rated this episode.</p>
+    <p><strong>Podcast: </strong>@Model.PodcastName</p>
+    <p><strong>Episode Name: </strong>@Model.EpisodeName</p>
+    <img src="@Model.ImageUrl" height="200" />
+    <p>You can <a asp-controller="User" asp-action="EditReview" asp-route-id="@Model.Id" >edit</a> this review, or</p>
+    
+  
+           <p>Or go <a href='javascript:history.go(-1)'>back</a> to the previous page</p>
+
+</div>
+//=======
         <form asp-controller="User" asp-action="ViewFeedBack" method="get">
             <input type="submit" value="No" class="btn btn-dark btn-group-lg float-lg-left" />
         </form>
@@ -27,3 +41,4 @@
         <br />
     </div>
 </div>
+//>>>>>>> 1166d9fb714e33f7bc1cc59c682e721e2a4c1073

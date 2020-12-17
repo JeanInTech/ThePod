@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -43,44 +44,15 @@ namespace ThePod.Controllers
         public async Task<IActionResult> Popular()
         {
             List<UserProfile> mostPopular = GetBestEpisodesRawData();
-            List<string> episodeIds = new List<string>();
-            int epIdCount = 0;
 
-            foreach (UserProfile e in mostPopular)
-            {
-                if (e != null && !episodeIds.Contains(e.EpisodeId) && epIdCount < 21)
-                {
-                    episodeIds.Add(e.EpisodeId);
-                    epIdCount++;
-                }
-
-            }
-            var epId = String.Join(",", episodeIds);
-            var recommendedEpisodes = await _dal.SearchEpisodeIdAsync(epId);
-
-            return View("Popular", recommendedEpisodes);
+            return View(mostPopular);
         }
-        public async Task<IActionResult> GetPopularResults(string id)
-        {
-            TempData["UserQuery"] = id;
-            var getPopular = await _dal.SearchEpisodeIdAsync(id);
-            return View("../Pod/EpisodeDetails", getPopular);
-        }
-
-        public IActionResult Recommendations()
-        {
-            return View(_context.UserFeedback.ToList());
-        }
-
+        
         public IActionResult AboutUs()
         {
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -94,7 +66,7 @@ namespace ThePod.Controllers
 
         public List<UserProfile> GetBestEpisodesRawData()
         {
-            List<UserProfile> globalProfiles = _context.UserProfile.ToList();
+            List<UserProfile> globalProfiles = _context.UserProfile.Include(m => m.UserFeedback.User).ToList();
             List<UserProfile> qualifiedProfiles = globalProfiles.Where(x => x.Rating >= 3).ToList(); //filtering out review that are less than rating of 3
             List<UserProfile> descOrderedProfiles = qualifiedProfiles.OrderByDescending(x => x.Rating).ToList(); //orders everything on the list based on highest-rated episdoes first
 

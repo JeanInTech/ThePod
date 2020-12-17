@@ -336,58 +336,26 @@ namespace ThePod.Controllers
 
             List<UserProfile> bestProfiles = GetBestEpisodesRawData(); //list of every tag in UserProfile table with a rating of 3+, that the logged in user has not reviewed, organized by highest rated first
 
-            List<string> firstTagEpisodeRec = new List<string>();
-            List<string> secondTagEpisodeRec = new List<string>();
-            List<string> thirdTagEpisodeRec = new List<string>();
+            List<UserProfile> topTagEpisodes = new List<UserProfile>();
 
             foreach (UserProfile u in bestProfiles)
             {
                 if (firstPreferred == u.Tag)
                 {
-                    firstTagEpisodeRec.Add(u.EpisodeId);
+                    topTagEpisodes.Add(u);
                 }
                 if (secondPreferred == u.Tag)
                 {
-                    secondTagEpisodeRec.Add(u.EpisodeId);
+                    topTagEpisodes.Add(u);
                 }
                 if (thirdPreferred == u.Tag)
                 {
-                    thirdTagEpisodeRec.Add(u.EpisodeId);
+                    topTagEpisodes.Add(u);
                 }
             }
-            List<List<string>> topThreeEpisdodeLists = new List<List<string>>(); //these are just lists of strings (episode Ids)
-            {
-                topThreeEpisdodeLists.Add(firstTagEpisodeRec);
-                topThreeEpisdodeLists.Add(secondTagEpisodeRec);
-                topThreeEpisdodeLists.Add(thirdTagEpisodeRec);
-            }
-            List<string> episodeIds = new List<string>();
-            foreach (var e in firstTagEpisodeRec)
-            {
-                if (e != null)
-                {
-                    episodeIds.Add(e);
-                }
-            }
-            foreach (var e in secondTagEpisodeRec)
-            {
-                if (e != null)
-                {
-                    episodeIds.Add(e);
-                }
-            }
-            foreach (var e in thirdTagEpisodeRec)
-            {
-                if (e != null)
-                {
-                    episodeIds.Add(e);
-                }
-            }
-            var epId = String.Join(",", episodeIds);
+           
+            return View("recommended", topTagEpisodes);
 
-            var recommendedEpisodes = await _dal.SearchEpisodeIdAsync(epId);
-
-            return View("UserRecommendations", recommendedEpisodes);
         }
 
         // ==============================================================
@@ -425,7 +393,7 @@ namespace ThePod.Controllers
         public List<UserProfile> GetBestEpisodesRawData()
         {
             string user = FindUser();
-            List<UserProfile> globalProfiles = _context.UserProfile.ToList();
+            List<UserProfile> globalProfiles = _context.UserProfile.Include(m => m.UserFeedback.User).ToList();
             List<UserProfile> filteredProfiles = globalProfiles.Where(x => x.UserId != user).ToList(); //filtering out reviews that belong to the logged in user
             List<UserProfile> qualifiedProfiles = filteredProfiles.Where(x => x.Rating >= 3).ToList(); //filtering out review that are less than rating of 3
             List<UserProfile> descOrderedProfiles = qualifiedProfiles.OrderByDescending(x => x.Rating).ToList(); //orders everything on the list based on highest-rated episdoes first
@@ -434,4 +402,3 @@ namespace ThePod.Controllers
         }
     }
 }
-

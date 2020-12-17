@@ -1,4 +1,4 @@
-@model List<UserProfile>
+﻿@model List<UserProfile>
 
 <style type="text/css">
     table {
@@ -22,8 +22,15 @@
 }
 else
 {
+
+    string user = @User.Identity.Name;
+    int index = user.IndexOf("@");
+    if (index > 0)
+        user = user.Substring(0, index);
+
     <div class="searchresults">
-        <h5 class="text-left text-capitalize" style="letter-spacing: 2px">Popular</h5>
+        <h5 class="text-left text-capitalize" style="letter-spacing: 2px">Recommendations for @user</h5>
+        <h6 class="text-left text-capitalize" style="letter-spacing: 2px">Because you give highest reviews to episodes with the tags: @ViewBag.FirstTag@ViewBag.SecondTag@ViewBag.ThirdTag</h6>
     </div>
     <table class="table table-hover table-responsive-lg" style="width: 100%">
 
@@ -44,10 +51,12 @@ else
             if (!uniqueEpisodeIDs.Contains(u.UserFeedback.EpisodeName))
             {
                 uniqueEpisodeIDs.Add(u.UserFeedback.EpisodeName);
-                string user = u.UserFeedback.User.UserName;
-                int index = user.IndexOf("@");
-                if (index > 0)
-                    user = user.Substring(0, index);
+                
+                string reviewer = u.UserFeedback.User.UserName;
+                int placeValue = reviewer.IndexOf("@");
+                if (placeValue > 0)
+                    reviewer = reviewer.Substring(0, placeValue);
+
                 <tr>
                     <td>
 
@@ -85,7 +94,7 @@ else
                         }
                         else
                         {
-                            <p><i>Reviewed by: @user</i></p>
+                            <p><i>Reviewed by: @reviewer</i></p>
                             <p><i>"@u.UserFeedback.Review"</i></p>
                             <form asp-controller="User" asp-action="EditReview" method="get">
                                 <input type="hidden" value="@u.UserFeedbackId" name="fbId" />

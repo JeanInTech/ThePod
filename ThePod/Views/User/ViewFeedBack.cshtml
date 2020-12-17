@@ -13,6 +13,7 @@
         font-weight: bold;
     }
 
+
     table {
         background-color: rgba(255, 255, 255, .8);
         border-radius: 25px;
@@ -71,8 +72,8 @@
             {
                 <tr>
                     <td>@u.DatePosted.ToShortDateString()</td>
-                    <td>@u.EpisodeName</td>
-                    <td>@u.PodcastName</td>
+                    <td><a asp-controller="pod" asp-action="searchresults" asp-route-query="@u.EpisodeName" asp-route-searchType="episodes">@u.EpisodeName</a></td>
+                    <td><a asp-controller="pod" asp-action="GetEpisodeByPodcast" asp-route-query="@u.PodcastName" asp-route-searchType="Podcast">@u.PodcastName</a></td>
                     <td>@u.Rating/5</td>
                     <td>@u.Tags</td>
                     <td>
