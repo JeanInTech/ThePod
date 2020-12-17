@@ -336,58 +336,63 @@ namespace ThePod.Controllers
 
             List<UserProfile> bestProfiles = GetBestEpisodesRawData(); //list of every tag in UserProfile table with a rating of 3+, that the logged in user has not reviewed, organized by highest rated first
 
-            List<string> firstTagEpisodeRec = new List<string>();
-            List<string> secondTagEpisodeRec = new List<string>();
-            List<string> thirdTagEpisodeRec = new List<string>();
+            //List<string> firstTagEpisodeRec = new List<string>();
+            //List<string> secondTagEpisodeRec = new List<string>();
+            //List<string> thirdTagEpisodeRec = new List<string>();
+
+            List<UserProfile> topTagEpisodes = new List<UserProfile>();
 
             foreach (UserProfile u in bestProfiles)
             {
                 if (firstPreferred == u.Tag)
                 {
-                    firstTagEpisodeRec.Add(u.EpisodeId);
+                    topTagEpisodes.Add(u);
                 }
                 if (secondPreferred == u.Tag)
                 {
-                    secondTagEpisodeRec.Add(u.EpisodeId);
+                    topTagEpisodes.Add(u);
                 }
                 if (thirdPreferred == u.Tag)
                 {
-                    thirdTagEpisodeRec.Add(u.EpisodeId);
+                    topTagEpisodes.Add(u);
                 }
             }
-            List<List<string>> topThreeEpisdodeLists = new List<List<string>>(); //these are just lists of strings (episode Ids)
-            {
-                topThreeEpisdodeLists.Add(firstTagEpisodeRec);
-                topThreeEpisdodeLists.Add(secondTagEpisodeRec);
-                topThreeEpisdodeLists.Add(thirdTagEpisodeRec);
-            }
-            List<string> episodeIds = new List<string>();
-            foreach (var e in firstTagEpisodeRec)
-            {
-                if (e != null)
-                {
-                    episodeIds.Add(e);
-                }
-            }
-            foreach (var e in secondTagEpisodeRec)
-            {
-                if (e != null)
-                {
-                    episodeIds.Add(e);
-                }
-            }
-            foreach (var e in thirdTagEpisodeRec)
-            {
-                if (e != null)
-                {
-                    episodeIds.Add(e);
-                }
-            }
-            var epId = String.Join(",", episodeIds);
+            //List<List<string>> topThreeEpisdodeLists = new List<List<string>>(); //these are just lists of strings (episode Ids)
+            //{
+            //    topThreeEpisdodeLists.Add(firstTagEpisodeRec);
+            //    topThreeEpisdodeLists.Add(secondTagEpisodeRec);
+            //    topThreeEpisdodeLists.Add(thirdTagEpisodeRec);
+            //}
+            //List<string> episodeIds = new List<string>();
+            //foreach (var e in firstTagEpisodeRec)
+            //{
+            //    if (e != null)
+            //    {
+            //        episodeIds.Add(e);
+            //    }
+            //}
+            //foreach (var e in secondTagEpisodeRec)
+            //{
+            //    if (e != null)
+            //    {
+            //        episodeIds.Add(e);
+            //    }
+            //}
+            //foreach (var e in thirdTagEpisodeRec)
+            //{
+            //    if (e != null)
+            //    {
+            //        episodeIds.Add(e);
+            //    }
+            //}
+            //var epId = String.Join(",", episodeIds);
 
-            var recommendedEpisodes = await _dal.SearchEpisodeIdAsync(epId);
+            //var recommendedEpisodes = await _dal.SearchEpisodeIdAsync(epId);
 
-            return View("UserRecommendations", recommendedEpisodes);
+            //List<UserProfile> recommendations = _context.UserProfile.Where(x => x.EpisodeId == episodeIds).ToList();
+            return View("recommended", topTagEpisodes);
+
+            //return View("UserRecommendations", recommendedEpisodes);
         }
 
         // ==============================================================
