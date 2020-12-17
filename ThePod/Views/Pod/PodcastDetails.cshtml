@@ -35,7 +35,7 @@
 @if (Model.shows == null)
 {
     <div class="searchresults">
-        <h5 class="text-left text-capitalize" style="letter-spacing: 2px">No Search Results For "@userQuery"<br />Maybe a little too specific or weird.</h5>
+        <h5 class="text-left text-capitalize" style=2"letter-spacing: 2px">No Search Results For "@userQuery"<br />Maybe a little too specific or weird.</h5>
         <a class="btn btn-light" href='javascript:history.go(-1)'>Try Again</a>
     </div>
 }
@@ -56,8 +56,7 @@ else
 
         @foreach (RootShow e in Model.shows)
         {
-            bool containsSearchTerm = @e.name.ToLower().Contains(userQuery); //this is used to make sure that the names of the podcast shows include the search term the user entered
-            if (!uniqueEpisodeIDs.Contains(e.name) && containsSearchTerm == true)
+            if (!uniqueEpisodeIDs.Contains(e.name))
             {
                 <tr>
                     <td>
