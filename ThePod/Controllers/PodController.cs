@@ -205,24 +205,24 @@ namespace ThePod.Controllers
             var showResults = await _dal.SearchShowNameAsync(query);
             List<Item> i = showResults.shows.items.ToList();
 
-            TempData["ShowId"] = i.First().id;
-            TempData["TotalResults"] = showResults.shows.total;
-            TempData["NextPage"] = showResults.shows.next;
-            TempData["PreviousPage"] = showResults.shows.previous;
-            TempData["Offset"] = showResults.shows.offset;
-
             foreach (Item x in i)
             {
                 if (x.name == query)
                 {
                     string shoId = x.id;
-
+                    TempData["ShowId"] = shoId;
                     var episodesByPodcast = await _dal.SearchEpbyPodIdAsync(shoId);
+
+                    TempData["TotalResults"] = episodesByPodcast.total;
+                    TempData["NextPage"] = episodesByPodcast.next;
+                    TempData["PreviousPage"] = episodesByPodcast.previous;
+                    TempData["Offset"] = episodesByPodcast.offset;
+
                     return View("EpisodesByPodcast", episodesByPodcast);
                 }
             }
 
-            return View(); // I need to put something else here- if I do not meet the conditions above, I will end up here, and this view does not exist
+            return View("EpisodesByPodcast");
         }
         [HttpPost]
         public async Task<IActionResult> GetNextEpByPod(string shoId, int offset)

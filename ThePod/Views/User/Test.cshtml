@@ -1,0 +1,8 @@
+﻿@model List<UserProfile>
+
+@{ foreach(UserProfile u in Model)
+    {
+        <p>@u.UserFeedback.PodcastName</p>
+    }
+
+}
