@@ -3,12 +3,14 @@
 @{
     ViewData["PodcastDetails"] = "Podcast Details";
     List<string> uniqueEpisodeIDs = new List<string>();
-    string shoId = TempData["ShowId"].ToString();
+    //string shoId = TempData["ShowId"].ToString();
     string totalResults = TempData.Peek("TotalResults").ToString();
     var nextPage = TempData.Peek("NextPage");
     var previousPage = TempData.Peek("PreviousPage");
     var offset = TempData["Offset"].ToString();
     var userQuery = ViewBag.userQuery;
+    var shoId = TempData.Peek("shoId");
+    var showName = TempData.Peek("showName");
 }
 
 <style type="text/css">
@@ -36,7 +38,7 @@
 </style>
 
 <div class="searchresults">
-    <h5 class="text-left text-capitalize" style="letter-spacing: 2px">All Episodes from "@ViewBag.userQuery"</h5>
+    <h5 class="text-left text-capitalize" style="letter-spacing: 2px">All Episodes from "@showName"</h5>
 </div>
 
 <table class="table table-hover table-responsive-lg">
