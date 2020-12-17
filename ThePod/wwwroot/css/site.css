@@ -122,3 +122,7 @@ body {
     width: 100%;
     font-family: 'Montserrat';
 }
+
+a, .link, .link:hover {
+    color: forestgreen;
+}
