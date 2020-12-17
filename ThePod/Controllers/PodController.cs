@@ -21,10 +21,13 @@ namespace ThePod.Controllers
             _config = config;
             _context = context;
         }
-        // ==============================================================
-        // Search Results
-        // ==============================================================
-        public async Task<IActionResult> SearchResults(string query, string searchType) //this takes in a search term and gets the episode id to feed that into the "episode" endpoint
+
+    
+
+            // ==============================================================
+            // Search Results
+            // ==============================================================
+            public async Task<IActionResult> SearchResults(string query, string searchType) //this takes in a search term and gets the episode id to feed that into the "episode" endpoint
         {
             TempData["SearchType"] = searchType;
             if (searchType == "podcast")
