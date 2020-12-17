@@ -47,27 +47,12 @@ namespace ThePod.Controllers
 
             return View(mostPopular);
         }
-        //public async Task<IActionResult> GetPopularResults(string id)
-        //{
-        //    TempData["UserQuery"] = id;
-        //    var getPopular = await _dal.SearchEpisodeIdAsync(id);
-        //    return View("../Pod/EpisodeDetails", getPopular);
-        //}
-
-        //public IActionResult Recommendations()
-        //{
-        //    return View(_context.UserFeedback.ToList());
-        //}
-
+        
         public IActionResult AboutUs()
         {
             return View();
         }
 
-        //public IActionResult Privacy()
-        //{
-        //    return View();
-        //}
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
