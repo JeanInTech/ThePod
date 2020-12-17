@@ -23,7 +23,7 @@ namespace ThePod.Models
         public string ImageUrl { get; set; }
         public DateTime? ReleaseDate { get; set; }
         public string ExternalUrls { get; set; }
-        public DateTime? DatePosted { get; set; }
+        public DateTime DatePosted { get; set; }
 
         public virtual AspNetUsers User { get; set; }
         public virtual ICollection<UserProfile> UserProfile { get; set; }

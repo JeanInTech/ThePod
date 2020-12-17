@@ -1,42 +1,120 @@
 ﻿<style>
+    @@font-face {
+        font-family: 'Montserrat';
+        src: url(../font/Montserrat-Regular.ttf);
+        font-weight: normal;
+    }
+
+    @@font-face {
+        font-family: 'MontserratBold';
+        src: url(../font/Montserrat-Bold.ttf);
+        font-weight: bold;
+    }
+
     h2 {
         text-align: center;
+        font-family: 'MontserratBold';
     }
+
     p {
         text-align: center;
     }
-    div {
-        padding-right: 20px;
+
+    .aboutus {
+        font-family: 'Montserrat';
+        display: flex;
+        flex-direction: column;
+        border-radius: 25px;
+        background-color: rgba(12, 12, 12, 0.8);
+        padding: 50px;
+        color: white;
     }
+
+    .meetus {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .teammates {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: baseline;
+    }
+
+    .team {
+        margin: 1em 1em 1em 1em;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+    }
+
+        .team h6 {
+            font-family: 'MontserratBold';
+        }
 </style>
 
-<h2>About Us</h2>
+<div class="aboutus">
+    <div class="meetus">
+        <h2>About The Pod</h2>
+        <hr />
+        <h5>The Pod is a web app that allows new and long-time podcast listeners to find and search for podcasts. 
+        The Pod utilizes the Spotify API, since Spotify has about <a href="https://podcasters.spotify.com/#:~:text=Spotify%20has%20over%20299%20million,since%20the%20start%20of%202019." target="_blank">299 million active listeners</a>. 
+        Currently, most major podcast platforms do not allow users to rate/recommend individual podcast episodes. 
+        Our app lets users review, rate, and favorite podcast episodes and provides personalized recommendations based on their feedback.</h5>
+        <hr />
+        <h2>Meet the Team</h2>
+        <hr />
+        <h5>We Are Graduates Of The Grand Circus 2020 Q4 C# .NET Bootcamp.</h5>
+        <h5>We look forward to connecting with you!</h5>
+        <br />
+        <br />
+    </div>
+    <div class="teammates">
+        <div class="team">
+            <h6>Kristen Harrell</h6>
+            <img src="~/img/kristen_harrell_headshot.jpg" height="200" /><br />
+            <p>
+                <a href="https://www.linkedin.com/in/kristen-harrell/" target="_blank"><img src="~/img/linkedin-icon-32.png" /></a>
+                <a href="https://github.com/kristen-harrell" target="_blank"><img src="~/img/github-icon-32 (1).png" /></a>
+                <a href="mailto:harrell.kristen@gmail.com" target="_blank"><img src="~/img/icons8-mail-32.png" /></a>
+            </p>
 
-<p>We are Graduates of the Grand Circus 2020 Q4 C#/.NET Bootcamp.</p>
-<p>We look forward to connecting with you!</p><br />
+        </div>
 
-<div style="position:absolute; left: 80px; top: 230px">
-    <p><strong>Kristen Harrell</strong></p>
-    <img src="~/img/kristen_harrell_headshot.jpg" height="200" /><br />
-    <p><a href="https://www.linkedin.com/in/kristen-harrell/" target="_blank"><img src="~/img/linkedin.png" height="20" /></a> <a href="https://github.com/kristen-harrell" target="_blank"><img src="~/img/GitHub-Mark.png" height="20" /></a> <a href="mailto:harrell.kristen@gmail.com" target="_blank"><img src="~/img/email.jpg" height="20" /></a></p>
+        <div class="team">
+            <h6>Jean Thomas</h6>
+            <img src="~/img/P10.jpg" height="200" /><br />
+            <p>
+                <a href="https://www.linkedin.com/in/jeanintech/" target="_blank"><img src="~/img/linkedin-icon-32.png" /></a>
+                <a href="https://github.com/JeanInTech" target="_blank"><img src="~/img/github-icon-32 (1).png" /></a>
+                <a href="mailto:jeniferjeanthomas@gmail.com" target="_blank"><img src="~/img/icons8-mail-32.png" /></a>
+            </p>
 
-</div>
+        </div>
 
-<div style="position:absolute; left: 380px; top: 230px">
-    <p><strong>Jean Thomas</strong></p>
-    <img src="~/img/P10.jpg" height="200" /><br />
-    <p><a href="https://www.linkedin.com/in/jeanintech/" target="_blank"><img src="~/img/linkedin.png" height="20" /></a> <a href="https://github.com/JeanInTech" target="_blank"><img src="~/img/GitHub-Mark.png" height="20" /></a> <a href="mailto:jeniferjeanthomas@gmail.com" target="_blank"><img src="~/img/email.jpg" height="20" /></a></p>
+        <div class="team">
+            <h6>Duncan MacLachlan</h6>
+            <img src="~/img/DM.jpg" height="200" /><br />
+            <p>
+                <a href="https://www.linkedin.com/in/duncanmaclachlan/" target="_blank"><img src="~/img/linkedin-icon-32.png" /></a>
+                <a href="https://github.com/duncaannn" target="_blank"><img src="~/img/github-icon-32 (1).png" /></a>
+                <a href="mailto:dmaclach1027@gmail.com" target="_blank"><img src="~/img/icons8-mail-32.png" /></a>
+            </p>
+        </div>
 
-</div>
-
-<div style="position:absolute; left: 680px; top: 230px">
-    <p><strong>Duncan MacLachlan</strong></p>
-    <img src="~/img/DM.jpg" height="200" /><br />                                                                                                        
-    <p><a href="https://www.linkedin.com/in/duncanmaclachlan/" target="_blank"><img src="~/img/linkedin.png" height="20" /></a> <a href="https://github.com/duncaannn" target="_blank"><img src="~/img/GitHub-Mark.png" height="20" /></a> <a href="mailto:dmaclach1027@gmail.com" target="_blank"><img src="~/img/email.jpg" height="20" /></a></p>
-</div>
-
-<div style="position:absolute; left: 980px; top: 230px">
-    <p><strong>Pin Vue</strong></p>
-    <img src="~/img/pv.jpg" height="200" /><br />
-    <p><a href="https://www.linkedin.com/in/pin-vue/" target="_blank"><img src="~/img/linkedin.png" height="20" /></a> <a href="https://github.com/pinvue91" target="_blank"><img src="~/img/GitHub-Mark.png" height="20" /></a> <a href="mailto:pin.vue@hotmail.com" target="_blank"><img src="~/img/email.jpg" height="20" /></a></p>
+        <div class="team">
+            <h6>Pin Vue</h6>
+            <img src="~/img/pv.jpg" height="200" /><br />
+            <p>
+                <a href="https://www.linkedin.com/in/pin-vue/" target="_blank"><img src="~/img/linkedin-icon-32.png" /></a>
+                <a href="https://github.com/pinvue91" target="_blank"><img src="~/img/github-icon-32 (1).png" /></a>
+                <a href="mailto:pin.vue@hotmail.com" target="_blank"><img src="~/img/icons8-mail-32.png" /></a>
+            </p>
+        </div>
+    </div>
 </div>

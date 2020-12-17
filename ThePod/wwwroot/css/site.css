@@ -1,5 +1,14 @@
-﻿
+﻿@font-face {
+    font-family: 'Montserrat';
+    src: url(../font/Montserrat-Regular.ttf);
+    font-weight: normal;
+}
 
+@font-face {
+    font-family: 'MontserratBold';
+    src: url(../font/Montserrat-Bold.ttf);
+    font-weight: bold;
+}
 a.navbar-brand {
     white-space: normal;
     text-align: center;
@@ -69,25 +78,21 @@ html {
 
 
 /******** Custom Stylings ********/
+@font-face {
+    font-family: 'Montserrat';
+    src: url(../font/Montserrat-Regular.ttf);
+}
 
 #indexContainer {
     color: white;
 }
 
-#searchIndex {
-    border-radius: 25px;
-    background-color: rgba(12, 12, 12, 0.7);
-    padding: 50px;
-}
-
 .pagebuttons {
-    display:inline-block;
+    display: inline-block;
     width: 100%;
     padding: 0 0 50px 0;
 }
-.searchresults {
-    width: 100%;
-}
+
 .carousel-inner > .carousel-item > img {
     margin: 0 auto;
 }
@@ -103,14 +108,17 @@ html {
     background-image: none;
 }
 
-  /*  .carousel-control-next-icon:after {
-        content: '>';
-        font-size: 55px;
-        color: red;
-    }
+body {
+    background-image: url(../img/artur-luczka-loAfOVk1eNc-unsplash.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
 
-    .carousel-control-prev-icon:after {
-        content: '<';
-        font-size: 55px;
-        color: red;
-    }*/
+.searchresults {
+    background-color: rgba(12, 12, 12, 0.5);
+    padding: 5px;
+    color: white;
+    width: 100%;
+    font-family: 'Montserrat';
+}

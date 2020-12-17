@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using ThePod.DataAccess;
 using ThePod.Models;
@@ -13,10 +14,12 @@ namespace ThePod.Controllers
     {
         private readonly PodDAL _dal;
         private readonly IConfiguration _config;
-        public PodController(PodDAL dal, IConfiguration config)
+        private readonly thepodContext _context;
+        public PodController(PodDAL dal, IConfiguration config, thepodContext context)
         {
             _dal = dal;
             _config = config;
+            _context = context;
         }
         // ==============================================================
         // Search Results
@@ -39,6 +42,21 @@ namespace ThePod.Controllers
 
                 var eachShow = await _dal.SearchShowIdAsync(showId);
 
+                if(eachShow.shows == null)
+                {
+                    var episodeResults = await _dal.SearchEpisodeNameAsync(query);
+                    List<EpisodeItem> s = episodeResults.episodes.items.ToList();
+
+                    TempData["TotalResults"] = episodeResults.episodes.total;
+                    TempData["NextPage"] = episodeResults.episodes.next;
+                    TempData["PreviousPage"] = episodeResults.episodes.previous;
+                    TempData["Offset"] = episodeResults.episodes.offset;
+
+                    var epId = ConvertToIdString(s).ToString();
+                    var eachEpisode = await _dal.SearchEpisodeIdAsync(epId);
+
+                    return View("EpisodeDetails", eachEpisode);
+                }
                 return View("PodcastDetails", eachShow);
             }
             else
@@ -55,14 +73,7 @@ namespace ThePod.Controllers
                 var epId = ConvertToIdString(s).ToString();
                 var eachEpisode = await _dal.SearchEpisodeIdAsync(epId);
 
-                if (searchType == "episode")
-                {
-                    return View("EpisodeDetails", eachEpisode);
-                }
-                else
-                {
-                    return View("AllContent", eachEpisode);
-                }
+                return View("EpisodeDetails", eachEpisode);
             }
         }
         // ==============================================================
@@ -241,11 +252,5 @@ namespace ThePod.Controllers
 
             return View("EpisodesByPodcast", showResults);
         }
-        
-        public async Task<IActionResult> Popular()
-        {
-            return View();
-        }
-
     }
 }

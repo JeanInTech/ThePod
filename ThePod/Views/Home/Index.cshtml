@@ -1,38 +1,52 @@
+@model RootEpisodes
 
-<div id="indexPicContainer" class="d-flex justify-content-center align-items-center">
-    <img src="~/img/thepod.png" style="max-height: 30%; max-width: 30%;" />
-</div>
+<style type="text/css">
+    @@font-face {
+        font-family: 'Montserrat';
+        src: url(../font/Montserrat-Regular.ttf);
+        font-weight: normal;
+    }
+    @@font-face {
+        font-family: 'MontserratBold';
+        src: url(../font/Montserrat-Bold.ttf);
+        font-weight: bold;
+    }
+    .indexDetails {
+        font-family: 'Montserrat';
+    }
+    .indexDetails h3 {
+        font-weight: bold;
+    }
+    #searchIndex {
+        border-radius: 25px;
+        background-color: rgba(12, 12, 12, 0.7);
+        padding: 50px;
+        color: white;
+    }
+</style>
 
-﻿<div id="indexContainer" class="d-flex justify-content-center align-items-center">
-    <form asp-controller="Pod" asp-action="SearchResults" method="post" id="searchIndex">
-        <h3>Find your next podcast</h3><br />
-        <div class="text-md-center">
-            <input type="text" name="query" placeholder="Whatever sounds good" class="form-control-lg btn-block" style="text-align: center" required /><br />
-            <select name="searchType" id="searchType" class="btn btn-success dropdown-toggle btn-lg btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <option class="dropdown-item-text" value="podcast" style="color: white;">Podcasts</option>
-                <option class="dropdown-item-text" value="episode" style="color: white">Episodes</option>
-                <option class="dropdown-item-text" value="content" style="color: white">All Content</option>
-                <option value="tags">Tags</option> keywords and stuff
-            </select><br />
-
-            <input type="submit" class="btn btn-lg btn-dark" id="indexbtn" value="Submit" />
-
-    </form>
-
+<div class="indexDetails text-md-center" id="searchIndex">
+    <h1 style="font-family:Montserrat; font-weight:bold; letter-spacing: .2em;">The Pod</h1>
+    <div id="indexPicContainer" class="d-flex justify-content-center align-items-center">
+        <img src="~/img/justhepod.png" alt="pod logo" style="max-height: 30%; max-width: 30%;" />
+    </div>
+    <br />
+    <h3>Find, Rate, and Review Podcasts.</h3>
+    <h5>Get personalized recommendations based on your feedback.</h5>
+    <br />
+    <h5 style="font-weight:bold;">Not Sure Where To Start?</h5>
+    <h5>Check out popular podcasts from our users.</h5>
 
     @{
         List<string> uniqueEpisodeIDs = new List<string>();
     }
-
-    <h4></h4>
-    <h5>Popular Podcasts</h5>
     <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="max-width: 300px; margin: 0 auto">
         <!--Indicators-->
         @*<ol class="carousel-indicators">
-            <li data-target="#carouselExampleControls" data-slide-to="0" class="active"></li>
-            <li data-target="#carouselExampleControls" data-slide-to="1"></li>
-            <li data-target="#carouselExampleControls" data-slide-to="2"></li>
-        </ol>*@
+                <li data-target="#carouselExampleControls" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselExampleControls" data-slide-to="1"></li>
+                <li data-target="#carouselExampleControls" data-slide-to="2"></li>
+            </ol>*@
         <!--/.Indicators-->
         <div class="carousel-inner" role="listbox">
             @{
@@ -41,13 +55,12 @@
 
             @foreach (Episode e in Model.episodes)
             {
-
                 List<Image1> img = new List<Image1>(e.images.ToList());
                 var firstPic = img.First();
                 uniqueEpisodeIDs.Add(e.id);
                 int minutes = (e.duration_ms / 1000) / 60;
 
-                
+
                 <div class="carousel-item @(first?Html.Raw("active"):Html.Raw(""))">
                     <a asp-controller="Pod" asp-action="SearchResults" asp-route-query="@e.show.name">
                         <img class="d-block w-75 mx-auto" src="@firstPic.url" alt="@e.show.name" />
@@ -56,7 +69,6 @@
                 </div>
                 first = false;
             }
-
         </div>
         <a class="carousel-control-prev" href="#carouselExampleControls" role="button"
            data-slide="prev">
@@ -69,6 +81,18 @@
             <span class="sr-only">Next</span>
         </a>
     </div>
+
+    ﻿<div id="indexContainer" class="d-flex justify-content-center align-items-center">
+        <form asp-controller="Pod" asp-action="SearchResults" method="post">
+            <h5 style="font-family: 'Montserrat'; font-weight:bold">Or Jump On In</h5>
+            <div class="text-md-center">
+                <input type="text" name="query" placeholder="Find your next podcast" class="form-control-lg btn-block" style="text-align: center" required /><br />
+                <select name="searchType" id="searchType" class="btn btn-success dropdown-toggle btn-lg btn-block" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <option class="dropdown-item-text" value="podcast" style="color: white;">Podcasts</option>
+                    <option class="dropdown-item-text" value="episode" style="color: white">Episodes</option>
+                </select><br />
+                <input type="submit" class="btn btn-lg btn-dark" id="indexbtn" value="Submit" />
+        </form>
+        <hr />
+    </div>
 </div>
-
-
