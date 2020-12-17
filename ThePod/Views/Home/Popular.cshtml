@@ -30,7 +30,7 @@ else
         <thead class="thead-dark">
             <tr class="thead-dark">
                 <th style="border-top-left-radius: 25px;">Podcast</th>
-                <th style="width: 200px">Episode Description</th>
+                <th>Episode Description</th>
                 <th>Review</th>
                 <th style="border-top-right-radius: 25px;"></th>
             </tr>
@@ -58,17 +58,15 @@ else
                             </audio>
                             <figcaption class="figure-caption text-right">Podcast: <a asp-controller="pod" asp-action="GetEpisodeByPodcast" asp-route-query="@u.UserFeedback.PodcastName" asp-route-searchType="episodes">@u.UserFeedback.PodcastName</a><br>Released: @u.UserFeedback.ReleaseDate.ToShortDateString() </figcaption>
                         </figure>
-                    <td style="padding: 2em 2em 2em 2em">
+                    <td style="padding: 2em 2em 2em; max-width: 500px;">
                         <p style="font-weight: bold; font-size: 1em;">@u.UserFeedback.EpisodeName<p>
                             <hr />
                         <p>@u.UserFeedback.Description</p>
                         <br>
                         <hr>
                         <p style="font-size: 1em;"><b>Tags:</b> @u.UserFeedback.Tags<p>
-                            @*<hr />
-                        <p style="text-align: right">@u.UserFeedback.Tags</p>*@
                     </td>
-                    <td style="padding: 2em 2em 2em 2em">
+                    <td style="padding: 2em 2em 2em">
 
                         @if (u.UserFeedback.Rating == null || u.UserFeedback.Rating == 0)
                         {
