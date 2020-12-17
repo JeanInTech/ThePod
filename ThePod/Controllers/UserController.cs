@@ -104,9 +104,9 @@ namespace ThePod.Controllers
         public async Task<IActionResult> SortFavorites(string sortOrder, string searchString)
         {
             string user = FindUser();
-            ViewData["EpNameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "epname_desc" : "";
-            ViewData["PodNameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "podname_desc" : "";
-            ViewData["PublisherSortParm"] = String.IsNullOrEmpty(sortOrder) ? "publisher_sort" : "";
+            ViewData["EpNameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "epname_desc" : "epname";
+            ViewData["PodNameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "podname_desc" : "podname";
+            ViewData["PublisherSortParm"] = String.IsNullOrEmpty(sortOrder) ? "publisher_sort" : "publisher";
             ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
             ViewData["CurrentFilter"] = searchString;
 
@@ -124,11 +124,20 @@ namespace ThePod.Controllers
                 case "date_desc":
                     podcast = podcast.OrderByDescending(p => p.ReleaseDate);
                     break;
-                case "epname_desc":
+                case "epname":
                     podcast = podcast.OrderBy(p => p.EpisodeName);
                     break;
-                case "podname_desc":
+                case "epname_desc":
+                    podcast = podcast.OrderByDescending(p => p.EpisodeName);
+                    break;
+                case "podname":
                     podcast = podcast.OrderBy(p => p.PodcastName);
+                    break;
+                case "podname_desc":
+                    podcast = podcast.OrderByDescending(p => p.PodcastName);
+                    break;
+                case "publisher":
+                    podcast = podcast.OrderBy(p => p.Publisher);
                     break;
                 case "publisher_sort":
                     podcast = podcast.OrderByDescending(p => p.Publisher);
