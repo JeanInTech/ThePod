@@ -223,7 +223,7 @@ namespace ThePod.Controllers
                 }
             }
 
-            return View(); // I need to put something else here- if I do not meet the conditions above, I will end up here, and this view does not exist
+            return View(); 
         }
         public async Task<IActionResult> GetPodcastFromCarosel(string id, string query)
         {
@@ -238,8 +238,6 @@ namespace ThePod.Controllers
             TempData["PreviousPage"] = episodesByPodcast.previous;
             TempData["Offset"] = episodesByPodcast.offset;
             TempData["shoId"] = id;
-
-            //var showResults = await _dal.SearchShowNameAsync(query);
 
             return View("EpisodesByPodcast", episodesByPodcast);
         }
